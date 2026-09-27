@@ -1,4 +1,4 @@
-# GIMP-Plugin-Workshop
+# GIMP-Plugin-Workshop V1 - 2.10 Version 
 Create GIMP plugins visually, using Scratch-like blocks. Export ready-to-run Python code. Visual, Block-Based Plugin Creator.
 
 # GIMP Code Block — Plug-in Maker
