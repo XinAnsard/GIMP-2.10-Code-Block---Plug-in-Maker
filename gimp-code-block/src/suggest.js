@@ -151,6 +151,12 @@ function rank(pairs, q, max) {
 /* liste de suggestions : { v: valeur à écrire, chip: texte de la pastille, cls, col, sub, desc } */
 function itemsFor(kind, q, field) {
   var qn = norm(q).trim(), out = [];
+  if (kind === 'val') {
+    // tant qu'on n'a rien tapé : toutes les valeurs habituelles ; sinon celles qui contiennent le texte tapé
+    var all = (cur && cur.hints && cur.hints.items) || [];
+    if (!cur || q === cur.orig) return all.slice();
+    return all.filter(function (it) { return norm(it.v).indexOf(qn) >= 0 || norm(it.desc).indexOf(qn) >= 0; });
+  }
   if (kind === 'var') {
     rank(namesInWorkspace(wsOf(field), field.getSourceBlock()), qn, 40).forEach(function (h) {
       var c = GA.isPyConst(h.p[0]);
@@ -203,7 +209,8 @@ function render() {
   // pré-sélection seulement si le début correspond : écrire un nouveau nom puis Entrée ne le remplace pas
   var qn = norm(cur.input.value).trim();
   cur.active = items.length && qn && (norm(items[0].v).indexOf(qn) === 0 || norm(items[0].chip).indexOf(qn) === 0) ? 0 : -1;
-  var head = cur.kind === 'var' ? T('Variables de ton script') : cur.kind === 'attr' ? T('Attributs courants') : T('Fonctions — tape un mot (en français ou en anglais)');
+  if (cur.kind === 'val' && cur.input.value === cur.orig) cur.active = -1;
+  var head = cur.kind === 'val' ? cur.hints.head + ' — ' + T('valeurs habituelles') : cur.kind === 'var' ? T('Variables de ton script') : cur.kind === 'attr' ? T('Attributs courants') : T('Fonctions — tape un mot (en français ou en anglais)');
   var h = '<div class="sgHead">' + esc(head) + (cur.kind === 'func' ? '<button type="button" class="sgAll">🔍 ' + esc(T('Parcourir tout')) + '</button>' : '') + '</div>';
   if (!items.length) h += '<div class="sgNone">' + esc(T('Rien ne correspond. Tu peux quand même écrire ce que tu veux.')) + '</div>';
   items.forEach(function (it, i) {
@@ -227,6 +234,12 @@ function setActive(i) {
 function choose(i) {
   if (!cur || !cur.items[i]) return;
   var it = cur.items[i], c = cur, block = c.field.getSourceBlock();
+  if (c.kind === 'val') {
+    close(); root.Blockly.WidgetDiv.hide();
+    if (GA.pickHint) GA.pickHint(block, it);
+    if (GA.afterSuggest) GA.afterSuggest(block);
+    return;
+  }
   c.input.value = it.v;
   c.input.dispatchEvent(new Event('input', { bubbles: true }));
   close();
@@ -235,10 +248,10 @@ function choose(i) {
   if (GA.afterSuggest) GA.afterSuggest(block);
 }
 GA.suggest = {
-  open: function (field, kind, input) {
+  open: function (field, kind, input, hints) {
     close();
     if (!input || !root.document) return;
-    cur = { field: field, kind: kind, input: input, items: [], active: -1 };
+    cur = { field: field, kind: kind, input: input, items: [], active: -1, hints: hints, orig: input.value };
     box = document.createElement('div');
     box.className = 'sgBox';
     box.setAttribute('role', 'listbox');

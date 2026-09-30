@@ -149,6 +149,7 @@ GA.varMenu = {
     var block = field.getSourceBlock(), ws = mainWs(block);
     if (!ws || !root.document) return;
     var curName = String(field.getValue() || '');
+    var hints = GA.valueHints ? GA.valueHints(block) : null;
     var isC = GA.isPyConst(curName);
     var list = varList(ws).filter(function (p) { return isC ? GA.isPyConst(p[0]) : !GA.isPyConst(p[0]); });
     cur = { field: field, active: -1, filter: '' };
@@ -159,7 +160,14 @@ GA.varMenu = {
     function draw() {
       var q = cur.filter.toLowerCase();
       var shown = list.filter(function (p) { return !q || p[0].toLowerCase().indexOf(q) >= 0; });
-      var h = '<div class="sgHead">' + esc(T('Variables de ton script')) + '</div>';
+      var h = '';
+      if (hints && hints.items.length && !q) {
+        h += '<div class="sgHead">' + esc(hints.head) + ' — ' + esc(T('valeurs habituelles')) + '</div>';
+        hints.items.forEach(function (it, i) {
+          h += '<div class="sgRow" data-h="' + i + '"><span class="sgChip sg-' + it.cls + '">' + esc(it.chip) + '</span>' + (it.desc ? '<div class="sgDesc">' + esc(T(it.desc)) + '</div>' : '') + '</div>';
+        });
+      }
+      h += '<div class="sgHead">' + esc(T('Variables de ton script')) + '</div>';
       if (list.length > 8) h += '<input class="vmFilter" type="search" placeholder="' + esc(T('filtrer…')) + '" value="' + esc(cur.filter) + '">';
       h += '<div class="vmList">';
       shown.forEach(function (p) {
@@ -182,9 +190,10 @@ GA.varMenu = {
     box.addEventListener('click', function (e) {
       var row = e.target.closest('.sgRow');
       if (!row) return;
-      var v = row.getAttribute('data-v'), a = row.getAttribute('data-a');
+      var v = row.getAttribute('data-v'), a = row.getAttribute('data-a'), hi = row.getAttribute('data-h');
       close();
-      if (v != null) setValue(field, v);
+      if (hi != null) { GA.pickHint(block, hints.items[+hi]); if (GA.afterSuggest) GA.afterSuggest(block); }
+      else if (v != null) setValue(field, v);
       else if (a === 'rename') GA.askRenameVar(ws, curName);
       else if (a === 'new') GA.createScriptVar(ws, function (n) { setValue(field, n); });
       else if (a === 'type') typeByHand(field);
@@ -221,6 +230,6 @@ function addVarMenu(type) {
   };
 }
 GA.pyVarsInit = function () { ['py_var', 'py_assign', 'py_augassign', 'py_for'].forEach(addVarMenu); };
-if (root.Blockly && root.Blockly.Blocks.py_var) GA.pyVarsInit();
+if (root.Blockly && root.Blockly.Blocks && root.Blockly.Blocks.py_var) GA.pyVarsInit();
 if (root.addEventListener) root.addEventListener('resize', function () { if (cur) place(cur.field); });
 })(typeof window !== 'undefined' ? window : globalThis);

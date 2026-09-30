@@ -668,7 +668,7 @@ GA.setup = function (Blockly, DATA) {
     var vars = [{ kind: 'label', text: GA.T('Variables de ton script :'), 'web-class': 'gaSep' }];
     if (!names.length) vars.push({ kind: 'label', text: GA.T('(importe ou écris un script pour voir ses variables)'), 'web-class': 'gaHint' });
     names.slice(0, 80).forEach(function (n) { vars.push({ kind: 'block', type: 'py_var', fields: { NAME: n } }); });
-    return out.slice(0, 1).concat(vars, GA.pyShortcuts(), out.slice(1));
+    return out.slice(0, 1).concat(vars, GA.pyShortcuts(), GA.registerFlyout ? GA.registerFlyout(main) : [], out.slice(1));
   };
   /* raccourcis GIMP en blocs Python : ce que presque tous les scripts écrivent */
   var PY_SHORTCUTS = [

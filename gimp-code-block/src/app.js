@@ -600,6 +600,7 @@ function importText(text, name, replaceOk, bytes) {
       if (res.opts) opts = Object.assign(GA.defaultOpts(), res.opts);
       else opts = Object.assign(GA.defaultOpts(), { crlf: opts.crlf });
       loadState(res.state);
+      if (GA.learnFromWorkspace) GA.learnFromWorkspace(ws);
       dlgClose = null; closeDialog();
       res.origText = text; res.origBytes = bytes || null;
       importReport(res);

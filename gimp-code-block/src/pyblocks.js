@@ -161,6 +161,14 @@ GA.pyInit = function (Blockly, G) {
   function pill(v, kind) { return new PillField(v, kind); }
   GA.PillField = PillField;
   function mtxt(v) { return new Blockly.FieldMultilineInput(v); }
+  /* case valeur : en l'ouvrant, l'atelier propose les valeurs habituelles à cet endroit (register, PF_…, pdb) */
+  class LeafField extends Blockly.FieldMultilineInput {
+    showEditor_(e, quiet) {
+      super.showEditor_(e, quiet);
+      var h = GA.valueHints && this.htmlInput_ ? GA.valueHints(this.getSourceBlock()) : null;
+      if (h && h.items.length && GA.suggest) GA.suggest.open(this, 'val', this.htmlInput_, h);
+    }
+  }
   function mutate(block, fn) {
     var before = JSON.stringify(block.saveExtraState() || {});
     Blockly.Events.setGroup(true);
@@ -528,7 +536,7 @@ GA.pyInit = function (Blockly, G) {
       this.appendDummyInput().appendField(f, 'NAME');
     },
     gen: function (b) { return [String(b.getFieldValue('NAME')), 0]; } });
-  defVal('py_leaf', { style: 'cat_pyleaf', init: function () { this.appendDummyInput().appendField(mtxt('0'), 'CODE'); },
+  defVal('py_leaf', { style: 'cat_pyleaf', init: function () { this.appendDummyInput().appendField(new LeafField('0'), 'CODE'); },
     gen: function (b) { var t = String(b.getFieldValue('CODE')); return [tx(t), leafOrd(t)]; } });
   var BINOPS = ['+', '-', '*', '/', '//', '%', '**', '<<', '>>', '|', '^', '&', '@'];
   defVal('py_binop', { init: function () { this.appendValueInput('A'); this.appendValueInput('B').appendField(new Blockly.FieldDropdown(BINOPS.map(function (o) { return [o, o]; })), 'OP'); },
