@@ -279,7 +279,7 @@ GA.tour = (function () {
 
 /* ================= raccourcis & à propos ================= */
 GA.openShortcuts = function () {
-  var rows = [['Ctrl + clic / Ctrl + clic droit', 'Ajouter / retirer un bloc de la sélection'], ['Maj + glisser dans le vide', 'Sélection au lasso'], ['Ctrl + A', 'Tout sélectionner'], ['Ctrl + C / X / V', 'Copier / couper / coller (blocs et code Python)'], ['Ctrl + D', 'Dupliquer la sélection'], ['Suppr', 'Supprimer la sélection'], ['Échap', 'Vider la sélection'], ['Ctrl + Z / Ctrl + Y', 'Annuler / rétablir'], ['Ctrl + F / Ctrl + H', 'Rechercher / remplacer'], ['Ctrl + G', 'Aller à une fonction'], ['Alt + 0 / Alt + Maj + 0', 'Replier toutes les fonctions / tout déplier'], ['Ctrl + S / Ctrl + O', 'Sauvegarder le projet / importer un fichier'], ['/', 'Chercher un bloc dans la boîte à outils'], ['Ctrl + Entrée', 'Envoyer la demande à l\'IA'], ['F1', 'Tutoriel']];
+  var rows = [['Ctrl + clic / Ctrl + clic droit', 'Ajouter / retirer un bloc de la sélection'], ['Maj + glisser dans le vide', 'Sélection au lasso'], ['Ctrl + A', 'Tout sélectionner'], ['Ctrl + C / X / V', 'Copier / couper / coller (blocs et code Python)'], ['Ctrl + D', 'Dupliquer la sélection'], ['Suppr', 'Supprimer la sélection'], ['Échap', 'Vider la sélection'], ['Ctrl + Z / Ctrl + Y', 'Annuler / rétablir'], ['Ctrl + F / Ctrl + H', 'Rechercher / remplacer'], ['Ctrl + G', 'Aller à une fonction'], ['Alt + 0 / Alt + Maj + 0', 'Replier toutes les fonctions / tout déplier'], ['Ctrl + S / Ctrl + O', 'Sauvegarder le projet / importer un fichier'], ['Ctrl + Maj + G', 'Installer le plug-in dans GIMP'], ['/', 'Chercher un bloc dans la boîte à outils'], ['Ctrl + Entrée', 'Envoyer la demande à l\'IA'], ['F1', 'Tutoriel']];
   var d = GA.app.openDialog('<h2>⌨️ ' + T('Raccourcis clavier') + '</h2><table class="keys">' + rows.map(function (r) { return '<tr><td><kbd>' + esc(r[0]) + '</kbd></td><td>' + esc(T(r[1])) + '</td></tr>'; }).join('') + '</table><div class="foot"><button class="btn primary" id="kOk">OK</button></div>');
   d.querySelector('#kOk').onclick = GA.app.closeDialog;
 };
@@ -311,7 +311,7 @@ GA.actions = {
   theme: function () { var t = GA.prefs.theme; GA.prefs.theme = t === 'auto' ? (GA.isDark() ? 'light' : 'dark') : (t === 'dark' ? 'light' : 'dark'); GA.savePrefs(); GA.applyLivePrefs(); },
   langFr: function () { GA.setLang('fr'); }, langEn: function () { GA.setLang('en'); },   // anciens noms (raccourcis enregistrés)
   tour: function () { GA.tour.start(); }, learn: function () { GA.learn.open(); }, guide: function () { GA.openGuide(); }, shortcuts: function () { GA.openShortcuts(); }, about: function () { GA.openAbout(); },
-  saveProject: function () { GA.app.saveProject(); }, sessions: function () { if (GA.sessions) GA.sessions.open(); }, importFile: function () { var f = $('#fileOpen'); f.value = ''; f.click(); },
+  saveProject: function () { GA.app.saveProject(); }, sessions: function () { if (GA.sessions) GA.sessions.open(); }, installGimp: function () { GA.app.installGimp(); }, importFile: function () { var f = $('#fileOpen'); f.value = ''; f.click(); },
   aiPanel: function () { if (GA.ai) GA.ai.show(); }, aiSettings: function () { if (GA.ai) GA.ai.openSettings(); },
   downloadAtelier: function () { if (GA.ai) GA.ai.downloadAtelier(); }
 };

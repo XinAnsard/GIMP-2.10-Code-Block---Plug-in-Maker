@@ -251,6 +251,7 @@ main { flex: 1; display: flex; min-height: 0; }
 .sgDesc { font-size: 12.5px; color: var(--muted); margin-top: 2px; line-height: 1.35; }
 .sgRow:hover { background: var(--accent-soft); } .sgRow.cur { outline: 2px solid var(--accent-soft); }
 .vmFilter { width: 100%; box-sizing: border-box; margin: 0 0 6px; padding: 5px 9px; border: 1.5px solid var(--line); border-radius: 9px; background: var(--panel2); color: var(--ink); font: inherit; }
+.gimpBox { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; padding: 12px; margin: 10px 0 6px; border: 2px solid var(--accent-soft); border-radius: 14px; } .gimpBox .btn { white-space: nowrap; }
 .sesNew { display: flex; gap: 8px; margin: 10px 0; } .sesNew input { flex: 1; min-width: 0; padding: 8px 10px; border: 1.5px solid var(--line); border-radius: 10px; background: var(--panel2); color: var(--ink); font: inherit; }
 .sesList { max-height: 50vh; overflow: auto; display: flex; flex-direction: column; gap: 8px; }
 .sesRow { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 12px; border: 1.5px solid var(--line); border-radius: 12px; }
@@ -401,6 +402,7 @@ table.keys kbd { font: 700 12px var(--mono); background: var(--panel2); border: 
         <button role="menuitem" id="bExamples"><span>✨ Exemples</span></button>
         <button role="menuitem" id="mConvert"><span>🔁 Voir ce plug-in en blocs Python</span></button>
         <hr>
+        <button role="menuitem" data-act="installGimp"><span>🧩 Installer dans GIMP</span><kbd>Ctrl+Maj+G</kbd></button>
         <button role="menuitem" id="bDl3"><span>⬇ Télécharger le plug-in</span></button>
         <button role="menuitem" data-act="downloadAtelier"><span>🧳 Télécharger l'atelier (pour l'ouvrir chez toi)</span></button>
     </div></div>
@@ -1593,6 +1595,20 @@ Object.assign(GA.EN, {
 "résultats": "results",
 "fonction": "function",
 "menu": "menu"
+});
+Object.assign(GA.EN, {
+/* ---- variables de script, valeurs prédites, sessions ---- */
+"🧩 Installer dans GIMP": "🧩 Install in GIMP",
+"Directement dans le dossier plug-ins de GIMP.": "Straight into GIMP's plug-ins folder.",
+"Garde ouverte la fenêtre de « Lancer GIMP Code Block.bat » : elle range le fichier tout de suite dans GIMP. Puis redémarre GIMP.": "Keep the \"Lancer GIMP Code Block.bat\" window open: it puts the file into GIMP right away. Then restart GIMP.",
+"est envoyé à GIMP.": "has been sent to GIMP.",
+"Rien ne se passe ? Lance « Lancer GIMP Code Block.bat » : il installe au démarrage les plug-ins en attente dans tes Téléchargements (choix 3 du menu).": "Nothing happens? Run \"Lancer GIMP Code Block.bat\": when it starts, it installs the plug-ins waiting in your Downloads (menu choice 3).",
+"Envoyé à GIMP : ": "Sent to GIMP: ",
+"Installer le plug-in dans GIMP": "Install the plug-in in GIMP"
+});
+Object.assign(GA.EN, {
+/* ---- variables de script, valeurs prédites, sessions ---- */
+"Ou installer à la main": "Or install it by hand"
 });
 })(typeof window !== 'undefined' ? window : globalThis);
 
@@ -4068,7 +4084,15 @@ Object.assign(GA.EN, {
 "16a5268":"tipos de imagen",
 "106ucn6":"resultados",
 "wd0lh3":"función",
-"1kxe64a":"menú"
+"1kxe64a":"menú",
+"wjz4s1":"🧩 Instalar en GIMP",
+"1wpxzio":"Directamente en la carpeta plug-ins de GIMP.",
+"rrszx0":"Deja abierta la ventana de «Lancer GIMP Code Block.bat»: coloca el archivo en GIMP enseguida. Después reinicia GIMP.",
+"jl40cm":"se ha enviado a GIMP.",
+"1yfi969":"¿No pasa nada? Ejecuta «Lancer GIMP Code Block.bat»: al arrancar instala los plug-ins que esperan en tus Descargas (opción 3 del menú).",
+"1jbam9a":"Enviado a GIMP: ",
+"127t0n":"Instalar el plug-in en GIMP",
+"fb2dvx":"O instalarlo a mano"
 }; })(typeof window !== 'undefined' ? window : globalThis);
 
 </script>
@@ -5954,7 +5978,15 @@ Object.assign(GA.EN, {
 "16a5268":"Bildtypen",
 "106ucn6":"Ergebnisse",
 "wd0lh3":"Funktion",
-"1kxe64a":"Menü"
+"1kxe64a":"Menü",
+"wjz4s1":"🧩 In GIMP installieren",
+"1wpxzio":"Direkt in den Plug-in-Ordner von GIMP.",
+"rrszx0":"Lass das Fenster von „Lancer GIMP Code Block.bat“ offen: Es legt die Datei sofort in GIMP ab. Starte GIMP dann neu.",
+"jl40cm":"wurde an GIMP gesendet.",
+"1yfi969":"Passiert nichts? Starte „Lancer GIMP Code Block.bat“: Beim Start installiert es die Plug-ins, die in deinen Downloads warten (Menüpunkt 3).",
+"1jbam9a":"An GIMP gesendet: ",
+"127t0n":"Das Plug-in in GIMP installieren",
+"fb2dvx":"Oder von Hand installieren"
 }; })(typeof window !== 'undefined' ? window : globalThis);
 
 </script>
@@ -7840,7 +7872,15 @@ Object.assign(GA.EN, {
 "16a5268":"tipos de imagem",
 "106ucn6":"resultados",
 "wd0lh3":"função",
-"1kxe64a":"menu"
+"1kxe64a":"menu",
+"wjz4s1":"🧩 Instalar no GIMP",
+"1wpxzio":"Direto na pasta plug-ins do GIMP.",
+"rrszx0":"Deixe aberta a janela do \"Lancer GIMP Code Block.bat\": ela coloca o arquivo no GIMP na hora. Depois reinicie o GIMP.",
+"jl40cm":"foi enviado ao GIMP.",
+"1yfi969":"Nada acontece? Abra o \"Lancer GIMP Code Block.bat\": ao iniciar, ele instala os plug-ins que esperam nos seus Downloads (opção 3 do menu).",
+"1jbam9a":"Enviado ao GIMP: ",
+"127t0n":"Instalar o plug-in no GIMP",
+"fb2dvx":"Ou instalar manualmente"
 }; })(typeof window !== 'undefined' ? window : globalThis);
 
 </script>
@@ -9726,7 +9766,15 @@ Object.assign(GA.EN, {
 "16a5268":"типы изображений",
 "106ucn6":"результаты",
 "wd0lh3":"функция",
-"1kxe64a":"меню"
+"1kxe64a":"меню",
+"wjz4s1":"🧩 Установить в GIMP",
+"1wpxzio":"Прямо в папку плагинов GIMP.",
+"rrszx0":"Не закрывайте окно «Lancer GIMP Code Block.bat»: оно сразу кладёт файл в GIMP. Затем перезапустите GIMP.",
+"jl40cm":"отправлен в GIMP.",
+"1yfi969":"Ничего не происходит? Запустите «Lancer GIMP Code Block.bat»: при запуске он установит плагины, ожидающие в папке «Загрузки» (пункт 3 меню).",
+"1jbam9a":"Отправлено в GIMP: ",
+"127t0n":"Установить плагин в GIMP",
+"fb2dvx":"Или установить вручную"
 }; })(typeof window !== 'undefined' ? window : globalThis);
 
 </script>
@@ -11612,7 +11660,15 @@ Object.assign(GA.EN, {
 "16a5268":"इमेज प्रकार",
 "106ucn6":"परिणाम",
 "wd0lh3":"फ़ंक्शन",
-"1kxe64a":"मेनू"
+"1kxe64a":"मेनू",
+"wjz4s1":"🧩 GIMP में इंस्टॉल करें",
+"1wpxzio":"सीधे GIMP के plug-ins फ़ोल्डर में।",
+"rrszx0":"\"Lancer GIMP Code Block.bat\" की विंडो खुली रखें: वह फ़ाइल तुरंत GIMP में रख देती है। फिर GIMP दोबारा शुरू करें।",
+"jl40cm":"GIMP को भेज दिया गया।",
+"1yfi969":"कुछ नहीं हुआ? \"Lancer GIMP Code Block.bat\" चलाएँ: शुरू होते ही वह आपके Downloads में इंतज़ार कर रहे प्लग-इन इंस्टॉल कर देता है (मेनू का विकल्प 3)।",
+"1jbam9a":"GIMP को भेजा गया: ",
+"127t0n":"प्लग-इन GIMP में इंस्टॉल करें",
+"fb2dvx":"या हाथ से इंस्टॉल करें"
 }; })(typeof window !== 'undefined' ? window : globalThis);
 
 </script>
@@ -13498,7 +13554,15 @@ Object.assign(GA.EN, {
 "16a5268":"أنواع الصور",
 "106ucn6":"النتائج",
 "wd0lh3":"الدالة",
-"1kxe64a":"القائمة"
+"1kxe64a":"القائمة",
+"wjz4s1":"🧩 التثبيت في GIMP",
+"1wpxzio":"مباشرة في مجلد إضافات GIMP.",
+"rrszx0":"أبقِ نافذة «Lancer GIMP Code Block.bat» مفتوحة: فهي تضع الملف في GIMP فوراً. ثم أعد تشغيل GIMP.",
+"jl40cm":"أُرسل إلى GIMP.",
+"1yfi969":"لا شيء يحدث؟ شغّل «Lancer GIMP Code Block.bat»: عند بدئه يثبّت الإضافات المنتظرة في مجلد التنزيلات (الخيار 3 في القائمة).",
+"1jbam9a":"أُرسل إلى GIMP: ",
+"127t0n":"تثبيت الإضافة في GIMP",
+"fb2dvx":"أو ثبّته يدوياً"
 }; })(typeof window !== 'undefined' ? window : globalThis);
 
 </script>
@@ -17775,6 +17839,7 @@ function keys(e) {
   if (k === 'F1') { e.preventDefault(); GA.actions.tour(); return; }
   if (c && !e.shiftKey && (k === 'f' || k === 'F')) { e.preventDefault(); GA.find.open(false); return; }
   if (c && (k === 'h' || k === 'H')) { e.preventDefault(); GA.find.open(true); return; }
+  if (c && e.shiftKey && (k === 'g' || k === 'G')) { e.preventDefault(); GA.actions.installGimp(); return; }   // G comme GIMP
   if (c && (k === 'g' || k === 'G')) { e.preventDefault(); GA.actions.functions(); return; }
   if (c && (k === 's' || k === 'S')) { e.preventDefault(); GA.actions.saveProject(); return; }
   if (c && (k === 'o' || k === 'O')) { e.preventDefault(); GA.actions.importFile(); return; }
@@ -18148,7 +18213,7 @@ GA.tour = (function () {
 
 /* ================= raccourcis & à propos ================= */
 GA.openShortcuts = function () {
-  var rows = [['Ctrl + clic / Ctrl + clic droit', 'Ajouter / retirer un bloc de la sélection'], ['Maj + glisser dans le vide', 'Sélection au lasso'], ['Ctrl + A', 'Tout sélectionner'], ['Ctrl + C / X / V', 'Copier / couper / coller (blocs et code Python)'], ['Ctrl + D', 'Dupliquer la sélection'], ['Suppr', 'Supprimer la sélection'], ['Échap', 'Vider la sélection'], ['Ctrl + Z / Ctrl + Y', 'Annuler / rétablir'], ['Ctrl + F / Ctrl + H', 'Rechercher / remplacer'], ['Ctrl + G', 'Aller à une fonction'], ['Alt + 0 / Alt + Maj + 0', 'Replier toutes les fonctions / tout déplier'], ['Ctrl + S / Ctrl + O', 'Sauvegarder le projet / importer un fichier'], ['/', 'Chercher un bloc dans la boîte à outils'], ['Ctrl + Entrée', 'Envoyer la demande à l\'IA'], ['F1', 'Tutoriel']];
+  var rows = [['Ctrl + clic / Ctrl + clic droit', 'Ajouter / retirer un bloc de la sélection'], ['Maj + glisser dans le vide', 'Sélection au lasso'], ['Ctrl + A', 'Tout sélectionner'], ['Ctrl + C / X / V', 'Copier / couper / coller (blocs et code Python)'], ['Ctrl + D', 'Dupliquer la sélection'], ['Suppr', 'Supprimer la sélection'], ['Échap', 'Vider la sélection'], ['Ctrl + Z / Ctrl + Y', 'Annuler / rétablir'], ['Ctrl + F / Ctrl + H', 'Rechercher / remplacer'], ['Ctrl + G', 'Aller à une fonction'], ['Alt + 0 / Alt + Maj + 0', 'Replier toutes les fonctions / tout déplier'], ['Ctrl + S / Ctrl + O', 'Sauvegarder le projet / importer un fichier'], ['Ctrl + Maj + G', 'Installer le plug-in dans GIMP'], ['/', 'Chercher un bloc dans la boîte à outils'], ['Ctrl + Entrée', 'Envoyer la demande à l\'IA'], ['F1', 'Tutoriel']];
   var d = GA.app.openDialog('<h2>⌨️ ' + T('Raccourcis clavier') + '</h2><table class="keys">' + rows.map(function (r) { return '<tr><td><kbd>' + esc(r[0]) + '</kbd></td><td>' + esc(T(r[1])) + '</td></tr>'; }).join('') + '</table><div class="foot"><button class="btn primary" id="kOk">OK</button></div>');
   d.querySelector('#kOk').onclick = GA.app.closeDialog;
 };
@@ -18180,7 +18245,7 @@ GA.actions = {
   theme: function () { var t = GA.prefs.theme; GA.prefs.theme = t === 'auto' ? (GA.isDark() ? 'light' : 'dark') : (t === 'dark' ? 'light' : 'dark'); GA.savePrefs(); GA.applyLivePrefs(); },
   langFr: function () { GA.setLang('fr'); }, langEn: function () { GA.setLang('en'); },   // anciens noms (raccourcis enregistrés)
   tour: function () { GA.tour.start(); }, learn: function () { GA.learn.open(); }, guide: function () { GA.openGuide(); }, shortcuts: function () { GA.openShortcuts(); }, about: function () { GA.openAbout(); },
-  saveProject: function () { GA.app.saveProject(); }, sessions: function () { if (GA.sessions) GA.sessions.open(); }, importFile: function () { var f = $('#fileOpen'); f.value = ''; f.click(); },
+  saveProject: function () { GA.app.saveProject(); }, sessions: function () { if (GA.sessions) GA.sessions.open(); }, installGimp: function () { GA.app.installGimp(); }, importFile: function () { var f = $('#fileOpen'); f.value = ''; f.click(); },
   aiPanel: function () { if (GA.ai) GA.ai.show(); }, aiSettings: function () { if (GA.ai) GA.ai.openSettings(); },
   downloadAtelier: function () { if (GA.ai) GA.ai.downloadAtelier(); }
 };
@@ -20836,6 +20901,21 @@ function fileText(b, code) {
   return c;
 }
 function stripState(st) { return JSON.stringify(st, function (k, v) { return /^(id|x|y|collapsed|height|width|pinned)$/.test(k) ? undefined : v; }); }
+/* « Installer dans GIMP » : le navigateur ne peut pas écrire dans AppData, alors le .py part dans
+   Téléchargements sous le nom <nom>.gimp-install.py ; le lanceur Windows le range aussitôt dans
+   %APPDATA%\GIMP\2.10\plug-ins (en gardant une copie de l'ancienne version). */
+function installGimp(name) {
+  refresh();
+  if (!built) { toast('Le code n\'a pas pu être généré.'); return Promise.resolve(false); }
+  name = name || ((ws && GA.isFileMode(ws) ? baseName() : (GA.pyIdent(baseName(), 'mon_plugin') || 'mon_plugin')) + '.py');
+  var file = name.replace(/\.py$/i, '') + '.gimp-install.py';
+  return exportCode().then(function (code) {
+    return saveFile(file, new Blob([code], { type: 'text/x-python' }));
+  }).then(function (ok) {
+    if (ok) toast(T('Envoyé à GIMP : ') + name);
+    return !!ok;
+  });
+}
 function exportCode() {
   if (!built) return Promise.resolve('');
   var b = built, code = b.code;
@@ -20891,9 +20971,11 @@ function openExport() {
   var menu = fileMode ? 'indiqué dans son register(...)' : built.menu.replace(/^<Image>\//, '').replace(/\//g, ' ▸ ') + ' ▸ ' + built.label;
   var d = openDialog('<h2>⬇ Télécharger ' + (fileMode ? 'le script' : 'le plug-in') + '</h2><p class="sub">« ' + esc(built.label) + ' » · ' + built.lines.length + ' lignes de Python</p>' + status +
     '<div class="field"><label for="eName">Nom du fichier</label><div class="dlrow"><input type="text" id="eName" style="flex:1 1 200px"><span class="muted" style="font-weight:800">.py</span></div></div>' +
-    '<div class="dlrow"><button class="btn go" id="eZip">⬇ Télécharger (.zip)</button><button class="btn" id="eCopy">📋 Copier le code</button><button class="btn" id="eProj">💾 Sauvegarder le projet</button></div>' +
+    '<div class="gimpBox"><button class="btn go" id="eGimp">🧩 Installer dans GIMP</button><div><b>Directement dans le dossier plug-ins de GIMP.</b><br><span class="muted">Garde ouverte la fenêtre de « Lancer GIMP Code Block.bat » : elle range le fichier tout de suite dans GIMP. Puis redémarre GIMP.</span></div></div>' +
+    '<div id="eGimpMsg"></div>' +
+    '<div class="dlrow"><button class="btn" id="eZip">⬇ Télécharger (.zip)</button><button class="btn" id="eCopy">📋 Copier le code</button><button class="btn" id="eProj">💾 Sauvegarder le projet</button></div>' +
     '<p class="muted" style="font-size:13px;margin-top:8px">Le .py est rangé dans un .zip, avec une notice.' + (opts.keepBlocks !== false ? ' Il contient aussi l\'empreinte de tes blocs : <b>réimporte ce .py (ou ce .zip) pour retrouver tes blocs à l\'identique.</b>' : ' (Empreinte des blocs désactivée dans ⚙️.)') + '</p>' +
-    '<h3>Installer dans GIMP</h3><ol class="steps">' +
+    '<h3>Ou installer à la main</h3><ol class="steps">' +
     '<li>Ouvre le .zip et copie <b id="ePy"></b> dans le dossier des plug-ins :<br><span class="path">C:\\Users\\TON_NOM\\AppData\\Roaming\\GIMP\\2.10\\plug-ins</span><br><span class="muted" style="font-size:13px">GIMP te montre ce dossier : Édition ▸ Préférences ▸ Dossiers ▸ Greffons.</span></li>' +
     '<li>Redémarre GIMP.</li><li>Lance-le depuis le menu ' + (fileMode ? esc(menu) : '<b>' + esc(menu) + '</b>') + '.</li></ol>' +
     '<p class="muted" style="font-size:13px">Sous Linux ou macOS, rends le fichier exécutable : <span class="path">chmod +x fichier.py</span></p>' +
@@ -20906,6 +20988,13 @@ function openExport() {
   d.querySelector('#eClose').onclick = closeDialog;
   d.querySelector('#eCopy').onclick = function () { copyCode(); };
   d.querySelector('#eProj').onclick = saveProject;
+  d.querySelector('#eGimp').onclick = function () {
+    installGimp(py()).then(function (ok) {
+      if (!ok) return;
+      d.querySelector('#eGimpMsg').innerHTML = '<div class="status ok">✅ <b>' + esc(py()) + '</b> ' + esc(T('est envoyé à GIMP.')) + '</div>' +
+        '<p class="muted" style="font-size:13px">' + esc(T('Rien ne se passe ? Lance « Lancer GIMP Code Block.bat » : il installe au démarrage les plug-ins en attente dans tes Téléchargements (choix 3 du menu).')) + '</p>';
+    });
+  };
   d.querySelector('#eZip').onclick = function () {
     var enc = new TextEncoder(), name = py();
     Promise.all([downloads(), exportCode()]).then(function (r) {
@@ -20994,7 +21083,7 @@ function init() {
   if (GA.ai) GA.ai.init();
   if (!store.get(KEY_SEEN)) openWelcome();
   window.addEventListener('resize', function () { Blockly.svgResize(ws); });
-  GA.ws = ws; GA.app = { openDialog: openDialog, closeDialog: closeDialog, confirmBox: confirmBox, saveFile: saveFile, openExamples: openExamples, openSettings: openSettings, saveProject: saveProject, openPaste: openPaste, convertToPython: convertToPython, openWelcome: openWelcome, importText: importText, handleFile: handleFile, readZip: readZip, exportCode: exportCode, refresh: refresh, openExport: openExport, openExamples: openExamples, openSettings: openSettings, openPicker: openPicker, showTab: showTab, loadState: loadState, getBuilt: function () { return built; }, getIssues: function () { return issues; }, getOpts: function () { return opts; } };
+  GA.ws = ws; GA.app = { openDialog: openDialog, closeDialog: closeDialog, confirmBox: confirmBox, saveFile: saveFile, openExamples: openExamples, openSettings: openSettings, saveProject: saveProject, openPaste: openPaste, convertToPython: convertToPython, openWelcome: openWelcome, importText: importText, handleFile: handleFile, readZip: readZip, exportCode: exportCode, refresh: refresh, openExport: openExport, openExamples: openExamples, openSettings: openSettings, openPicker: openPicker, installGimp: installGimp, showTab: showTab, loadState: loadState, getBuilt: function () { return built; }, getIssues: function () { return issues; }, getOpts: function () { return opts; } };
   GA.app.flush = save;
   if (GA.sessions) GA.sessions.init();
 }

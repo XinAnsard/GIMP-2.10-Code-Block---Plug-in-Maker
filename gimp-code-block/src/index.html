@@ -251,6 +251,7 @@ main { flex: 1; display: flex; min-height: 0; }
 .sgDesc { font-size: 12.5px; color: var(--muted); margin-top: 2px; line-height: 1.35; }
 .sgRow:hover { background: var(--accent-soft); } .sgRow.cur { outline: 2px solid var(--accent-soft); }
 .vmFilter { width: 100%; box-sizing: border-box; margin: 0 0 6px; padding: 5px 9px; border: 1.5px solid var(--line); border-radius: 9px; background: var(--panel2); color: var(--ink); font: inherit; }
+.gimpBox { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; padding: 12px; margin: 10px 0 6px; border: 2px solid var(--accent-soft); border-radius: 14px; } .gimpBox .btn { white-space: nowrap; }
 .sesNew { display: flex; gap: 8px; margin: 10px 0; } .sesNew input { flex: 1; min-width: 0; padding: 8px 10px; border: 1.5px solid var(--line); border-radius: 10px; background: var(--panel2); color: var(--ink); font: inherit; }
 .sesList { max-height: 50vh; overflow: auto; display: flex; flex-direction: column; gap: 8px; }
 .sesRow { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 12px; border: 1.5px solid var(--line); border-radius: 12px; }
@@ -401,6 +402,7 @@ table.keys kbd { font: 700 12px var(--mono); background: var(--panel2); border: 
         <button role="menuitem" id="bExamples"><span>✨ Exemples</span></button>
         <button role="menuitem" id="mConvert"><span>🔁 Voir ce plug-in en blocs Python</span></button>
         <hr>
+        <button role="menuitem" data-act="installGimp"><span>🧩 Installer dans GIMP</span><kbd>Ctrl+Maj+G</kbd></button>
         <button role="menuitem" id="bDl3"><span>⬇ Télécharger le plug-in</span></button>
         <button role="menuitem" data-act="downloadAtelier"><span>🧳 Télécharger l'atelier (pour l'ouvrir chez toi)</span></button>
     </div></div>

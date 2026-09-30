@@ -1879,5 +1879,13 @@
 "16a5268":"Bildtypen",
 "106ucn6":"Ergebnisse",
 "wd0lh3":"Funktion",
-"1kxe64a":"Menü"
+"1kxe64a":"Menü",
+"wjz4s1":"🧩 In GIMP installieren",
+"1wpxzio":"Direkt in den Plug-in-Ordner von GIMP.",
+"rrszx0":"Lass das Fenster von „Lancer GIMP Code Block.bat“ offen: Es legt die Datei sofort in GIMP ab. Starte GIMP dann neu.",
+"jl40cm":"wurde an GIMP gesendet.",
+"1yfi969":"Passiert nichts? Starte „Lancer GIMP Code Block.bat“: Beim Start installiert es die Plug-ins, die in deinen Downloads warten (Menüpunkt 3).",
+"1jbam9a":"An GIMP gesendet: ",
+"127t0n":"Das Plug-in in GIMP installieren",
+"fb2dvx":"Oder von Hand installieren"
 }; })(typeof window !== 'undefined' ? window : globalThis);

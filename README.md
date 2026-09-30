@@ -52,6 +52,8 @@ browser and download a plug-in ready to drop into GIMP's `plug-ins` folder.
 
 **Windows :** double-clique sur **`Lancer GIMP Code Block.bat`** à la racine du projet — un petit menu s'ouvre et lance l'atelier dans ton navigateur (il peut aussi ouvrir le dossier plug-ins de GIMP).
 
+**Installer un plug-in dans GIMP en un clic :** lance l'atelier avec le `.bat` et laisse sa fenêtre ouverte. Dans l'atelier, clique **🧩 Installer dans GIMP** (ou `Ctrl+Maj+G`) : le fichier est rangé tout seul dans `%APPDATA%\GIMP\2.10\plug-ins` (l'ancienne version est gardée dans `gimp-code-block-sauvegardes`). Redémarre GIMP et le plug-in est dans son menu.
+
 ```bash
 git clone https://github.com/USER/gimp-code-block.git
 cd gimp-code-block
