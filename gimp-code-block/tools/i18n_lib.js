@@ -18,7 +18,7 @@ function load() {
 function units(GA) { return GA.i18nUnits().map(u => Object.assign({ id: GA.i18nId(u.key) }, u)); }
 // what must survive translation unchanged: %ARGS, $1, <tags>, {placeholders}, `code`
 function marks(s) {
-  const m = [].concat(s.match(/%[A-Z0-9_]+/g) || [], s.match(/\$\d/g) || [], (s.match(/<\/?[a-z]+/g) || []), s.match(/\{[a-z0-9_]+\}/g) || [], s.match(/`[^`]+`/g) || []);
+  const m = [].concat(s.match(/%[A-Z0-9_]+/g) || [], s.match(/\$\d/g) || [], (s.match(/<\/?(?:b|i|br|code|kbd|small|span|div|p|ul|ol|li|h\d)\b/g) || []), s.match(/\{[a-z0-9_]+\}/g) || [], s.match(/`[^`]+`/g) || []);
   return m.sort().join(' ');
 }
 module.exports = { ROOT, SRC, PACKS, load, units, marks };

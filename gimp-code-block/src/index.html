@@ -193,6 +193,39 @@ main { flex: 1; display: flex; min-height: 0; }
 .pick { text-align: left; border: 1.5px solid var(--line); background: var(--panel); border-radius: 11px; padding: 9px 11px; }
 .pick:hover { border-color: var(--accent); background: var(--panel2); }
 .pick .bl { display: block; font-size: 13px; color: var(--muted); }
+/* cours et guide */
+#p-learn h2 { margin-top: 4px; }
+.lnBar { height: 10px; border-radius: 99px; background: var(--panel2); border: 1px solid var(--line); overflow: hidden; margin: 10px 0 4px; }
+.lnBar > div { height: 100%; background: var(--go); border-radius: 99px; transition: width .3s; }
+.lnCount { font-size: 12.5px; font-weight: 800; color: var(--muted); margin-bottom: 8px; }
+.lnLvl { margin-top: -6px; font-size: 13px; }
+.lnList { display: flex; flex-direction: column; gap: 5px; }
+.lnItem { display: flex; align-items: center; gap: 10px; text-align: start; border: 1.5px solid var(--line); background: var(--panel); border-radius: 11px; padding: 8px 10px; font-weight: 700; font-size: 14px; color: var(--ink); }
+.lnItem:hover { border-color: var(--accent); background: var(--panel2); }
+.lnItem.done { border-color: var(--go); background: var(--ok-soft); }
+.lnMark { min-width: 26px; height: 26px; border-radius: 99px; background: var(--accent-soft); color: var(--accent); display: inline-flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 900; }
+.lnItem.done .lnMark { background: transparent; }
+.lnNav, .lnNav2 { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+.lnNav .muted { font-size: 12.5px; }
+.lnGoal { background: var(--accent-soft); border-radius: 11px; padding: 9px 12px; font-weight: 800; margin: 8px 0 10px; }
+.lnText p, .lnText li, .gdBody p, .gdBody li { font-size: 14.5px; line-height: 1.55; }
+.lnText code, .gdBody code, .lnGoal code, .steps code, .tip code { font: 600 12.5px var(--mono); background: var(--code-bg); border: 1px solid var(--line); border-radius: 6px; padding: 0 5px; word-break: break-word; }
+.lnBlocks { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0 10px; }
+.lnBlock { border: 0; border-radius: 10px; color: #fff; font-weight: 800; font-size: 13px; padding: 7px 12px; box-shadow: inset 0 -3px 0 rgba(0, 0, 0, .18); cursor: pointer; }
+.lnBlock:hover { filter: brightness(1.08); }
+.lnActs { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0 10px; }
+.lnOk { background: var(--ok-soft); color: var(--go); font-weight: 900; border-radius: 11px; padding: 10px 12px; margin: 10px 0; font-size: 15px; }
+.lnWait { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; color: var(--muted); font-size: 13px; font-weight: 700; margin: 10px 0 4px; }
+.lnHint { background: var(--warn-soft); border-radius: 11px; padding: 9px 12px; font-size: 14px; }
+.lnFoot { margin-top: 16px; display: flex; gap: 6px; flex-wrap: wrap; }
+.gdWrap { display: flex; gap: 14px; min-height: 50vh; max-height: 62vh; }
+.gdToc { display: flex; flex-direction: column; gap: 3px; min-width: 210px; max-width: 240px; overflow: auto; }
+.gdTab { text-align: start; border: 0; background: transparent; border-radius: 9px; padding: 7px 10px; font-weight: 700; font-size: 13.5px; color: var(--ink); }
+.gdTab:hover { background: var(--panel2); }
+.gdTab.on { background: var(--accent-soft); color: var(--accent); }
+.gdBody { flex: 1; overflow: auto; padding-inline-end: 6px; }
+.gdBody h3 { margin-top: 0; }
+@media (max-width: 700px) { .gdWrap { flex-direction: column; max-height: none; } .gdToc { flex-direction: row; flex-wrap: wrap; max-width: none; } }
 .pick .gname { font-size: 11.5px; font-weight: 800; color: var(--muted); margin-left: 8px; }
 /* pastilles dans les blocs : variables (orange, comme Scratch), fonctions, fonctions de GIMP, attributs */
 .gcbPill > rect.blocklyFieldRect { stroke-width: 1.5px; fill-opacity: 1; }
@@ -419,7 +452,9 @@ table.keys kbd { font: 700 12px var(--mono); background: var(--panel2); border: 
         <button role="menuitem" data-act="lang_ar" lang="ar"><span>🇸🇦 العربية</span></button>
     </div></div>
     <div class="mb"><button class="mbBtn" aria-haspopup="true" aria-expanded="false">Aide</button><div class="menu" role="menu">
-        <button role="menuitem" data-act="tour"><span>🎓 Tutoriel (2 min)</span><kbd>F1</kbd></button>
+        <button role="menuitem" data-act="learn"><span>🎓 Cours : de débutant à pro</span></button>
+        <button role="menuitem" data-act="guide"><span>📘 Guide d'utilisation</span></button>
+        <button role="menuitem" data-act="tour"><span>🧭 Visite de l'écran (2 min)</span><kbd>F1</kbd></button>
         <button role="menuitem" id="mWelcome"><span>👋 Revoir l'accueil</span></button>
         <button role="menuitem" data-act="shortcuts"><span>⌨️ Raccourcis clavier</span></button>
         <button role="menuitem" data-act="about"><span>ℹ️ À propos</span></button>
@@ -456,6 +491,7 @@ table.keys kbd { font: 700 12px var(--mono); background: var(--panel2); border: 
       <button class="tab" role="tab" id="t-code" aria-selected="false" data-pane="code">🐍 Code</button>
       <button class="tab" role="tab" id="t-check" aria-selected="false" data-pane="check">✅ Vérification <span class="badge" id="chkBadge">0</span></button>
       <button class="tab" role="tab" id="t-ai" aria-selected="false" data-pane="ai">🤖 IA</button>
+      <button class="tab" role="tab" id="t-learn" aria-selected="false" data-pane="learn">🎓 Cours</button>
       <button class="tab closeSheet" id="sheetClose" aria-label="Fermer le panneau">✕</button>
     </div>
     <div class="pane on" id="p-help" role="tabpanel"></div>
@@ -469,6 +505,7 @@ table.keys kbd { font: 700 12px var(--mono); background: var(--panel2); border: 
     </div>
     <div class="pane" id="p-check" role="tabpanel"></div>
     <div class="pane" id="p-ai" role="tabpanel"></div>
+    <div class="pane" id="p-learn" role="tabpanel"></div>
   </aside>
 </main>
 <button class="btn primary" id="sideToggle">💡 Aide & code</button>

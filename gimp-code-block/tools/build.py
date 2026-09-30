@@ -45,6 +45,7 @@ SCRIPTS = (
     'tools.js',
     'tools2.js',
     'suggest.js',
+    'learn.js',
     'ai.js',
     'app.js',
 )

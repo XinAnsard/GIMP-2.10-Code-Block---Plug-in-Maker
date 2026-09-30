@@ -2719,6 +2719,1082 @@
   "key": "ui|Rafraîchir l'affichage",
   "en": "Refresh the display"
  },
+ "zp831k": {
+  "key": "ui|🌱 Niveau 1 — Premiers pas",
+  "en": "🌱 Level 1 — First steps"
+ },
+ "126z9hz": {
+  "key": "ui|Tu n'as jamais programmé ? Parfait, on commence ici.",
+  "en": "Never programmed before? Perfect, we start here."
+ },
+ "1o5cm54": {
+  "key": "ui|🌿 Niveau 2 — Les bases de la programmation",
+  "en": "🌿 Level 2 — Programming basics"
+ },
+ "1wsz8j6": {
+  "key": "ui|Variables, boucles, conditions : les 3 idées qui font tous les programmes.",
+  "en": "Variables, loops, conditions: the 3 ideas behind every program."
+ },
+ "a4gtll": {
+  "key": "ui|🌳 Niveau 3 — GIMP pour de vrai",
+  "en": "🌳 Level 3 — Real GIMP work"
+ },
+ "1fa5qws": {
+  "key": "ui|Sélections, texte, plusieurs images, dossiers entiers.",
+  "en": "Selections, text, several images, whole folders."
+ },
+ "1x3cf1m": {
+  "key": "ui|🚀 Niveau 4 — Vers le code (pro)",
+  "en": "🚀 Level 4 — Towards code (pro)"
+ },
+ "1ssj6vu": {
+  "key": "ui|Lire et écrire du Python, utiliser les 857 fonctions de GIMP, déboguer.",
+  "en": "Read and write Python, use the 857 GIMP functions, debug."
+ },
+ "1aronxm": {
+  "key": "ui|Ton premier plug-in",
+  "en": "Your first plug-in"
+ },
+ "ai1uoh": {
+  "key": "ui|Faire afficher « Bonjour » par GIMP.",
+  "en": "Make GIMP say \"Hello\"."
+ },
+ "q42cbl": {
+  "key": "ui|Un **plug-in** est un petit programme qui ajoute une commande dans les menus de GIMP. Ici, tu le construis en emboîtant des blocs, comme un puzzle : l'atelier écrit le vrai code Python à ta place.",
+  "en": "A **plug-in** is a small program that adds a command to GIMP's menus. Here you build it by snapping blocks together, like a puzzle: the workshop writes the real Python code for you."
+ },
+ "1orgtkd": {
+  "key": "ui|Tout plug-in commence par le bloc jaune **▶ Quand je lance**. Les blocs rangés sous « puis faire » s'exécutent **de haut en bas**, un par un.",
+  "en": "Every plug-in starts with the yellow block **▶ When I run**. The blocks placed under \"then do\" run **from top to bottom**, one by one."
+ },
+ "191rph7": {
+  "key": "ui|Clique sur le bloc ci-dessous pour l'ajouter : il s'accroche tout seul sous « puis faire ».",
+  "en": "Click the block below to add it: it attaches itself under \"then do\"."
+ },
+ "la9mbs": {
+  "key": "ui|Clique dans la case blanche du message et écris ton texte.",
+  "en": "Click the white slot of the message and type your text."
+ },
+ "1u2hgek": {
+  "key": "ui|Regarde l'onglet 🐍 Code : la ligne `pdb.gimp_message(...)` est apparue.",
+  "en": "Look at the 🐍 Code tab: the line `pdb.gimp_message(...)` has appeared."
+ },
+ "mj291a": {
+  "key": "ui|Il faut un bloc « 💬 afficher le message » accroché sous « puis faire ».",
+  "en": "You need a \"💬 show the message\" block attached under \"then do\"."
+ },
+ "fl30tf": {
+  "key": "ui|Installer ton plug-in dans GIMP",
+  "en": "Install your plug-in in GIMP"
+ },
+ "1xqgwh7": {
+  "key": "ui|Voir ton plug-in dans les menus de GIMP et le lancer.",
+  "en": "See your plug-in in GIMP's menus and run it."
+ },
+ "wf14pm": {
+  "key": "ui|GIMP charge les plug-ins au démarrage, depuis un dossier spécial appelé **plug-ins**.",
+  "en": "GIMP loads plug-ins at startup, from a special folder called **plug-ins**."
+ },
+ "1u1hp5p": {
+  "key": "ui|- **Windows** : `C:\\Users\\<toi>\\AppData\\Roaming\\GIMP\\2.10\\plug-ins`",
+  "en": "- **Windows**: `C:\\Users\\<you>\\AppData\\Roaming\\GIMP\\2.10\\plug-ins`"
+ },
+ "hfuz5d": {
+  "key": "ui|- **Linux** : `~/.config/GIMP/2.10/plug-ins` (puis rends le fichier exécutable : `chmod +x fichier.py`)",
+  "en": "- **Linux**: `~/.config/GIMP/2.10/plug-ins` (then make the file executable: `chmod +x file.py`)"
+ },
+ "8rbu4p": {
+  "key": "ui|- **macOS** : `~/Library/Application Support/GIMP/2.10/plug-ins`",
+  "en": "- **macOS**: `~/Library/Application Support/GIMP/2.10/plug-ins`"
+ },
+ "14g9uvz": {
+  "key": "ui|Le chemin exact est écrit dans GIMP : **Édition ▸ Préférences ▸ Dossiers ▸ Greffons**.",
+  "en": "The exact path is written in GIMP: **Edit ▸ Preferences ▸ Folders ▸ Plug-ins**."
+ },
+ "m28dr0": {
+  "key": "ui|Dans le bloc ▶, donne un nom à ton plug-in et choisis son menu.",
+  "en": "In the ▶ block, give your plug-in a name and choose its menu."
+ },
+ "15b6z85": {
+  "key": "ui|Clique sur **⬇ Télécharger** en haut à droite.",
+  "en": "Click **⬇ Download** at the top right."
+ },
+ "6ogj6u": {
+  "key": "ui|Range le fichier `.py` dans le dossier plug-ins, puis **redémarre GIMP**.",
+  "en": "Put the `.py` file in the plug-ins folder, then **restart GIMP**."
+ },
+ "m9dbl7": {
+  "key": "ui|Ouvre une image et cherche ton plug-in dans le menu choisi. Clique : ton message apparaît !",
+  "en": "Open an image and look for your plug-in in the menu you chose. Click it: your message appears!"
+ },
+ "co5ikd": {
+  "key": "ui|Quand ça marche, clique sur « J'ai réussi ».",
+  "en": "When it works, click \"I did it\"."
+ },
+ "1fzfrcy": {
+  "key": "ui|Le plug-in n'apparaît pas ? Vérifie que le fichier est bien dans le dossier plug-ins (pas dans un sous-dossier en trop), qu'il se termine par .py, et que GIMP a été redémarré. Sous Linux, il faut aussi le paquet gimp-python.",
+  "en": "The plug-in does not show up? Check that the file really is in the plug-ins folder (not in an extra sub-folder), that it ends with .py, and that GIMP was restarted. On Linux you also need the gimp-python package."
+ },
+ "1bi9iuz": {
+  "key": "ui|Agir sur l'image : un nouveau calque",
+  "en": "Act on the image: a new layer"
+ },
+ "11c0w3w": {
+  "key": "ui|Créer un calque rempli de blanc dans l'image.",
+  "en": "Create a layer filled with white in the image."
+ },
+ "1glw1rz": {
+  "key": "ui|Un **calque** est une feuille transparente posée sur l'image. Les blocs violets (📑 Calques) les créent et les modifient.",
+  "en": "A **layer** is a transparent sheet laid on the image. The purple blocks (📑 Layers) create and change them."
+ },
+ "1iw5ss3": {
+  "key": "ui|Le bloc « nouveau calque » de la catégorie ⚡ Raccourcis fait en une fois ce que les programmeurs écrivent en 3 lignes : créer le calque, l'ajouter à l'image, le remplir.",
+  "en": "The \"new layer\" block of the ⚡ Shortcuts category does at once what programmers write in 3 lines: create the layer, add it to the image, fill it."
+ },
+ "11ngtor": {
+  "key": "ui|Remarque les ovales bleus « 🖼️ image actuelle » : ce sont des **valeurs**. Ils désignent l'image sur laquelle tu as lancé le plug-in.",
+  "en": "Notice the blue ovals \"🖼️ current image\": they are **values**. They stand for the image you ran the plug-in on."
+ },
+ "s0rt1f": {
+  "key": "ui|Ajoute le bloc ci-dessous.",
+  "en": "Add the block below."
+ },
+ "ulk3k6": {
+  "key": "ui|Change son nom (« Mon calque ») et choisis « blanc » dans la liste.",
+  "en": "Change its name (\"My layer\") and choose \"white\" in the list."
+ },
+ "11vbgk0": {
+  "key": "ui|Télécharge, remplace l'ancien fichier dans GIMP, redémarre et essaie.",
+  "en": "Download, replace the old file in GIMP, restart and try."
+ },
+ "11f1m7w": {
+  "key": "ui|Il faut un bloc qui crée un calque (catégorie 📑 Calques ou ⚡ Raccourcis).",
+  "en": "You need a block that creates a layer (📑 Layers or ⚡ Shortcuts category)."
+ },
+ "nj7rg8": {
+  "key": "ui|Poser une question à l'utilisateur",
+  "en": "Ask the user a question"
+ },
+ "royz9z": {
+  "key": "ui|Demander un nombre au lancement et s'en servir.",
+  "en": "Ask for a number at launch and use it."
+ },
+ "1jk100a": {
+  "key": "ui|Quand un plug-in a des **réglages**, GIMP ouvre une petite fenêtre avant de le lancer : l'utilisateur y choisit un nombre, un texte, une couleur…",
+  "en": "When a plug-in has **settings**, GIMP opens a small window before running it: the user chooses a number, a text, a colour…"
+ },
+ "17fjovg": {
+  "key": "ui|Les réglages se rangent dans la partie « d'abord, demander » du bloc ▶. Ensuite, le bloc « 🎛️ valeur du réglage » (catégorie ▶ Démarrer) donne ce que l'utilisateur a choisi.",
+  "en": "Settings go in the \"first, ask\" part of the ▶ block. Then the \"🎛️ setting value\" block (▶ Start category) gives what the user chose."
+ },
+ "ylqd8e": {
+  "key": "ui|Ouvre la catégorie **▶ Démarrer & réglages** et glisse un réglage « 🔢 nombre entier » dans « d'abord, demander ». Donne-lui un nom, par exemple `opacite`.",
+  "en": "Open the **▶ Start & settings** category and drag a \"🔢 whole number\" setting into \"first, ask\". Give it a name, for example `opacity`."
+ },
+ "1cv3q8n": {
+  "key": "ui|Ajoute le bloc « opacité de … » ci-dessous.",
+  "en": "Add the \"opacity of …\" block below."
+ },
+ "jjx9hx": {
+  "key": "ui|Dans sa case du pourcentage, dépose le bloc 🎛️ du réglage (il apparaît dans la catégorie ▶ Démarrer une fois le réglage créé).",
+  "en": "In its percentage slot, drop the 🎛️ block of the setting (it appears in the ▶ Start category once the setting exists)."
+ },
+ "a7gl9v": {
+  "key": "ui|Il faut au moins un réglage dans « d'abord, demander » ET un bloc 🎛️ qui l'utilise dans les actions.",
+  "en": "You need at least one setting in \"first, ask\" AND a 🎛️ block using it in the actions."
+ },
+ "i79y5a": {
+  "key": "ui|Les variables : des boîtes pour retenir",
+  "en": "Variables: boxes that remember"
+ },
+ "ybq3ip": {
+  "key": "ui|Ranger une valeur dans une variable, puis la réutiliser.",
+  "en": "Store a value in a variable, then use it again."
+ },
+ "1cgbe6o": {
+  "key": "ui|Une **variable** est une boîte avec un nom. On y range une valeur (un nombre, un texte, un calque…) pour s'en resservir plus tard.",
+  "en": "A **variable** is a box with a name. You store a value in it (a number, a text, a layer…) to use it again later."
+ },
+ "1v2po3y": {
+  "key": "ui|« mettre `x` à 5 » range 5 dans la boîte `x`. Ensuite, chaque bloc `x` vaut 5. Si tu remets autre chose dans `x`, l'ancienne valeur est remplacée.",
+  "en": "\"set `x` to 5\" puts 5 in the box `x`. After that, every `x` block is worth 5. If you put something else in `x`, the old value is replaced."
+ },
+ "1ngeycr": {
+  "key": "ui|Les blocs qui créent quelque chose (calque, texte, image) ont souvent une flèche **→ dans** : le résultat est rangé dans une variable, pour que tu puisses le modifier ensuite.",
+  "en": "Blocks that create something (layer, text, image) often have an arrow **→ in**: the result is stored in a variable, so you can change it afterwards."
+ },
+ "1hl6p9p": {
+  "key": "ui|Ouvre **📦 Variables & listes** et clique sur « ➕ Créer une variable ». Appelle-la `nom`.",
+  "en": "Open **📦 Variables & lists** and click \"➕ Create a variable\". Call it `name`."
+ },
+ "niz085": {
+  "key": "ui|Ajoute « mettre … à … » et mets-y un texte, par exemple « Bonjour ».",
+  "en": "Add \"set … to …\" and put a text in it, for example \"Hello\"."
+ },
+ "1losre0": {
+  "key": "ui|Ajoute « 💬 afficher le message » et dépose-y le bloc de ta variable.",
+  "en": "Add \"💬 show the message\" and drop your variable's block in it."
+ },
+ "czwyqu": {
+  "key": "ui|Il faut un bloc « mettre … à … » ET un bloc variable qui la relit.",
+  "en": "You need a \"set … to …\" block AND a variable block that reads it back."
+ },
+ "1xf461h": {
+  "key": "ui|Répéter : les boucles",
+  "en": "Repeat: loops"
+ },
+ "1omycby": {
+  "key": "ui|Créer 5 calques d'un coup.",
+  "en": "Create 5 layers at once."
+ },
+ "1nh8hac": {
+  "key": "ui|Un ordinateur ne se lasse jamais : une **boucle** refait les mêmes blocs autant de fois qu'on veut.",
+  "en": "A computer never gets bored: a **loop** runs the same blocks as many times as you want."
+ },
+ "121palf": {
+  "key": "ui|« répéter 10 fois » est la plus simple. « compter avec `i` de 1 à 10 » fait pareil, mais la variable `i` vaut 1, puis 2, puis 3… : pratique pour numéroter.",
+  "en": "\"repeat 10 times\" is the simplest. \"count with `i` from 1 to 10\" does the same, but the variable `i` is 1, then 2, then 3…: handy for numbering."
+ },
+ "1k0aokd": {
+  "key": "ui|Les blocs en forme de **C** contiennent d'autres blocs : tout ce qui est à l'intérieur est répété.",
+  "en": "**C**-shaped blocks hold other blocks: everything inside is repeated."
+ },
+ "e2evgd": {
+  "key": "ui|Ajoute le bloc « compter avec … » ci-dessous et mets 5 comme fin.",
+  "en": "Add the \"count with …\" block below and set the end to 5."
+ },
+ "1362nqh": {
+  "key": "ui|Glisse un bloc « nouveau calque » **à l'intérieur** du C.",
+  "en": "Drag a \"new layer\" block **inside** the C."
+ },
+ "4drq89": {
+  "key": "ui|Bonus : dans le nom du calque, utilise « regrouper … et … » (🧮 Calculs & texte) pour écrire « Calque » + `i`.",
+  "en": "Bonus: in the layer name, use \"join … and …\" (🧮 Maths & text) to write \"Layer\" + `i`."
+ },
+ "cf6od4": {
+  "key": "ui|Le bloc qui crée le calque doit être DANS le C de la boucle, pas en dessous.",
+  "en": "The block that creates the layer must be INSIDE the C of the loop, not below it."
+ },
+ "1cziltk": {
+  "key": "ui|Choisir : les conditions",
+  "en": "Choose: conditions"
+ },
+ "o2e58f": {
+  "key": "ui|Faire quelque chose seulement si l'image est plus large que haute.",
+  "en": "Do something only if the image is wider than it is tall."
+ },
+ "1qbkjrx": {
+  "key": "ui|« **si** … **alors** … » ne fait les blocs de l'intérieur que si la condition est vraie.",
+  "en": "\"**if** … **then** …\" runs the blocks inside only if the condition is true."
+ },
+ "2e4m2t": {
+  "key": "ui|Une condition est un bloc **hexagonal** (pointu des deux côtés) : une comparaison comme « … > … », « … contient … », « … et … ».",
+  "en": "A condition is a **hexagonal** block (pointed on both sides): a comparison like \"… > …\", \"… contains …\", \"… and …\"."
+ },
+ "1wolzry": {
+  "key": "ui|Avec « si … alors … sinon … », tu choisis entre deux chemins.",
+  "en": "With \"if … then … else …\", you choose between two paths."
+ },
+ "vojnow": {
+  "key": "ui|Ajoute « si … alors ».",
+  "en": "Add \"if … then\"."
+ },
+ "17c0wg1": {
+  "key": "ui|Dans sa case pointue, dépose une comparaison « … > … ».",
+  "en": "In its pointed slot, drop a \"… > …\" comparison."
+ },
+ "1kzuuud": {
+  "key": "ui|À gauche, mets « largeur de image actuelle » ; à droite, « hauteur de image actuelle ».",
+  "en": "On the left put \"width of current image\"; on the right, \"height of current image\"."
+ },
+ "vieqbt": {
+  "key": "ui|Dans le C, mets un message « Image en paysage ! ».",
+  "en": "Inside the C, put a message \"Landscape image!\"."
+ },
+ "vevb21": {
+  "key": "ui|Il faut un « si … alors » dont la case pointue contient une condition.",
+  "en": "You need an \"if … then\" whose pointed slot holds a condition."
+ },
+ "d9rhb5": {
+  "key": "ui|Parcourir tous les calques",
+  "en": "Go through all the layers"
+ },
+ "s9jgjd": {
+  "key": "ui|Faire la même chose sur chaque calque de l'image.",
+  "en": "Do the same thing to every layer of the image."
+ },
+ "8yb9rd": {
+  "key": "ui|« pour chaque calque `calque` de image actuelle » est une boucle spéciale : à chaque tour, la variable `calque` contient **un** calque de l'image, puis le suivant…",
+  "en": "\"for each layer `layer` of current image\" is a special loop: on each round, the variable `layer` holds **one** layer of the image, then the next one…"
+ },
+ "6dk6yn": {
+  "key": "ui|C'est comme ça qu'on renomme, cache ou modifie 200 calques en un clic. Avec la case « chercher aussi dans les groupes », les calques rangés dans des dossiers sont aussi visités.",
+  "en": "This is how you rename, hide or change 200 layers in one click. With the \"also look inside groups\" box, layers stored in folders are visited too."
+ },
+ "jg9s7b": {
+  "key": "ui|Ajoute « pour chaque calque ».",
+  "en": "Add \"for each layer\"."
+ },
+ "1ocmqoc": {
+  "key": "ui|Dedans, mets « opacité de … » et dépose la variable `calque` dans sa première case.",
+  "en": "Inside, put \"opacity of …\" and drop the `layer` variable in its first slot."
+ },
+ "1pz6bzy": {
+  "key": "ui|Choisis 50 % : tous tes calques deviennent à moitié transparents.",
+  "en": "Choose 50%: all your layers become half transparent."
+ },
+ "1h7casw": {
+  "key": "ui|Il faut une action sur un calque (opacité, renommer, visibilité…) DANS la boucle « pour chaque calque ».",
+  "en": "You need an action on a layer (opacity, rename, visibility…) INSIDE the \"for each layer\" loop."
+ },
+ "1br6gx6": {
+  "key": "ui|Sélectionner et peindre",
+  "en": "Select and paint"
+ },
+ "6hsiom": {
+  "key": "ui|Remplir un rectangle de couleur.",
+  "en": "Fill a rectangle with colour."
+ },
+ "5a7rri": {
+  "key": "ui|La **sélection** (les pointillés) limite les actions à une zone. Dans GIMP, presque tous les filtres et remplissages ne touchent que la sélection.",
+  "en": "The **selection** (the dotted lines) limits actions to an area. In GIMP, almost all filters and fills only touch the selection."
+ },
+ "1noh94n": {
+  "key": "ui|Les positions se comptent en pixels depuis le **coin en haut à gauche** : x vers la droite, y vers le bas.",
+  "en": "Positions are counted in pixels from the **top-left corner**: x to the right, y downwards."
+ },
+ "a3dfw": {
+  "key": "ui|Pense à tout désélectionner à la fin, pour rendre la main proprement à l'utilisateur.",
+  "en": "Remember to select nothing at the end, to hand things back cleanly to the user."
+ },
+ "yu5nfy": {
+  "key": "ui|Ajoute « couleur de premier plan » et choisis une couleur.",
+  "en": "Add \"foreground colour\" and pick a colour."
+ },
+ "12pv5yc": {
+  "key": "ui|Ajoute « sélectionner un rectangle » (x 0, y 0, 200 × 100).",
+  "en": "Add \"select a rectangle\" (x 0, y 0, 200 × 100)."
+ },
+ "ehtskc": {
+  "key": "ui|Ajoute « remplir la sélection de … avec couleur de premier plan ».",
+  "en": "Add \"fill the selection of … with foreground colour\"."
+ },
+ "okgjdi": {
+  "key": "ui|Termine par « tout désélectionner ».",
+  "en": "Finish with \"select none\"."
+ },
+ "hgx2tq": {
+  "key": "ui|Il faut une sélection (rectangle, ellipse…) ET un remplissage de la sélection.",
+  "en": "You need a selection (rectangle, ellipse…) AND a fill of the selection."
+ },
+ "11pn83m": {
+  "key": "ui|Écrire du texte",
+  "en": "Write text"
+ },
+ "m3a8fo": {
+  "key": "ui|Ajouter un calque de texte sur l'image.",
+  "en": "Add a text layer on the image."
+ },
+ "1rld5wr": {
+  "key": "ui|Le bloc « écrire … » crée un **calque de texte** : police, taille, couleur et position se règlent dans le bloc.",
+  "en": "The \"write …\" block creates a **text layer**: font, size, colour and position are set in the block."
+ },
+ "vh8h52": {
+  "key": "ui|Le calque de texte est rangé dans une variable (→ dans `texte`) : tu peux ensuite le déplacer, changer son opacité, etc.",
+  "en": "The text layer is stored in a variable (→ in `text`): you can then move it, change its opacity, etc."
+ },
+ "126on6c": {
+  "key": "ui|Ajoute le bloc « écrire ».",
+  "en": "Add the \"write\" block."
+ },
+ "p9pvg4": {
+  "key": "ui|Mets ton texte, une taille de 60 px, une couleur.",
+  "en": "Type your text, a size of 60 px, a colour."
+ },
+ "xq6wr2": {
+  "key": "ui|Bonus : utilise un réglage « texte court » pour que l'utilisateur choisisse le texte.",
+  "en": "Bonus: use a \"short text\" setting so the user chooses the text."
+ },
+ "h74oou": {
+  "key": "ui|Il faut un bloc « écrire … » (catégorie 🔤 Texte).",
+  "en": "You need a \"write …\" block (🔤 Text category)."
+ },
+ "tuvtfo": {
+  "key": "ui|Travailler sur toutes les images ouvertes",
+  "en": "Work on all open images"
+ },
+ "gp60g": {
+  "key": "ui|Appliquer une action à chaque image ouverte, avec une annulation propre.",
+  "en": "Apply an action to each open image, with a clean undo."
+ },
+ "132nzgl": {
+  "key": "ui|Un plug-in n'est pas obligé de travailler seulement sur l'image actuelle. « pour chaque image ouverte » passe sur **toutes** les images ouvertes dans GIMP.",
+  "en": "A plug-in does not have to work only on the current image. \"for each open image\" goes through **all** the images open in GIMP."
+ },
+ "7ndeqo": {
+  "key": "ui|Chaque action compte normalement comme une étape d'annulation. Le raccourci ⚡ regroupe tout ce que le plug-in fait sur une image en **un seul Ctrl+Z**.",
+  "en": "Each action normally counts as one undo step. The ⚡ shortcut groups everything the plug-in does to an image into **a single Ctrl+Z**."
+ },
+ "15gybce": {
+  "key": "ui|Dans la boucle, utilise la variable `img` à la place de « image actuelle ».",
+  "en": "In the loop, use the `img` variable instead of \"current image\"."
+ },
+ "1lpnzph": {
+  "key": "ui|Ajoute « pour chaque image ouverte (une annulation par image) ».",
+  "en": "Add \"for each open image (one undo step per image)\"."
+ },
+ "afncj8": {
+  "key": "ui|Dedans, mets « aplatir … » et dépose `img` dans sa case.",
+  "en": "Inside, put \"flatten …\" and drop `img` in its slot."
+ },
+ "2yjg5f": {
+  "key": "ui|Ouvre 3 images dans GIMP et lance ton plug-in.",
+  "en": "Open 3 images in GIMP and run your plug-in."
+ },
+ "t3y4iz": {
+  "key": "ui|Il faut une boucle sur les images ouvertes avec au moins un bloc à l'intérieur.",
+  "en": "You need a loop over the open images with at least one block inside."
+ },
+ "18irwmb": {
+  "key": "ui|Traiter un dossier entier (lot)",
+  "en": "Process a whole folder (batch)"
+ },
+ "19kwt44": {
+  "key": "ui|Ouvrir chaque image d'un dossier, la modifier et l'exporter en PNG.",
+  "en": "Open each image of a folder, change it and export it as PNG."
+ },
+ "7salrl": {
+  "key": "ui|Le **traitement par lot** est la vraie superpuissance des scripts : 500 fichiers traités pendant que tu prends un café.",
+  "en": "**Batch processing** is the real superpower of scripts: 500 files processed while you have a coffee."
+ },
+ "z89479": {
+  "key": "ui|Le raccourci « pour chaque fichier image du dossier » ouvre chaque fichier sans fenêtre, fait tes blocs, puis libère la mémoire.",
+  "en": "The \"for each image file of the folder\" shortcut opens each file without a window, runs your blocks, then frees the memory."
+ },
+ "12976zs": {
+  "key": "ui|Astuce : ajoute un réglage « 📁 dossier à choisir » pour que l'utilisateur choisisse le dossier dans GIMP.",
+  "en": "Tip: add a \"📁 folder to choose\" setting so the user picks the folder in GIMP."
+ },
+ "v4x069": {
+  "key": "ui|Ajoute le bloc de lot ci-dessous, avec l'extension `.jpg`.",
+  "en": "Add the batch block below, with the extension `.jpg`."
+ },
+ "1x4jk96": {
+  "key": "ui|Dedans, mets « exporter … en PNG vers … » avec `img`.",
+  "en": "Inside, put \"export … as PNG to …\" with `img`."
+ },
+ "108th1v": {
+  "key": "ui|Pour le chemin, regroupe le nom du fichier et « .png » (🧮 Calculs & texte).",
+  "en": "For the path, join the file name and \".png\" (🧮 Maths & text)."
+ },
+ "1szx6v0": {
+  "key": "ui|Il faut un enregistrement ou un export DANS une boucle sur les fichiers d'un dossier.",
+  "en": "You need a save or an export INSIDE a loop over the files of a folder."
+ },
+ "l3o3cn": {
+  "key": "ui|Lire le Python que tu as construit",
+  "en": "Read the Python you built"
+ },
+ "196lg0c": {
+  "key": "ui|Comprendre le lien entre un bloc et ses lignes de code.",
+  "en": "Understand the link between a block and its lines of code."
+ },
+ "23g6nx": {
+  "key": "ui|Chaque bloc correspond à une ou plusieurs lignes de **Python 2.7**, le langage des plug-ins de GIMP 2.10.",
+  "en": "Each block matches one or more lines of **Python 2.7**, the language of GIMP 2.10 plug-ins."
+ },
+ "106bei4": {
+  "key": "ui|Dans l'onglet 🐍 Code, **clique sur un bloc** : ses lignes s'allument. **Clique sur une ligne** : son bloc est sélectionné. C'est la meilleure façon d'apprendre à lire le code.",
+  "en": "In the 🐍 Code tab, **click a block**: its lines light up. **Click a line**: its block gets selected. It is the best way to learn to read code."
+ },
+ "1kk984l": {
+  "key": "ui|À retenir : en Python, ce qui est **décalé vers la droite** (l'indentation) est « à l'intérieur » — exactement comme les blocs dans un C.",
+  "en": "Remember: in Python, what is **shifted to the right** (the indentation) is \"inside\" — exactly like blocks inside a C."
+ },
+ "2if95y": {
+  "key": "ui|- `pdb.gimp_...(...)` : un appel à une fonction de GIMP",
+  "en": "- `pdb.gimp_...(...)`: a call to a GIMP function"
+ },
+ "1bjgarz": {
+  "key": "ui|- `x = ...` : on range une valeur dans la variable `x`",
+  "en": "- `x = ...`: a value is stored in the variable `x`"
+ },
+ "6m4zdf": {
+  "key": "ui|- `for ... in ...:` : une boucle ; `if ...:` : une condition",
+  "en": "- `for ... in ...:`: a loop; `if ...:`: a condition"
+ },
+ "1vbo6sp": {
+  "key": "ui|Ouvre l'onglet 🐍 Code.",
+  "en": "Open the 🐍 Code tab."
+ },
+ "3o9gcg": {
+  "key": "ui|Clique sur trois blocs différents et regarde les lignes qui s'allument.",
+  "en": "Click three different blocks and watch the lines that light up."
+ },
+ "1dd63uy": {
+  "key": "ui|Ouvre l'onglet 🐍 Code, dans le panneau de droite.",
+  "en": "Open the 🐍 Code tab, in the right-hand panel."
+ },
+ "2txwh": {
+  "key": "ui|🐍 Ouvrir l'onglet Code",
+  "en": "🐍 Open the Code tab"
+ },
+ "16kowbi": {
+  "key": "ui|Passer aux blocs Python",
+  "en": "Switch to Python blocks"
+ },
+ "4b178w": {
+  "key": "ui|Transformer ton plug-in en blocs Python, une ligne = un bloc.",
+  "en": "Turn your plug-in into Python blocks, one line = one block."
+ },
+ "1c36vq1": {
+  "key": "ui|Les blocs simples sont confortables, mais les blocs **Python** te montrent tout le code, ligne par ligne, et te laissent tout modifier.",
+  "en": "Simple blocks are comfortable, but **Python** blocks show you all the code, line by line, and let you change everything."
+ },
+ "19t2uk": {
+  "key": "ui|Dans les blocs Python, les couleurs t'aident :",
+  "en": "In Python blocks, colours help you:"
+ },
+ "13m59lv": {
+  "key": "ui|- pastille **orange** : une variable (`image`, `calque`, `x`)",
+  "en": "- **orange** pill: a variable (`image`, `layer`, `x`)"
+ },
+ "c8caoc": {
+  "key": "ui|- pastille **violette** : une constante de GIMP (`FILL_WHITE`, `NORMAL_MODE`)",
+  "en": "- **violet** pill: a GIMP constant (`FILL_WHITE`, `NORMAL_MODE`)"
+ },
+ "80abju": {
+  "key": "ui|- pastille **jaune** : une fonction de GIMP (`pdb.…`)",
+  "en": "- **yellow** pill: a GIMP function (`pdb.…`)"
+ },
+ "zzefpz": {
+  "key": "ui|- blocs verts : les calculs et comparaisons (`+`, `==`, `and`…)",
+  "en": "- green blocks: calculations and comparisons (`+`, `==`, `and`…)"
+ },
+ "1s25nel": {
+  "key": "ui|Clique sur une pastille et tape quelques lettres : une liste de propositions s'ouvre.",
+  "en": "Click a pill and type a few letters: a list of suggestions opens."
+ },
+ "3k3sq4": {
+  "key": "ui|Clique sur le bouton ci-dessous (ou Fichier ▸ Voir ce plug-in en blocs Python).",
+  "en": "Click the button below (or File ▸ See this plug-in as Python blocks)."
+ },
+ "efxan3": {
+  "key": "ui|Explore : clique sur une pastille orange et regarde les variables proposées.",
+  "en": "Explore: click an orange pill and look at the suggested variables."
+ },
+ "a0t417": {
+  "key": "ui|Il faut convertir ton plug-in (ou importer un script) : un bloc « 📄 script Python » doit être présent.",
+  "en": "You need to convert your plug-in (or import a script): a \"📄 Python script\" block must be present."
+ },
+ "16tsxgv": {
+  "key": "ui|🔁 Voir mon plug-in en blocs Python",
+  "en": "🔁 See my plug-in as Python blocks"
+ },
+ "1n1d5e0": {
+  "key": "ui|Les 857 fonctions de GIMP",
+  "en": "The 857 GIMP functions"
+ },
+ "a19tbj": {
+  "key": "ui|Appeler une fonction de la PDB avec les bons arguments.",
+  "en": "Call a PDB function with the right arguments."
+ },
+ "lzkh9e": {
+  "key": "ui|La **PDB** (Procedure DataBase) est la liste de tout ce que GIMP sait faire : 857 fonctions. Tout ce que tu fais à la souris dans GIMP a sa fonction.",
+  "en": "The **PDB** (Procedure DataBase) is the list of everything GIMP can do: 857 functions. Everything you do with the mouse in GIMP has its function."
+ },
+ "1fovtx1": {
+  "key": "ui|Dans un bloc « appeler … », clique sur le nom de la fonction et tape un mot, en français ou en anglais : **flou**, **calque**, **texte**… La liste montre chaque fonction avec ses arguments et une explication. Choisis : les cases se remplissent toutes seules.",
+  "en": "In a \"call …\" block, click the function name and type a word, in English or French: **blur**, **layer**, **text**… The list shows each function with its arguments and an explanation. Choose one: the slots fill themselves."
+ },
+ "gbt19s": {
+  "key": "ui|Le 🔍 du bloc ouvre la liste complète, rangée par groupes.",
+  "en": "The block's 🔍 opens the full list, sorted by group."
+ },
+ "cr1x58": {
+  "key": "ui|Règle d'or : le `run_mode` ne se passe **jamais** — pygimp l'ajoute lui-même.",
+  "en": "Golden rule: the `run_mode` is **never** passed — pygimp adds it itself."
+ },
+ "1m2qt6d": {
+  "key": "ui|Ajoute un bloc « appeler … » (catégorie 🐍 Python).",
+  "en": "Add a \"call …\" block (🐍 Python category)."
+ },
+ "1oyletz": {
+  "key": "ui|Clique sur son nom, tape « flou » et choisis `plug_in_gauss`.",
+  "en": "Click its name, type \"blur\" and choose `plug_in_gauss`."
+ },
+ "1wznih0": {
+  "key": "ui|Remplace les 0.0 par 5.0 pour un flou de 5 pixels.",
+  "en": "Replace the 0.0 values with 5.0 for a 5-pixel blur."
+ },
+ "ndagyc": {
+  "key": "ui|Il faut un appel `pdb.…` vers une vraie fonction de GIMP, avec toutes ses cases remplies.",
+  "en": "You need a `pdb.…` call to a real GIMP function, with all its slots filled."
+ },
+ "196cs4r": {
+  "key": "ui|Déboguer comme un pro",
+  "en": "Debug like a pro"
+ },
+ "u5dzap": {
+  "key": "ui|Trouver et comprendre une erreur.",
+  "en": "Find and understand an error."
+ },
+ "fc3gwb": {
+  "key": "ui|Tout le monde fait des erreurs, même les pros. La différence : ils savent **où regarder**.",
+  "en": "Everybody makes mistakes, even pros. The difference: they know **where to look**."
+ },
+ "dr20b2": {
+  "key": "ui|- L'onglet **✅ Vérification** trouve beaucoup d'erreurs **avant** GIMP : case vide, mauvais nombre d'arguments, fonction inconnue… Clique sur un problème pour voir le bloc.",
+  "en": "- The **✅ Check** tab finds many errors **before** GIMP does: empty slot, wrong number of arguments, unknown function… Click a problem to see the block."
+ },
+ "byikbk": {
+  "key": "ui|- Dans GIMP, les erreurs s'affichent dans **Fenêtres ▸ Fenêtres ancrables ▸ Console d'erreurs**.",
+  "en": "- In GIMP, errors are shown in **Windows ▸ Dockable Dialogs ▸ Error Console**."
+ },
+ "1qot65i": {
+  "key": "ui|- Pour voir ce que vaut une variable pendant l'exécution, affiche-la : `pdb.gimp_message(str(x))`.",
+  "en": "- To see what a variable holds while the plug-in runs, show it: `pdb.gimp_message(str(x))`."
+ },
+ "fk02md": {
+  "key": "ui|- **Filtres ▸ Python-Fu ▸ Console** permet d'essayer une ligne de Python directement dans GIMP.",
+  "en": "- **Filters ▸ Python-Fu ▸ Console** lets you try a line of Python directly in GIMP."
+ },
+ "1g0ujpo": {
+  "key": "ui|Lis les erreurs **de bas en haut** : la dernière ligne dit ce qui ne va pas, celle du dessus dit où.",
+  "en": "Read errors **from the bottom up**: the last line says what is wrong, the one above says where."
+ },
+ "1grvkva": {
+  "key": "ui|Ouvre l'onglet ✅ Vérification.",
+  "en": "Open the ✅ Check tab."
+ },
+ "15ji6xd": {
+  "key": "ui|Ajoute un « appeler … » vers `pdb.gimp_message` et mets une variable dedans, par exemple `str(image.width)`.",
+  "en": "Add a \"call …\" to `pdb.gimp_message` and put a variable in it, for example `str(image.width)`."
+ },
+ "iu94iy": {
+  "key": "ui|Ouvre l'onglet ✅ Vérification, puis ajoute un message qui affiche une variable.",
+  "en": "Open the ✅ Check tab, then add a message that shows a variable."
+ },
+ "vrp30t": {
+  "key": "ui|✅ Ouvrir la Vérification",
+  "en": "✅ Open the Check tab"
+ },
+ "1diyov": {
+  "key": "ui|Écrire tes propres fonctions",
+  "en": "Write your own functions"
+ },
+ "1j45r0w": {
+  "key": "ui|Ranger un morceau de code dans une fonction et l'appeler.",
+  "en": "Put a piece of code in a function and call it."
+ },
+ "15q8vak": {
+  "key": "ui|Quand tu répètes les mêmes lignes à plusieurs endroits, range-les dans une **fonction** : « définir `ma_fonction(calque)` ». Ensuite, un seul bloc « appeler `ma_fonction(...)` » fait tout.",
+  "en": "When you repeat the same lines in several places, put them in a **function**: \"define `my_function(layer)`\". Then a single \"call `my_function(...)`\" block does it all."
+ },
+ "11impip": {
+  "key": "ui|Les **paramètres** (entre parenthèses) sont des variables remplies au moment de l'appel. « retourner … » renvoie un résultat.",
+  "en": "**Parameters** (in brackets) are variables filled at the moment of the call. \"return …\" sends back a result."
+ },
+ "a8wj97": {
+  "key": "ui|Un bon nom de fonction dit ce qu'elle fait : `mettre_en_gris`, `numeroter_calques`… Tes fonctions apparaissent aussi dans les suggestions.",
+  "en": "A good function name says what it does: `make_grey`, `number_layers`… Your functions also appear in the suggestions."
+ },
+ "1dqyksd": {
+  "key": "ui|Ajoute « définir … » avec le nom `griser` et le paramètre `calque`.",
+  "en": "Add \"define …\" with the name `griser` and the parameter `calque`."
+ },
+ "12o68j7": {
+  "key": "ui|Dedans, appelle `pdb.gimp_drawable_desaturate(calque, DESATURATE_LUMINANCE)`.",
+  "en": "Inside, call `pdb.gimp_drawable_desaturate(calque, DESATURATE_LUMINANCE)`."
+ },
+ "1u5k66i": {
+  "key": "ui|Ailleurs, appelle `griser(drawable)`.",
+  "en": "Somewhere else, call `griser(drawable)`."
+ },
+ "12i2wsd": {
+  "key": "ui|Il faut un bloc « définir … » ET un appel à cette fonction (même nom).",
+  "en": "You need a \"define …\" block AND a call to that function (same name)."
+ },
+ "sd010g": {
+  "key": "ui|Importer, modifier, partager",
+  "en": "Import, change, share"
+ },
+ "bja4ve": {
+  "key": "ui|Ouvrir un vrai script existant et le modifier sans le casser.",
+  "en": "Open a real existing script and change it without breaking it."
+ },
+ "1kbsqvy": {
+  "key": "ui|Tu as trouvé un plug-in sur Internet ? **Fichier ▸ Importer un script Python** : chaque ligne devient un bloc, et le téléchargement redonne **exactement le même fichier** tant que tu ne changes rien. Si tu modifies un bloc, seules ses lignes changent.",
+  "en": "Found a plug-in on the Internet? **File ▸ Import a Python script**: each line becomes a block, and the download gives back **exactly the same file** as long as you change nothing. If you change a block, only its lines change."
+ },
+ "okline": {
+  "key": "ui|L'**assistant IA** (onglet 🤖) peut écrire une fonction, expliquer un script ou corriger une erreur. Ses réponses sont vérifiées (Python 2.7, vraies fonctions de GIMP, bon nombre d'arguments) avant de devenir des blocs.",
+  "en": "The **AI assistant** (🤖 tab) can write a function, explain a script or fix an error. Its answers are checked (Python 2.7, real GIMP functions, right number of arguments) before they become blocks."
+ },
+ "1cweucn": {
+  "key": "ui|Tu es maintenant capable de lire, écrire et corriger des plug-ins GIMP. La suite : ouvre des scripts d'autres personnes, lis-les bloc par bloc, et construis les tiens. **Bravo !**",
+  "en": "You can now read, write and fix GIMP plug-ins. Next: open other people's scripts, read them block by block, and build your own. **Well done!**"
+ },
+ "fqxhn5": {
+  "key": "ui|Importe un script `.py` (ou un exemple : Fichier ▸ Exemples, puis convertis-le).",
+  "en": "Import a `.py` script (or an example: File ▸ Examples, then convert it)."
+ },
+ "14kh2cm": {
+  "key": "ui|Change une valeur et regarde dans l'onglet 🐍 Code quelles lignes ont changé.",
+  "en": "Change a value and look in the 🐍 Code tab at which lines changed."
+ },
+ "18bnq9x": {
+  "key": "ui|Quand c'est fait, clique sur « J'ai réussi ».",
+  "en": "When you are done, click \"I did it\"."
+ },
+ "mmylkz": {
+  "key": "ui|🗺️ L'écran de l'atelier",
+  "en": "🗺️ The workshop screen"
+ },
+ "1bvpw5l": {
+  "key": "ui|- À **gauche**, les catégories de blocs. Clique sur une catégorie pour voir ses blocs, puis glisse un bloc dans la zone de construction.",
+  "en": "- On the **left**, the block categories. Click a category to see its blocks, then drag a block into the building area."
+ },
+ "czeio5": {
+  "key": "ui|- Au **centre**, la zone de construction. Molette : défiler ; Ctrl + molette : zoomer ; glisser dans le vide : se déplacer.",
+  "en": "- In the **centre**, the building area. Wheel: scroll; Ctrl + wheel: zoom; drag on empty space: move around."
+ },
+ "b5nto8": {
+  "key": "ui|- À **droite**, le panneau : 💡 Aide (sur le bloc sélectionné), 🐍 Code (le Python produit), ✅ Vérification, 🤖 IA et 🎓 Cours.",
+  "en": "- On the **right**, the panel: 💡 Help (about the selected block), 🐍 Code (the Python produced), ✅ Check, 🤖 AI and 🎓 Course."
+ },
+ "j23kft": {
+  "key": "ui|- En **haut**, les menus, la recherche de blocs (touche /) et le bouton ⬇ Télécharger.",
+  "en": "- At the **top**, the menus, the block search (/ key) and the ⬇ Download button."
+ },
+ "1tc2jtn": {
+  "key": "ui|🧩 Les formes des blocs",
+  "en": "🧩 The shapes of the blocks"
+ },
+ "tzev2a": {
+  "key": "ui|- **Bloc à encoche** : une action. Il s'empile sous un autre.",
+  "en": "- **Notched block**: an action. It stacks under another one."
+ },
+ "iz2m52": {
+  "key": "ui|- **Bloc arrondi** : une valeur (nombre, texte, calque, variable). Il se glisse dans un trou.",
+  "en": "- **Rounded block**: a value (number, text, layer, variable). It slots into a hole."
+ },
+ "1kokggy": {
+  "key": "ui|- **Bloc pointu (hexagonal)** : une condition vraie/fausse, pour « si » et « tant que ».",
+  "en": "- **Pointed (hexagonal) block**: a true/false condition, for \"if\" and \"while\"."
+ },
+ "1jawbb": {
+  "key": "ui|- **Bloc en C** : il contient d'autres blocs (boucles, conditions, raccourcis).",
+  "en": "- **C block**: it holds other blocks (loops, conditions, shortcuts)."
+ },
+ "9s4q9j": {
+  "key": "ui|Un bloc grisé est désactivé : il n'est pas dans le code. Clic droit sur un bloc : dupliquer, commenter, désactiver, replier, aide.",
+  "en": "A greyed-out block is disabled: it is not in the code. Right-click a block: duplicate, comment, disable, collapse, help."
+ },
+ "1e3r577": {
+  "key": "ui|▶ Le bloc de départ",
+  "en": "▶ The start block"
+ },
+ "blea0e": {
+  "key": "ui|Le bloc jaune **▶ Quand je lance** décrit ton plug-in : son nom dans le menu, le menu où il apparaît, s'il a besoin d'une image ouverte, et ses réglages (« d'abord, demander »).",
+  "en": "The yellow **▶ When I run** block describes your plug-in: its name in the menu, the menu where it appears, whether it needs an open image, and its settings (\"first, ask\")."
+ },
+ "129iup8": {
+  "key": "ui|Les réglages deviennent la fenêtre que GIMP affiche avant de lancer le plug-in. Utilise leur valeur avec les blocs 🎛️ de la catégorie ▶ Démarrer.",
+  "en": "Settings become the window GIMP shows before running the plug-in. Use their value with the 🎛️ blocks of the ▶ Start category."
+ },
+ "1ag0bdx": {
+  "key": "ui|**Paramètres ▸ Mon plug-in** règle le reste : auteur, annulation groupée, gestion des erreurs, modules importés.",
+  "en": "**Settings ▸ My plug-in** sets the rest: author, grouped undo, error handling, imported modules."
+ },
+ "10omsp9": {
+  "key": "ui|⬇ Télécharger et installer",
+  "en": "⬇ Download and install"
+ },
+ "125ijo7": {
+  "key": "ui|Clique sur **⬇ Télécharger** : tu obtiens un fichier `.py`. Range-le dans le dossier plug-ins de GIMP et redémarre GIMP.",
+  "en": "Click **⬇ Download**: you get a `.py` file. Put it in GIMP's plug-ins folder and restart GIMP."
+ },
+ "qihi0v": {
+  "key": "ui|- **Linux** : `~/.config/GIMP/2.10/plug-ins`, puis `chmod +x fichier.py`",
+  "en": "- **Linux**: `~/.config/GIMP/2.10/plug-ins`, then `chmod +x file.py`"
+ },
+ "1rfohbr": {
+  "key": "ui|Le dossier exact est dans **Édition ▸ Préférences ▸ Dossiers ▸ Greffons**. Les plug-ins faits ici marchent dans **GIMP 2.10** (pas dans GIMP 3, qui a une autre API).",
+  "en": "The exact folder is in **Edit ▸ Preferences ▸ Folders ▸ Plug-ins**. Plug-ins made here work in **GIMP 2.10** (not in GIMP 3, which has a different API)."
+ },
+ "1rii1qm": {
+  "key": "ui|**Fichier ▸ Importer un script Python**, ou glisse le fichier `.py` sur la page. Chaque ligne devient un bloc Python.",
+  "en": "**File ▸ Import a Python script**, or drop the `.py` file on the page. Each line becomes a Python block."
+ },
+ "ywosoc": {
+  "key": "ui|Garantie : tant que tu ne changes rien, le téléchargement redonne **le même fichier, octet pour octet** (commentaires, espaces, tabulations compris). Si tu modifies un bloc, seules ses lignes sont réécrites.",
+  "en": "Guarantee: as long as you change nothing, the download gives back **the same file, byte for byte** (comments, spaces and tabs included). If you change a block, only its lines are rewritten."
+ },
+ "1m3nd80": {
+  "key": "ui|Un script avec une erreur de syntaxe s'importe quand même : la partie fautive devient un bloc 🧱 « code brut » à corriger.",
+  "en": "A script with a syntax error still imports: the faulty part becomes a 🧱 \"raw code\" block to fix."
+ },
+ "1vadwco": {
+  "key": "ui|🟠 Les blocs Python et leurs pastilles",
+  "en": "🟠 Python blocks and their pills"
+ },
+ "13234vx": {
+  "key": "ui|- **orange** : variable ; **violet** : constante de GIMP ; **jaune** : fonction de GIMP ; **vert foncé** : autre fonction ; blocs verts : calculs et comparaisons ; cases blanches : valeurs écrites telles quelles.",
+  "en": "- **orange**: variable; **violet**: GIMP constant; **yellow**: GIMP function; **dark green**: other function; green blocks: calculations and comparisons; white slots: values written as is."
+ },
+ "1ate22x": {
+  "key": "ui|Clique sur une pastille et tape : une liste de propositions s'ouvre (flèches ↑↓ puis Entrée, ou clic). Pour une fonction de GIMP, les cases manquantes se remplissent toutes seules.",
+  "en": "Click a pill and type: a list of suggestions opens (arrows ↑↓ then Enter, or click). For a GIMP function, the missing slots fill themselves."
+ },
+ "2zpi4m": {
+  "key": "ui|Clic droit sur un appel de fonction : ajouter ou retirer un argument. Clic droit sur « si » : ajouter « sinon si » ou « sinon ».",
+  "en": "Right-click a function call: add or remove an argument. Right-click \"if\": add \"else if\" or \"else\"."
+ },
+ "dt9nb6": {
+  "key": "ui|La catégorie 🐍 Python liste les variables de ton script et des **raccourcis GIMP** tout prêts (annulation groupée, boucle sur les images, sur les calques…).",
+  "en": "The 🐍 Python category lists your script's variables and ready-made **GIMP shortcuts** (grouped undo, loop over images, over layers…)."
+ },
+ "1odk7pr": {
+  "key": "ui|⚙️ Les 857 fonctions de GIMP (PDB)",
+  "en": "⚙️ The 857 GIMP functions (PDB)"
+ },
+ "p8a0vb": {
+  "key": "ui|Deux façons de les utiliser : le bloc « ⚙️ fonction GIMP » (🧰 Avancé) dans un plug-in en blocs simples, ou le bloc « appeler … » dans les blocs Python.",
+  "en": "Two ways to use them: the \"⚙️ GIMP function\" block (🧰 Advanced) in a simple-blocks plug-in, or the \"call …\" block in Python blocks."
+ },
+ "1g2pabb": {
+  "key": "ui|Recherche : tape un mot en français ou en anglais (flou, calque, sélection, texte…). Les fonctions les plus utilisées sont en premier ; « ancienne » signale une fonction dépréciée qui a une remplaçante.",
+  "en": "Search: type a word in English or French (blur, layer, selection, text…). The most used functions come first; \"old\" marks a deprecated function that has a replacement."
+ },
+ "mosjk7": {
+  "key": "ui|Le `run_mode` n'est jamais à fournir : pygimp l'ajoute. Les tableaux ont souvent un compteur juste avant (ex. `num_points` puis `points`).",
+  "en": "The `run_mode` is never provided: pygimp adds it. Arrays often have a counter just before them (e.g. `num_points` then `points`)."
+ },
+ "pfb06t": {
+  "key": "ui|⚡ Raccourcis GIMP",
+  "en": "⚡ GIMP shortcuts"
+ },
+ "i6vkm6": {
+  "key": "ui|Des blocs qui remplacent ce que tous les scripts écrivent à la main :",
+  "en": "Blocks that replace what every script writes by hand:"
+ },
+ "9lylf6": {
+  "key": "ui|- « en une seule annulation » : tout compte pour un seul Ctrl+Z, même en cas d'erreur ;",
+  "en": "- \"as a single undo step\": everything counts as one Ctrl+Z, even if an error happens;"
+ },
+ "zuhmx8": {
+  "key": "ui|- « en remettant ensuite… » les couleurs et outils, la sélection ou le calque actif ;",
+  "en": "- \"then restore…\" the colours and tools, the selection or the active layer;"
+ },
+ "1hugtmt": {
+  "key": "ui|- « pour chaque image ouverte », « pour chaque calque de toutes les images », « pour chaque fichier du dossier » ;",
+  "en": "- \"for each open image\", \"for each layer of all images\", \"for each file of the folder\";"
+ },
+ "pp4fh4": {
+  "key": "ui|- « nouveau calque de la taille de l'image », « copier le calque dans une autre image ».",
+  "en": "- \"new layer the size of the image\", \"copy the layer into another image\"."
+ },
+ "1ev54eq": {
+  "key": "ui|✅ Vérification et erreurs",
+  "en": "✅ Check and errors"
+ },
+ "hqamxy": {
+  "key": "ui|L'onglet **✅ Vérification** relit ton plug-in à chaque modification : 🛑 erreur (il ne marcherait pas), ⚠️ à regarder, ℹ️ information. Clique sur une ligne pour aller au bloc.",
+  "en": "The **✅ Check** tab rereads your plug-in after every change: 🛑 error (it would not work), ⚠️ worth a look, ℹ️ information. Click a line to go to the block."
+ },
+ "1ljro06": {
+  "key": "ui|Dans GIMP : **Fenêtres ▸ Fenêtres ancrables ▸ Console d'erreurs** montre les erreurs Python. Les plug-ins faits ici affichent aussi l'erreur complète dans un message.",
+  "en": "In GIMP: **Windows ▸ Dockable Dialogs ▸ Error Console** shows Python errors. Plug-ins made here also show the full error in a message."
+ },
+ "1r8ch26": {
+  "key": "ui|**Filtres ▸ Python-Fu ▸ Console** : pour essayer une ligne de Python directement dans GIMP.",
+  "en": "**Filters ▸ Python-Fu ▸ Console**: to try a line of Python directly in GIMP."
+ },
+ "17pcn34": {
+  "key": "ui|🤖 L'assistant IA",
+  "en": "🤖 The AI assistant"
+ },
+ "1jucnme": {
+  "key": "ui|**IA ▸ Choisir l'IA** : n'importe quel service compatible (OpenAI, Anthropic, Gemini, Mistral…), une IA locale (Ollama, LM Studio) ou le mode copier-coller, sans connexion.",
+  "en": "**AI ▸ Choose the AI**: any compatible service (OpenAI, Anthropic, Gemini, Mistral…), a local AI (Ollama, LM Studio) or copy-and-paste mode, with no connection."
+ },
+ "f8c5fc": {
+  "key": "ui|Demande une fonction, un plug-in entier, une correction ou une explication. La réponse est vérifiée et réparée automatiquement avant de devenir des blocs.",
+  "en": "Ask for a function, a whole plug-in, a fix or an explanation. The answer is checked and repaired automatically before it becomes blocks."
+ },
+ "1svsjop": {
+  "key": "ui|💾 Sauvegarder ton travail",
+  "en": "💾 Save your work"
+ },
+ "1ss2xro": {
+  "key": "ui|L'atelier garde automatiquement ton travail dans ce navigateur.",
+  "en": "The workshop automatically keeps your work in this browser."
+ },
+ "wh896t": {
+  "key": "ui|Pour le garder ailleurs ou le partager : **Fichier ▸ Sauvegarder le projet** (fichier `.json`). Le `.py` téléchargé contient aussi l'empreinte des blocs : en le réimportant, tu retrouves tes blocs à l'identique.",
+  "en": "To keep it elsewhere or share it: **File ▸ Save the project** (`.json` file). The downloaded `.py` also contains the blocks' fingerprint: re-import it and you get your blocks back exactly."
+ },
+ "phe68f": {
+  "key": "ui|❓ Problèmes fréquents",
+  "en": "❓ Common problems"
+ },
+ "iexcro": {
+  "key": "ui|- **Le plug-in n'apparaît pas** : mauvais dossier, GIMP pas redémarré, fichier non exécutable (Linux), ou Python-Fu absent (Linux : paquet `gimp-python`).",
+  "en": "- **The plug-in does not show up**: wrong folder, GIMP not restarted, file not executable (Linux), or Python-Fu missing (Linux: `gimp-python` package)."
+ },
+ "19wutjy": {
+  "key": "ui|- **Le menu est grisé** : le plug-in a besoin d'une image ouverte (case du bloc ▶).",
+  "en": "- **The menu is greyed out**: the plug-in needs an open image (checkbox of the ▶ block)."
+ },
+ "gs5un2": {
+  "key": "ui|- **« argument count » / « wrong type »** : regarde l'onglet ✅ Vérification, il indique le nombre d'arguments attendu.",
+  "en": "- **\"argument count\" / \"wrong type\"**: look at the ✅ Check tab, it tells the expected number of arguments."
+ },
+ "kigecz": {
+  "key": "ui|- **Accents bizarres** : utilise les blocs de texte de l'atelier, ils gèrent l'UTF-8 pour toi.",
+  "en": "- **Strange accents**: use the workshop's text blocks, they handle UTF-8 for you."
+ },
+ "w5omb6": {
+  "key": "ui|Mission réussie !",
+  "en": "Mission accomplished!"
+ },
+ "tlpu3s": {
+  "key": "ui|leçons réussies",
+  "en": "lessons done"
+ },
+ "1pacn42": {
+  "key": "ui|Cours : de débutant complet à pro",
+  "en": "Course: from complete beginner to pro"
+ },
+ "1c17wiw": {
+  "key": "ui|Chaque leçon explique une idée, puis te donne une mission. L'atelier vérifie tout seul quand tu as réussi.",
+  "en": "Each lesson explains one idea, then gives you a mission. The workshop checks by itself when you have succeeded."
+ },
+ "xm48v6": {
+  "key": "ui|Continuer",
+  "en": "Continue"
+ },
+ "1tarhwd": {
+  "key": "ui|Commencer le cours",
+  "en": "Start the course"
+ },
+ "j4pzmx": {
+  "key": "ui|Guide d'utilisation",
+  "en": "User guide"
+ },
+ "1cnhkfo": {
+  "key": "ui|Recommencer le cours",
+  "en": "Restart the course"
+ },
+ "1v8hdr9": {
+  "key": "ui|Ajouter ce bloc",
+  "en": "Add this block"
+ },
+ "15m52q1": {
+  "key": "ui|Toutes les leçons",
+  "en": "All lessons"
+ },
+ "5f6nbo": {
+  "key": "ui|Ta mission",
+  "en": "Your mission"
+ },
+ "19kkul2": {
+  "key": "ui|Clique sur un bloc pour l'ajouter :",
+  "en": "Click a block to add it:"
+ },
+ "1h9z4jd": {
+  "key": "ui|J'ai réussi",
+  "en": "I did it"
+ },
+ "1g1h4fi": {
+  "key": "ui|L'atelier vérifie ta mission pendant que tu travailles.",
+  "en": "The workshop checks your mission while you work."
+ },
+ "632dfv": {
+  "key": "ui|Un indice ?",
+  "en": "A hint?"
+ },
+ "1e5rnwi": {
+  "key": "ui|Précédente",
+  "en": "Previous"
+ },
+ "169gmzy": {
+  "key": "ui|Suivante",
+  "en": "Next"
+ },
+ "rly8zd": {
+  "key": "ui|Recommencer le cours ?",
+  "en": "Restart the course?"
+ },
+ "u22k5i": {
+  "key": "ui|Ta progression dans le cours sera effacée.",
+  "en": "Your progress in the course will be erased."
+ },
+ "t1g0af": {
+  "key": "ui|Recommencer",
+  "en": "Restart"
+ },
+ "1it7jk0": {
+  "key": "ui|Suivre le cours",
+  "en": "Follow the course"
+ },
+ "8x5lbe": {
+  "key": "ui|🎓 Cours",
+  "en": "🎓 Course"
+ },
+ "1uctii9": {
+  "key": "ui|🎓 Cours : de débutant à pro",
+  "en": "🎓 Course: from beginner to pro"
+ },
+ "111e0zi": {
+  "key": "ui|📘 Guide d'utilisation",
+  "en": "📘 User guide"
+ },
+ "1ycdqra": {
+  "key": "ui|🧭 Visite de l'écran (2 min)",
+  "en": "🧭 Screen tour (2 min)"
+ },
+ "nxdu2h": {
+  "key": "ui|Commencer seul",
+  "en": "Start on my own"
+ },
+ "11nc99b": {
+  "key": "ui|🎓 Suivre le cours",
+  "en": "🎓 Follow the course"
+ },
+ "1e07gqr": {
+  "key": "ui|🎓 Tu débutes ? Le",
+  "en": "🎓 New to this? The"
+ },
+ "1fcbur1": {
+  "key": "ui|cours",
+  "en": "course"
+ },
+ "17w8mfb": {
+  "key": "ui|t'emmène pas à pas de ton premier plug-in jusqu'au vrai code Python, avec des missions vérifiées automatiquement.",
+  "en": "takes you step by step from your first plug-in to real Python code, with missions checked automatically."
+ },
+ "adcetw": {
+  "key": "ui|🎓 Nouveau ici ? Suis le",
+  "en": "🎓 New here? Follow the"
+ },
+ "17f9r1k": {
+  "key": "ui|(onglet 🎓 Cours), ou ouvre le",
+  "en": "(🎓 Course tab), or open the"
+ },
+ "1tdbbt7": {
+  "key": "ui|guide",
+  "en": "guide"
+ },
+ "x25r1e": {
+  "key": "ui|: menu Aide ▸ 📘 Guide d'utilisation.",
+  "en": ": Help menu ▸ 📘 User guide."
+ },
+ "y4p10n": {
+  "key": "ui|sous « ▶ puis faire ».",
+  "en": "under \"▶ then do\"."
+ },
  "k9kocu": {
   "key": "rx|^(\\d+) problème\\(s\\) à corriger \\(onglet Vérification\\)$",
   "en": "$1 problem(s) to fix (Check tab)"

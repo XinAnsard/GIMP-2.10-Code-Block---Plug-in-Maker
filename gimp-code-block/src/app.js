@@ -113,6 +113,7 @@ function refresh() {
   try { issues = GA.check(ws, opts, built); }
   catch (err2) { console.error(err2); issues = []; }
   renderCode(); renderChecks(); applyWarnings(); updateBadges(); renderHelp(); save();
+  if (GA.learn) GA.learn.check();
 }
 function applyWarnings() {
   var by = {};
@@ -279,6 +280,7 @@ function defaultHelp() {
     '<li><b>Emboîte-les</b> sous « ▶ puis faire » dans le bloc jaune. Ils s\'exécutent de haut en bas.</li>' +
     '<li><b>Clique « Télécharger le plug-in »</b> et range le fichier dans le dossier plug-ins de GIMP.</li></ol>' +
     '<div class="tip">💡 Clique sur n\'importe quel bloc : son explication et son code apparaissent ici.</div>' +
+    '<div class="tip">🎓 Nouveau ici ? Suis le <b>cours</b> (onglet 🎓 Cours), ou ouvre le <b>guide</b> : menu Aide ▸ 📘 Guide d\'utilisation.</div>' +
     '<div class="tip">🐍 Tu as déjà un script ? <b>📂 Projet ▸ Importer un script Python</b> (ou glisse le fichier ici) : chaque ligne devient un bloc, et le téléchargement redonne le même script.</div>' +
     '<h3>Les formes des blocs</h3><dl class="gloss">' +
     '<dt>🧩 Bloc à encoche</dt><dd>Une action. Il s\'empile sous un autre bloc.</dd>' +
@@ -330,6 +332,7 @@ function showTab(name) {
   document.querySelectorAll('.tab[data-pane]').forEach(function (t) { t.setAttribute('aria-selected', t.getAttribute('data-pane') === name ? 'true' : 'false'); });
   document.querySelectorAll('.pane').forEach(function (p) { p.classList.toggle('on', p.id === 'p-' + name); });
   if (name === 'code') highlightCode(true);
+  if (GA.learn) { GA.learn.flag('tab_' + name); if (name === 'learn') GA.learn.render(); }
 }
 function sheet(open) { $('#side').classList.toggle('open', open); document.body.classList.toggle('sheet-open', open); }
 $('#sheetClose').onclick = function () { sheet(false); };
@@ -685,9 +688,11 @@ function openWelcome() {
     '<ol class="steps"><li><b>Prends des blocs</b> dans les catégories de gauche.</li><li><b>Emboîte-les</b> sous « ▶ puis faire ».</li><li><b>Télécharge</b> ton plug-in et range-le dans le dossier plug-ins de GIMP.</li></ol></div>' +
     '<div class="stack" aria-hidden="true"><div class="pb hat" style="background:#C8930A">▶ Quand je lance « Crédits +1 »</div><div class="pb in" style="background:#E0701A">pour chaque calque</div>' +
     '<div class="pb in" style="background:#D43F7C;margin-left:44px">changer le texte</div><div class="pb in" style="background:#5E6F8A">💬 afficher « Terminé ! »</div></div></div>' +
-    '<div class="foot"><button class="btn" id="wEx">✨ Voir un exemple</button><button class="btn" id="wTour">🎓 Tutoriel (2 min)</button><button class="btn primary" id="wGo" autofocus>Commencer</button></div>', 'wide', function () { store.set(KEY_SEEN, '1'); });
+    '<div class="tip">🎓 Tu débutes ? Le <b>cours</b> t\'emmène pas à pas de ton premier plug-in jusqu\'au vrai code Python, avec des missions vérifiées automatiquement.</div>' +
+    '<div class="foot"><button class="btn" id="wEx">✨ Voir un exemple</button><button class="btn" id="wGuide">📘 Guide d\'utilisation</button><button class="btn" id="wGo">Commencer seul</button><button class="btn primary" id="wLearn" autofocus>🎓 Suivre le cours</button></div>', 'wide', function () { store.set(KEY_SEEN, '1'); });
   d.querySelector('#wGo').onclick = closeDialog;
-  d.querySelector('#wTour').onclick = function () { closeDialog(); if (GA.tour) GA.tour.start(); };
+  d.querySelector('#wLearn').onclick = function () { closeDialog(); if (GA.learn) GA.learn.open(); };
+  d.querySelector('#wGuide').onclick = function () { closeDialog(); if (GA.openGuide) GA.openGuide(); };
   d.querySelector('#wEx').onclick = function () { closeDialog(); openExamples(); };
 }
 
@@ -900,7 +905,7 @@ function init() {
     if (e.type === Blockly.Events.SELECTED) {
       selectedId = e.newElementId || null;
       renderHelp(); highlightCode(true);
-      if (selectedId && window.innerWidth >= 900) showTab($('#p-check').classList.contains('on') ? 'check' : ($('#p-code').classList.contains('on') ? 'code' : 'help'));
+      if (selectedId && window.innerWidth >= 900 && !$('#p-learn').classList.contains('on')) showTab($('#p-check').classList.contains('on') ? 'check' : ($('#p-code').classList.contains('on') ? 'code' : 'help'));
       return;
     }
     if (e.type === Blockly.Events.TOOLBOX_ITEM_SELECT && e.newItem && $('#q').value) { $('#q').value = ''; }
@@ -917,7 +922,7 @@ function init() {
   if (GA.ai) GA.ai.init();
   if (!store.get(KEY_SEEN)) openWelcome();
   window.addEventListener('resize', function () { Blockly.svgResize(ws); });
-  GA.ws = ws; GA.app = { openDialog: openDialog, closeDialog: closeDialog, confirmBox: confirmBox, saveFile: saveFile, openExamples: openExamples, openSettings: openSettings, saveProject: saveProject, openPaste: openPaste, convertToPython: convertToPython, openWelcome: openWelcome, importText: importText, handleFile: handleFile, readZip: readZip, exportCode: exportCode, refresh: refresh, openExport: openExport, openExamples: openExamples, openSettings: openSettings, openPicker: openPicker, loadState: loadState, getBuilt: function () { return built; }, getIssues: function () { return issues; }, getOpts: function () { return opts; } };
+  GA.ws = ws; GA.app = { openDialog: openDialog, closeDialog: closeDialog, confirmBox: confirmBox, saveFile: saveFile, openExamples: openExamples, openSettings: openSettings, saveProject: saveProject, openPaste: openPaste, convertToPython: convertToPython, openWelcome: openWelcome, importText: importText, handleFile: handleFile, readZip: readZip, exportCode: exportCode, refresh: refresh, openExport: openExport, openExamples: openExamples, openSettings: openSettings, openPicker: openPicker, showTab: showTab, loadState: loadState, getBuilt: function () { return built; }, getIssues: function () { return issues; }, getOpts: function () { return opts; } };
 }
 function start() {
   if (!window.Blockly) { $('#loading').textContent = 'Impossible de charger Blockly (connexion ?). Recharge la page.'; return; }

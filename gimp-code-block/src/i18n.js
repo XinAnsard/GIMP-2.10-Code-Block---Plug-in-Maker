@@ -43,7 +43,7 @@ GA.T = function (s) {
   return lead + t + trail;
 };
 /* traduction automatique de tout ce qui apparaît dans la page (hors code et blocs) */
-var SKIP = '#code, .snippet, .aiCode, .copyzone, #blockly, .blocklyWidgetDiv, .blocklyDropDownDiv, .blocklyTooltipDiv, pre, textarea, code, .path, .aiText, .aiMsg.user, script, style, .sgChip, .sgSub';
+var SKIP = '#code, .snippet, .aiCode, .copyzone, #blockly, .blocklyWidgetDiv, .blocklyDropDownDiv, .blocklyTooltipDiv, pre, textarea, code, .path, .aiText, .aiMsg.user, script, style, .sgChip, .sgSub, #p-learn, .gdWrap';
 function trNode(n) {
   if (!n) return;
   if (n.nodeType === 3) {

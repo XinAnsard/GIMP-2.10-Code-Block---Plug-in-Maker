@@ -193,6 +193,39 @@ main { flex: 1; display: flex; min-height: 0; }
 .pick { text-align: left; border: 1.5px solid var(--line); background: var(--panel); border-radius: 11px; padding: 9px 11px; }
 .pick:hover { border-color: var(--accent); background: var(--panel2); }
 .pick .bl { display: block; font-size: 13px; color: var(--muted); }
+/* cours et guide */
+#p-learn h2 { margin-top: 4px; }
+.lnBar { height: 10px; border-radius: 99px; background: var(--panel2); border: 1px solid var(--line); overflow: hidden; margin: 10px 0 4px; }
+.lnBar > div { height: 100%; background: var(--go); border-radius: 99px; transition: width .3s; }
+.lnCount { font-size: 12.5px; font-weight: 800; color: var(--muted); margin-bottom: 8px; }
+.lnLvl { margin-top: -6px; font-size: 13px; }
+.lnList { display: flex; flex-direction: column; gap: 5px; }
+.lnItem { display: flex; align-items: center; gap: 10px; text-align: start; border: 1.5px solid var(--line); background: var(--panel); border-radius: 11px; padding: 8px 10px; font-weight: 700; font-size: 14px; color: var(--ink); }
+.lnItem:hover { border-color: var(--accent); background: var(--panel2); }
+.lnItem.done { border-color: var(--go); background: var(--ok-soft); }
+.lnMark { min-width: 26px; height: 26px; border-radius: 99px; background: var(--accent-soft); color: var(--accent); display: inline-flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 900; }
+.lnItem.done .lnMark { background: transparent; }
+.lnNav, .lnNav2 { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+.lnNav .muted { font-size: 12.5px; }
+.lnGoal { background: var(--accent-soft); border-radius: 11px; padding: 9px 12px; font-weight: 800; margin: 8px 0 10px; }
+.lnText p, .lnText li, .gdBody p, .gdBody li { font-size: 14.5px; line-height: 1.55; }
+.lnText code, .gdBody code, .lnGoal code, .steps code, .tip code { font: 600 12.5px var(--mono); background: var(--code-bg); border: 1px solid var(--line); border-radius: 6px; padding: 0 5px; word-break: break-word; }
+.lnBlocks { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0 10px; }
+.lnBlock { border: 0; border-radius: 10px; color: #fff; font-weight: 800; font-size: 13px; padding: 7px 12px; box-shadow: inset 0 -3px 0 rgba(0, 0, 0, .18); cursor: pointer; }
+.lnBlock:hover { filter: brightness(1.08); }
+.lnActs { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0 10px; }
+.lnOk { background: var(--ok-soft); color: var(--go); font-weight: 900; border-radius: 11px; padding: 10px 12px; margin: 10px 0; font-size: 15px; }
+.lnWait { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; color: var(--muted); font-size: 13px; font-weight: 700; margin: 10px 0 4px; }
+.lnHint { background: var(--warn-soft); border-radius: 11px; padding: 9px 12px; font-size: 14px; }
+.lnFoot { margin-top: 16px; display: flex; gap: 6px; flex-wrap: wrap; }
+.gdWrap { display: flex; gap: 14px; min-height: 50vh; max-height: 62vh; }
+.gdToc { display: flex; flex-direction: column; gap: 3px; min-width: 210px; max-width: 240px; overflow: auto; }
+.gdTab { text-align: start; border: 0; background: transparent; border-radius: 9px; padding: 7px 10px; font-weight: 700; font-size: 13.5px; color: var(--ink); }
+.gdTab:hover { background: var(--panel2); }
+.gdTab.on { background: var(--accent-soft); color: var(--accent); }
+.gdBody { flex: 1; overflow: auto; padding-inline-end: 6px; }
+.gdBody h3 { margin-top: 0; }
+@media (max-width: 700px) { .gdWrap { flex-direction: column; max-height: none; } .gdToc { flex-direction: row; flex-wrap: wrap; max-width: none; } }
 .pick .gname { font-size: 11.5px; font-weight: 800; color: var(--muted); margin-left: 8px; }
 /* pastilles dans les blocs : variables (orange, comme Scratch), fonctions, fonctions de GIMP, attributs */
 .gcbPill > rect.blocklyFieldRect { stroke-width: 1.5px; fill-opacity: 1; }
@@ -419,7 +452,9 @@ table.keys kbd { font: 700 12px var(--mono); background: var(--panel2); border: 
         <button role="menuitem" data-act="lang_ar" lang="ar"><span>🇸🇦 العربية</span></button>
     </div></div>
     <div class="mb"><button class="mbBtn" aria-haspopup="true" aria-expanded="false">Aide</button><div class="menu" role="menu">
-        <button role="menuitem" data-act="tour"><span>🎓 Tutoriel (2 min)</span><kbd>F1</kbd></button>
+        <button role="menuitem" data-act="learn"><span>🎓 Cours : de débutant à pro</span></button>
+        <button role="menuitem" data-act="guide"><span>📘 Guide d'utilisation</span></button>
+        <button role="menuitem" data-act="tour"><span>🧭 Visite de l'écran (2 min)</span><kbd>F1</kbd></button>
         <button role="menuitem" id="mWelcome"><span>👋 Revoir l'accueil</span></button>
         <button role="menuitem" data-act="shortcuts"><span>⌨️ Raccourcis clavier</span></button>
         <button role="menuitem" data-act="about"><span>ℹ️ À propos</span></button>
@@ -456,6 +491,7 @@ table.keys kbd { font: 700 12px var(--mono); background: var(--panel2); border: 
       <button class="tab" role="tab" id="t-code" aria-selected="false" data-pane="code">🐍 Code</button>
       <button class="tab" role="tab" id="t-check" aria-selected="false" data-pane="check">✅ Vérification <span class="badge" id="chkBadge">0</span></button>
       <button class="tab" role="tab" id="t-ai" aria-selected="false" data-pane="ai">🤖 IA</button>
+      <button class="tab" role="tab" id="t-learn" aria-selected="false" data-pane="learn">🎓 Cours</button>
       <button class="tab closeSheet" id="sheetClose" aria-label="Fermer le panneau">✕</button>
     </div>
     <div class="pane on" id="p-help" role="tabpanel"></div>
@@ -469,6 +505,7 @@ table.keys kbd { font: 700 12px var(--mono); background: var(--panel2); border: 
     </div>
     <div class="pane" id="p-check" role="tabpanel"></div>
     <div class="pane" id="p-ai" role="tabpanel"></div>
+    <div class="pane" id="p-learn" role="tabpanel"></div>
   </aside>
 </main>
 <button class="btn primary" id="sideToggle">💡 Aide & code</button>
@@ -979,7 +1016,7 @@ GA.T = function (s) {
   return lead + t + trail;
 };
 /* traduction automatique de tout ce qui apparaît dans la page (hors code et blocs) */
-var SKIP = '#code, .snippet, .aiCode, .copyzone, #blockly, .blocklyWidgetDiv, .blocklyDropDownDiv, .blocklyTooltipDiv, pre, textarea, code, .path, .aiText, .aiMsg.user, script, style, .sgChip, .sgSub';
+var SKIP = '#code, .snippet, .aiCode, .copyzone, #blockly, .blocklyWidgetDiv, .blocklyDropDownDiv, .blocklyTooltipDiv, pre, textarea, code, .path, .aiText, .aiMsg.user, script, style, .sgChip, .sgSub, #p-learn, .gdWrap';
 function trNode(n) {
   if (!n) return;
   if (n.nodeType === 3) {
@@ -1726,11 +1763,284 @@ GA.EN_BLOCKS = {
 
 </script>
 <script data-ga>
-/* Atelier — English texts for the course and the user guide */
+/* Atelier — English texts for the course and the user guide (src/learn.js).
+   Keys are the French source texts, in the order of tools/learn_strings.js. */
 (function (root) {
 'use strict';
 var GA = root.GA;
 Object.assign(GA.EN, {
+"🌱 Niveau 1 — Premiers pas": "🌱 Level 1 — First steps",
+"Tu n'as jamais programmé ? Parfait, on commence ici.": "Never programmed before? Perfect, we start here.",
+"🌿 Niveau 2 — Les bases de la programmation": "🌿 Level 2 — Programming basics",
+"Variables, boucles, conditions : les 3 idées qui font tous les programmes.": "Variables, loops, conditions: the 3 ideas behind every program.",
+"🌳 Niveau 3 — GIMP pour de vrai": "🌳 Level 3 — Real GIMP work",
+"Sélections, texte, plusieurs images, dossiers entiers.": "Selections, text, several images, whole folders.",
+"🚀 Niveau 4 — Vers le code (pro)": "🚀 Level 4 — Towards code (pro)",
+"Lire et écrire du Python, utiliser les 857 fonctions de GIMP, déboguer.": "Read and write Python, use the 857 GIMP functions, debug.",
+"Ton premier plug-in": "Your first plug-in",
+"Faire afficher « Bonjour » par GIMP.": "Make GIMP say \"Hello\".",
+"Un **plug-in** est un petit programme qui ajoute une commande dans les menus de GIMP. Ici, tu le construis en emboîtant des blocs, comme un puzzle : l'atelier écrit le vrai code Python à ta place.": "A **plug-in** is a small program that adds a command to GIMP's menus. Here you build it by snapping blocks together, like a puzzle: the workshop writes the real Python code for you.",
+"Tout plug-in commence par le bloc jaune **▶ Quand je lance**. Les blocs rangés sous « puis faire » s'exécutent **de haut en bas**, un par un.": "Every plug-in starts with the yellow block **▶ When I run**. The blocks placed under \"then do\" run **from top to bottom**, one by one.",
+"Clique sur le bloc ci-dessous pour l'ajouter : il s'accroche tout seul sous « puis faire ».": "Click the block below to add it: it attaches itself under \"then do\".",
+"Clique dans la case blanche du message et écris ton texte.": "Click the white slot of the message and type your text.",
+"Regarde l'onglet 🐍 Code : la ligne `pdb.gimp_message(...)` est apparue.": "Look at the 🐍 Code tab: the line `pdb.gimp_message(...)` has appeared.",
+"Il faut un bloc « 💬 afficher le message » accroché sous « puis faire ».": "You need a \"💬 show the message\" block attached under \"then do\".",
+"Installer ton plug-in dans GIMP": "Install your plug-in in GIMP",
+"Voir ton plug-in dans les menus de GIMP et le lancer.": "See your plug-in in GIMP's menus and run it.",
+"GIMP charge les plug-ins au démarrage, depuis un dossier spécial appelé **plug-ins**.": "GIMP loads plug-ins at startup, from a special folder called **plug-ins**.",
+"- **Windows** : `C:\\Users\\<toi>\\AppData\\Roaming\\GIMP\\2.10\\plug-ins`": "- **Windows**: `C:\\Users\\<you>\\AppData\\Roaming\\GIMP\\2.10\\plug-ins`",
+"- **Linux** : `~/.config/GIMP/2.10/plug-ins` (puis rends le fichier exécutable : `chmod +x fichier.py`)": "- **Linux**: `~/.config/GIMP/2.10/plug-ins` (then make the file executable: `chmod +x file.py`)",
+"- **macOS** : `~/Library/Application Support/GIMP/2.10/plug-ins`": "- **macOS**: `~/Library/Application Support/GIMP/2.10/plug-ins`",
+"Le chemin exact est écrit dans GIMP : **Édition ▸ Préférences ▸ Dossiers ▸ Greffons**.": "The exact path is written in GIMP: **Edit ▸ Preferences ▸ Folders ▸ Plug-ins**.",
+"Dans le bloc ▶, donne un nom à ton plug-in et choisis son menu.": "In the ▶ block, give your plug-in a name and choose its menu.",
+"Clique sur **⬇ Télécharger** en haut à droite.": "Click **⬇ Download** at the top right.",
+"Range le fichier `.py` dans le dossier plug-ins, puis **redémarre GIMP**.": "Put the `.py` file in the plug-ins folder, then **restart GIMP**.",
+"Ouvre une image et cherche ton plug-in dans le menu choisi. Clique : ton message apparaît !": "Open an image and look for your plug-in in the menu you chose. Click it: your message appears!",
+"Quand ça marche, clique sur « J'ai réussi ».": "When it works, click \"I did it\".",
+"Le plug-in n'apparaît pas ? Vérifie que le fichier est bien dans le dossier plug-ins (pas dans un sous-dossier en trop), qu'il se termine par .py, et que GIMP a été redémarré. Sous Linux, il faut aussi le paquet gimp-python.": "The plug-in does not show up? Check that the file really is in the plug-ins folder (not in an extra sub-folder), that it ends with .py, and that GIMP was restarted. On Linux you also need the gimp-python package.",
+"⬇ Télécharger le plug-in": "⬇ Download the plug-in",
+"Agir sur l'image : un nouveau calque": "Act on the image: a new layer",
+"Créer un calque rempli de blanc dans l'image.": "Create a layer filled with white in the image.",
+"Un **calque** est une feuille transparente posée sur l'image. Les blocs violets (📑 Calques) les créent et les modifient.": "A **layer** is a transparent sheet laid on the image. The purple blocks (📑 Layers) create and change them.",
+"Le bloc « nouveau calque » de la catégorie ⚡ Raccourcis fait en une fois ce que les programmeurs écrivent en 3 lignes : créer le calque, l'ajouter à l'image, le remplir.": "The \"new layer\" block of the ⚡ Shortcuts category does at once what programmers write in 3 lines: create the layer, add it to the image, fill it.",
+"Remarque les ovales bleus « 🖼️ image actuelle » : ce sont des **valeurs**. Ils désignent l'image sur laquelle tu as lancé le plug-in.": "Notice the blue ovals \"🖼️ current image\": they are **values**. They stand for the image you ran the plug-in on.",
+"Ajoute le bloc ci-dessous.": "Add the block below.",
+"Change son nom (« Mon calque ») et choisis « blanc » dans la liste.": "Change its name (\"My layer\") and choose \"white\" in the list.",
+"Télécharge, remplace l'ancien fichier dans GIMP, redémarre et essaie.": "Download, replace the old file in GIMP, restart and try.",
+"Il faut un bloc qui crée un calque (catégorie 📑 Calques ou ⚡ Raccourcis).": "You need a block that creates a layer (📑 Layers or ⚡ Shortcuts category).",
+"Poser une question à l'utilisateur": "Ask the user a question",
+"Demander un nombre au lancement et s'en servir.": "Ask for a number at launch and use it.",
+"Quand un plug-in a des **réglages**, GIMP ouvre une petite fenêtre avant de le lancer : l'utilisateur y choisit un nombre, un texte, une couleur…": "When a plug-in has **settings**, GIMP opens a small window before running it: the user chooses a number, a text, a colour…",
+"Les réglages se rangent dans la partie « d'abord, demander » du bloc ▶. Ensuite, le bloc « 🎛️ valeur du réglage » (catégorie ▶ Démarrer) donne ce que l'utilisateur a choisi.": "Settings go in the \"first, ask\" part of the ▶ block. Then the \"🎛️ setting value\" block (▶ Start category) gives what the user chose.",
+"Ouvre la catégorie **▶ Démarrer & réglages** et glisse un réglage « 🔢 nombre entier » dans « d'abord, demander ». Donne-lui un nom, par exemple `opacite`.": "Open the **▶ Start & settings** category and drag a \"🔢 whole number\" setting into \"first, ask\". Give it a name, for example `opacity`.",
+"Ajoute le bloc « opacité de … » ci-dessous.": "Add the \"opacity of …\" block below.",
+"Dans sa case du pourcentage, dépose le bloc 🎛️ du réglage (il apparaît dans la catégorie ▶ Démarrer une fois le réglage créé).": "In its percentage slot, drop the 🎛️ block of the setting (it appears in the ▶ Start category once the setting exists).",
+"Il faut au moins un réglage dans « d'abord, demander » ET un bloc 🎛️ qui l'utilise dans les actions.": "You need at least one setting in \"first, ask\" AND a 🎛️ block using it in the actions.",
+"Les variables : des boîtes pour retenir": "Variables: boxes that remember",
+"Ranger une valeur dans une variable, puis la réutiliser.": "Store a value in a variable, then use it again.",
+"Une **variable** est une boîte avec un nom. On y range une valeur (un nombre, un texte, un calque…) pour s'en resservir plus tard.": "A **variable** is a box with a name. You store a value in it (a number, a text, a layer…) to use it again later.",
+"« mettre `x` à 5 » range 5 dans la boîte `x`. Ensuite, chaque bloc `x` vaut 5. Si tu remets autre chose dans `x`, l'ancienne valeur est remplacée.": "\"set `x` to 5\" puts 5 in the box `x`. After that, every `x` block is worth 5. If you put something else in `x`, the old value is replaced.",
+"Les blocs qui créent quelque chose (calque, texte, image) ont souvent une flèche **→ dans** : le résultat est rangé dans une variable, pour que tu puisses le modifier ensuite.": "Blocks that create something (layer, text, image) often have an arrow **→ in**: the result is stored in a variable, so you can change it afterwards.",
+"Ouvre **📦 Variables & listes** et clique sur « ➕ Créer une variable ». Appelle-la `nom`.": "Open **📦 Variables & lists** and click \"➕ Create a variable\". Call it `name`.",
+"Ajoute « mettre … à … » et mets-y un texte, par exemple « Bonjour ».": "Add \"set … to …\" and put a text in it, for example \"Hello\".",
+"Ajoute « 💬 afficher le message » et dépose-y le bloc de ta variable.": "Add \"💬 show the message\" and drop your variable's block in it.",
+"Il faut un bloc « mettre … à … » ET un bloc variable qui la relit.": "You need a \"set … to …\" block AND a variable block that reads it back.",
+"Répéter : les boucles": "Repeat: loops",
+"Créer 5 calques d'un coup.": "Create 5 layers at once.",
+"Un ordinateur ne se lasse jamais : une **boucle** refait les mêmes blocs autant de fois qu'on veut.": "A computer never gets bored: a **loop** runs the same blocks as many times as you want.",
+"« répéter 10 fois » est la plus simple. « compter avec `i` de 1 à 10 » fait pareil, mais la variable `i` vaut 1, puis 2, puis 3… : pratique pour numéroter.": "\"repeat 10 times\" is the simplest. \"count with `i` from 1 to 10\" does the same, but the variable `i` is 1, then 2, then 3…: handy for numbering.",
+"Les blocs en forme de **C** contiennent d'autres blocs : tout ce qui est à l'intérieur est répété.": "**C**-shaped blocks hold other blocks: everything inside is repeated.",
+"Ajoute le bloc « compter avec … » ci-dessous et mets 5 comme fin.": "Add the \"count with …\" block below and set the end to 5.",
+"Glisse un bloc « nouveau calque » **à l'intérieur** du C.": "Drag a \"new layer\" block **inside** the C.",
+"Bonus : dans le nom du calque, utilise « regrouper … et … » (🧮 Calculs & texte) pour écrire « Calque » + `i`.": "Bonus: in the layer name, use \"join … and …\" (🧮 Maths & text) to write \"Layer\" + `i`.",
+"Le bloc qui crée le calque doit être DANS le C de la boucle, pas en dessous.": "The block that creates the layer must be INSIDE the C of the loop, not below it.",
+"Choisir : les conditions": "Choose: conditions",
+"Faire quelque chose seulement si l'image est plus large que haute.": "Do something only if the image is wider than it is tall.",
+"« **si** … **alors** … » ne fait les blocs de l'intérieur que si la condition est vraie.": "\"**if** … **then** …\" runs the blocks inside only if the condition is true.",
+"Une condition est un bloc **hexagonal** (pointu des deux côtés) : une comparaison comme « … > … », « … contient … », « … et … ».": "A condition is a **hexagonal** block (pointed on both sides): a comparison like \"… > …\", \"… contains …\", \"… and …\".",
+"Avec « si … alors … sinon … », tu choisis entre deux chemins.": "With \"if … then … else …\", you choose between two paths.",
+"Ajoute « si … alors ».": "Add \"if … then\".",
+"Dans sa case pointue, dépose une comparaison « … > … ».": "In its pointed slot, drop a \"… > …\" comparison.",
+"À gauche, mets « largeur de image actuelle » ; à droite, « hauteur de image actuelle ».": "On the left put \"width of current image\"; on the right, \"height of current image\".",
+"Dans le C, mets un message « Image en paysage ! ».": "Inside the C, put a message \"Landscape image!\".",
+"Il faut un « si … alors » dont la case pointue contient une condition.": "You need an \"if … then\" whose pointed slot holds a condition.",
+"Parcourir tous les calques": "Go through all the layers",
+"Faire la même chose sur chaque calque de l'image.": "Do the same thing to every layer of the image.",
+"« pour chaque calque `calque` de image actuelle » est une boucle spéciale : à chaque tour, la variable `calque` contient **un** calque de l'image, puis le suivant…": "\"for each layer `layer` of current image\" is a special loop: on each round, the variable `layer` holds **one** layer of the image, then the next one…",
+"C'est comme ça qu'on renomme, cache ou modifie 200 calques en un clic. Avec la case « chercher aussi dans les groupes », les calques rangés dans des dossiers sont aussi visités.": "This is how you rename, hide or change 200 layers in one click. With the \"also look inside groups\" box, layers stored in folders are visited too.",
+"Ajoute « pour chaque calque ».": "Add \"for each layer\".",
+"Dedans, mets « opacité de … » et dépose la variable `calque` dans sa première case.": "Inside, put \"opacity of …\" and drop the `layer` variable in its first slot.",
+"Choisis 50 % : tous tes calques deviennent à moitié transparents.": "Choose 50%: all your layers become half transparent.",
+"Il faut une action sur un calque (opacité, renommer, visibilité…) DANS la boucle « pour chaque calque ».": "You need an action on a layer (opacity, rename, visibility…) INSIDE the \"for each layer\" loop.",
+"Sélectionner et peindre": "Select and paint",
+"Remplir un rectangle de couleur.": "Fill a rectangle with colour.",
+"La **sélection** (les pointillés) limite les actions à une zone. Dans GIMP, presque tous les filtres et remplissages ne touchent que la sélection.": "The **selection** (the dotted lines) limits actions to an area. In GIMP, almost all filters and fills only touch the selection.",
+"Les positions se comptent en pixels depuis le **coin en haut à gauche** : x vers la droite, y vers le bas.": "Positions are counted in pixels from the **top-left corner**: x to the right, y downwards.",
+"Pense à tout désélectionner à la fin, pour rendre la main proprement à l'utilisateur.": "Remember to select nothing at the end, to hand things back cleanly to the user.",
+"Ajoute « couleur de premier plan » et choisis une couleur.": "Add \"foreground colour\" and pick a colour.",
+"Ajoute « sélectionner un rectangle » (x 0, y 0, 200 × 100).": "Add \"select a rectangle\" (x 0, y 0, 200 × 100).",
+"Ajoute « remplir la sélection de … avec couleur de premier plan ».": "Add \"fill the selection of … with foreground colour\".",
+"Termine par « tout désélectionner ».": "Finish with \"select none\".",
+"Il faut une sélection (rectangle, ellipse…) ET un remplissage de la sélection.": "You need a selection (rectangle, ellipse…) AND a fill of the selection.",
+"Écrire du texte": "Write text",
+"Ajouter un calque de texte sur l'image.": "Add a text layer on the image.",
+"Le bloc « écrire … » crée un **calque de texte** : police, taille, couleur et position se règlent dans le bloc.": "The \"write …\" block creates a **text layer**: font, size, colour and position are set in the block.",
+"Le calque de texte est rangé dans une variable (→ dans `texte`) : tu peux ensuite le déplacer, changer son opacité, etc.": "The text layer is stored in a variable (→ in `text`): you can then move it, change its opacity, etc.",
+"Ajoute le bloc « écrire ».": "Add the \"write\" block.",
+"Mets ton texte, une taille de 60 px, une couleur.": "Type your text, a size of 60 px, a colour.",
+"Bonus : utilise un réglage « texte court » pour que l'utilisateur choisisse le texte.": "Bonus: use a \"short text\" setting so the user chooses the text.",
+"Il faut un bloc « écrire … » (catégorie 🔤 Texte).": "You need a \"write …\" block (🔤 Text category).",
+"Travailler sur toutes les images ouvertes": "Work on all open images",
+"Appliquer une action à chaque image ouverte, avec une annulation propre.": "Apply an action to each open image, with a clean undo.",
+"Un plug-in n'est pas obligé de travailler seulement sur l'image actuelle. « pour chaque image ouverte » passe sur **toutes** les images ouvertes dans GIMP.": "A plug-in does not have to work only on the current image. \"for each open image\" goes through **all** the images open in GIMP.",
+"Chaque action compte normalement comme une étape d'annulation. Le raccourci ⚡ regroupe tout ce que le plug-in fait sur une image en **un seul Ctrl+Z**.": "Each action normally counts as one undo step. The ⚡ shortcut groups everything the plug-in does to an image into **a single Ctrl+Z**.",
+"Dans la boucle, utilise la variable `img` à la place de « image actuelle ».": "In the loop, use the `img` variable instead of \"current image\".",
+"Ajoute « pour chaque image ouverte (une annulation par image) ».": "Add \"for each open image (one undo step per image)\".",
+"Dedans, mets « aplatir … » et dépose `img` dans sa case.": "Inside, put \"flatten …\" and drop `img` in its slot.",
+"Ouvre 3 images dans GIMP et lance ton plug-in.": "Open 3 images in GIMP and run your plug-in.",
+"Il faut une boucle sur les images ouvertes avec au moins un bloc à l'intérieur.": "You need a loop over the open images with at least one block inside.",
+"Traiter un dossier entier (lot)": "Process a whole folder (batch)",
+"Ouvrir chaque image d'un dossier, la modifier et l'exporter en PNG.": "Open each image of a folder, change it and export it as PNG.",
+"Le **traitement par lot** est la vraie superpuissance des scripts : 500 fichiers traités pendant que tu prends un café.": "**Batch processing** is the real superpower of scripts: 500 files processed while you have a coffee.",
+"Le raccourci « pour chaque fichier image du dossier » ouvre chaque fichier sans fenêtre, fait tes blocs, puis libère la mémoire.": "The \"for each image file of the folder\" shortcut opens each file without a window, runs your blocks, then frees the memory.",
+"Astuce : ajoute un réglage « 📁 dossier à choisir » pour que l'utilisateur choisisse le dossier dans GIMP.": "Tip: add a \"📁 folder to choose\" setting so the user picks the folder in GIMP.",
+"Ajoute le bloc de lot ci-dessous, avec l'extension `.jpg`.": "Add the batch block below, with the extension `.jpg`.",
+"Dedans, mets « exporter … en PNG vers … » avec `img`.": "Inside, put \"export … as PNG to …\" with `img`.",
+"Pour le chemin, regroupe le nom du fichier et « .png » (🧮 Calculs & texte).": "For the path, join the file name and \".png\" (🧮 Maths & text).",
+"Il faut un enregistrement ou un export DANS une boucle sur les fichiers d'un dossier.": "You need a save or an export INSIDE a loop over the files of a folder.",
+"Lire le Python que tu as construit": "Read the Python you built",
+"Comprendre le lien entre un bloc et ses lignes de code.": "Understand the link between a block and its lines of code.",
+"Chaque bloc correspond à une ou plusieurs lignes de **Python 2.7**, le langage des plug-ins de GIMP 2.10.": "Each block matches one or more lines of **Python 2.7**, the language of GIMP 2.10 plug-ins.",
+"Dans l'onglet 🐍 Code, **clique sur un bloc** : ses lignes s'allument. **Clique sur une ligne** : son bloc est sélectionné. C'est la meilleure façon d'apprendre à lire le code.": "In the 🐍 Code tab, **click a block**: its lines light up. **Click a line**: its block gets selected. It is the best way to learn to read code.",
+"À retenir : en Python, ce qui est **décalé vers la droite** (l'indentation) est « à l'intérieur » — exactement comme les blocs dans un C.": "Remember: in Python, what is **shifted to the right** (the indentation) is \"inside\" — exactly like blocks inside a C.",
+"- `pdb.gimp_...(...)` : un appel à une fonction de GIMP": "- `pdb.gimp_...(...)`: a call to a GIMP function",
+"- `x = ...` : on range une valeur dans la variable `x`": "- `x = ...`: a value is stored in the variable `x`",
+"- `for ... in ...:` : une boucle ; `if ...:` : une condition": "- `for ... in ...:`: a loop; `if ...:`: a condition",
+"Ouvre l'onglet 🐍 Code.": "Open the 🐍 Code tab.",
+"Clique sur trois blocs différents et regarde les lignes qui s'allument.": "Click three different blocks and watch the lines that light up.",
+"Ouvre l'onglet 🐍 Code, dans le panneau de droite.": "Open the 🐍 Code tab, in the right-hand panel.",
+"🐍 Ouvrir l'onglet Code": "🐍 Open the Code tab",
+"Passer aux blocs Python": "Switch to Python blocks",
+"Transformer ton plug-in en blocs Python, une ligne = un bloc.": "Turn your plug-in into Python blocks, one line = one block.",
+"Les blocs simples sont confortables, mais les blocs **Python** te montrent tout le code, ligne par ligne, et te laissent tout modifier.": "Simple blocks are comfortable, but **Python** blocks show you all the code, line by line, and let you change everything.",
+"Dans les blocs Python, les couleurs t'aident :": "In Python blocks, colours help you:",
+"- pastille **orange** : une variable (`image`, `calque`, `x`)": "- **orange** pill: a variable (`image`, `layer`, `x`)",
+"- pastille **violette** : une constante de GIMP (`FILL_WHITE`, `NORMAL_MODE`)": "- **violet** pill: a GIMP constant (`FILL_WHITE`, `NORMAL_MODE`)",
+"- pastille **jaune** : une fonction de GIMP (`pdb.…`)": "- **yellow** pill: a GIMP function (`pdb.…`)",
+"- blocs verts : les calculs et comparaisons (`+`, `==`, `and`…)": "- green blocks: calculations and comparisons (`+`, `==`, `and`…)",
+"Clique sur une pastille et tape quelques lettres : une liste de propositions s'ouvre.": "Click a pill and type a few letters: a list of suggestions opens.",
+"Clique sur le bouton ci-dessous (ou Fichier ▸ Voir ce plug-in en blocs Python).": "Click the button below (or File ▸ See this plug-in as Python blocks).",
+"Explore : clique sur une pastille orange et regarde les variables proposées.": "Explore: click an orange pill and look at the suggested variables.",
+"Il faut convertir ton plug-in (ou importer un script) : un bloc « 📄 script Python » doit être présent.": "You need to convert your plug-in (or import a script): a \"📄 Python script\" block must be present.",
+"🔁 Voir mon plug-in en blocs Python": "🔁 See my plug-in as Python blocks",
+"Les 857 fonctions de GIMP": "The 857 GIMP functions",
+"Appeler une fonction de la PDB avec les bons arguments.": "Call a PDB function with the right arguments.",
+"La **PDB** (Procedure DataBase) est la liste de tout ce que GIMP sait faire : 857 fonctions. Tout ce que tu fais à la souris dans GIMP a sa fonction.": "The **PDB** (Procedure DataBase) is the list of everything GIMP can do: 857 functions. Everything you do with the mouse in GIMP has its function.",
+"Dans un bloc « appeler … », clique sur le nom de la fonction et tape un mot, en français ou en anglais : **flou**, **calque**, **texte**… La liste montre chaque fonction avec ses arguments et une explication. Choisis : les cases se remplissent toutes seules.": "In a \"call …\" block, click the function name and type a word, in English or French: **blur**, **layer**, **text**… The list shows each function with its arguments and an explanation. Choose one: the slots fill themselves.",
+"Le 🔍 du bloc ouvre la liste complète, rangée par groupes.": "The block's 🔍 opens the full list, sorted by group.",
+"Règle d'or : le `run_mode` ne se passe **jamais** — pygimp l'ajoute lui-même.": "Golden rule: the `run_mode` is **never** passed — pygimp adds it itself.",
+"Ajoute un bloc « appeler … » (catégorie 🐍 Python).": "Add a \"call …\" block (🐍 Python category).",
+"Clique sur son nom, tape « flou » et choisis `plug_in_gauss`.": "Click its name, type \"blur\" and choose `plug_in_gauss`.",
+"Remplace les 0.0 par 5.0 pour un flou de 5 pixels.": "Replace the 0.0 values with 5.0 for a 5-pixel blur.",
+"Il faut un appel `pdb.…` vers une vraie fonction de GIMP, avec toutes ses cases remplies.": "You need a `pdb.…` call to a real GIMP function, with all its slots filled.",
+"Déboguer comme un pro": "Debug like a pro",
+"Trouver et comprendre une erreur.": "Find and understand an error.",
+"Tout le monde fait des erreurs, même les pros. La différence : ils savent **où regarder**.": "Everybody makes mistakes, even pros. The difference: they know **where to look**.",
+"- L'onglet **✅ Vérification** trouve beaucoup d'erreurs **avant** GIMP : case vide, mauvais nombre d'arguments, fonction inconnue… Clique sur un problème pour voir le bloc.": "- The **✅ Check** tab finds many errors **before** GIMP does: empty slot, wrong number of arguments, unknown function… Click a problem to see the block.",
+"- Dans GIMP, les erreurs s'affichent dans **Fenêtres ▸ Fenêtres ancrables ▸ Console d'erreurs**.": "- In GIMP, errors are shown in **Windows ▸ Dockable Dialogs ▸ Error Console**.",
+"- Pour voir ce que vaut une variable pendant l'exécution, affiche-la : `pdb.gimp_message(str(x))`.": "- To see what a variable holds while the plug-in runs, show it: `pdb.gimp_message(str(x))`.",
+"- **Filtres ▸ Python-Fu ▸ Console** permet d'essayer une ligne de Python directement dans GIMP.": "- **Filters ▸ Python-Fu ▸ Console** lets you try a line of Python directly in GIMP.",
+"Lis les erreurs **de bas en haut** : la dernière ligne dit ce qui ne va pas, celle du dessus dit où.": "Read errors **from the bottom up**: the last line says what is wrong, the one above says where.",
+"Ouvre l'onglet ✅ Vérification.": "Open the ✅ Check tab.",
+"Ajoute un « appeler … » vers `pdb.gimp_message` et mets une variable dedans, par exemple `str(image.width)`.": "Add a \"call …\" to `pdb.gimp_message` and put a variable in it, for example `str(image.width)`.",
+"Ouvre l'onglet ✅ Vérification, puis ajoute un message qui affiche une variable.": "Open the ✅ Check tab, then add a message that shows a variable.",
+"✅ Ouvrir la Vérification": "✅ Open the Check tab",
+"Écrire tes propres fonctions": "Write your own functions",
+"Ranger un morceau de code dans une fonction et l'appeler.": "Put a piece of code in a function and call it.",
+"Quand tu répètes les mêmes lignes à plusieurs endroits, range-les dans une **fonction** : « définir `ma_fonction(calque)` ». Ensuite, un seul bloc « appeler `ma_fonction(...)` » fait tout.": "When you repeat the same lines in several places, put them in a **function**: \"define `my_function(layer)`\". Then a single \"call `my_function(...)`\" block does it all.",
+"Les **paramètres** (entre parenthèses) sont des variables remplies au moment de l'appel. « retourner … » renvoie un résultat.": "**Parameters** (in brackets) are variables filled at the moment of the call. \"return …\" sends back a result.",
+"Un bon nom de fonction dit ce qu'elle fait : `mettre_en_gris`, `numeroter_calques`… Tes fonctions apparaissent aussi dans les suggestions.": "A good function name says what it does: `make_grey`, `number_layers`… Your functions also appear in the suggestions.",
+"Ajoute « définir … » avec le nom `griser` et le paramètre `calque`.": "Add \"define …\" with the name `griser` and the parameter `calque`.",
+"Dedans, appelle `pdb.gimp_drawable_desaturate(calque, DESATURATE_LUMINANCE)`.": "Inside, call `pdb.gimp_drawable_desaturate(calque, DESATURATE_LUMINANCE)`.",
+"Ailleurs, appelle `griser(drawable)`.": "Somewhere else, call `griser(drawable)`.",
+"Il faut un bloc « définir … » ET un appel à cette fonction (même nom).": "You need a \"define …\" block AND a call to that function (same name).",
+"Importer, modifier, partager": "Import, change, share",
+"Ouvrir un vrai script existant et le modifier sans le casser.": "Open a real existing script and change it without breaking it.",
+"Tu as trouvé un plug-in sur Internet ? **Fichier ▸ Importer un script Python** : chaque ligne devient un bloc, et le téléchargement redonne **exactement le même fichier** tant que tu ne changes rien. Si tu modifies un bloc, seules ses lignes changent.": "Found a plug-in on the Internet? **File ▸ Import a Python script**: each line becomes a block, and the download gives back **exactly the same file** as long as you change nothing. If you change a block, only its lines change.",
+"L'**assistant IA** (onglet 🤖) peut écrire une fonction, expliquer un script ou corriger une erreur. Ses réponses sont vérifiées (Python 2.7, vraies fonctions de GIMP, bon nombre d'arguments) avant de devenir des blocs.": "The **AI assistant** (🤖 tab) can write a function, explain a script or fix an error. Its answers are checked (Python 2.7, real GIMP functions, right number of arguments) before they become blocks.",
+"Tu es maintenant capable de lire, écrire et corriger des plug-ins GIMP. La suite : ouvre des scripts d'autres personnes, lis-les bloc par bloc, et construis les tiens. **Bravo !**": "You can now read, write and fix GIMP plug-ins. Next: open other people's scripts, read them block by block, and build your own. **Well done!**",
+"Importe un script `.py` (ou un exemple : Fichier ▸ Exemples, puis convertis-le).": "Import a `.py` script (or an example: File ▸ Examples, then convert it).",
+"Change une valeur et regarde dans l'onglet 🐍 Code quelles lignes ont changé.": "Change a value and look in the 🐍 Code tab at which lines changed.",
+"Quand c'est fait, clique sur « J'ai réussi ».": "When you are done, click \"I did it\".",
+"🐍 Importer un script Python": "🐍 Import a Python script",
+"✨ Exemples": "✨ Examples",
+"🗺️ L'écran de l'atelier": "🗺️ The workshop screen",
+"- À **gauche**, les catégories de blocs. Clique sur une catégorie pour voir ses blocs, puis glisse un bloc dans la zone de construction.": "- On the **left**, the block categories. Click a category to see its blocks, then drag a block into the building area.",
+"- Au **centre**, la zone de construction. Molette : défiler ; Ctrl + molette : zoomer ; glisser dans le vide : se déplacer.": "- In the **centre**, the building area. Wheel: scroll; Ctrl + wheel: zoom; drag on empty space: move around.",
+"- À **droite**, le panneau : 💡 Aide (sur le bloc sélectionné), 🐍 Code (le Python produit), ✅ Vérification, 🤖 IA et 🎓 Cours.": "- On the **right**, the panel: 💡 Help (about the selected block), 🐍 Code (the Python produced), ✅ Check, 🤖 AI and 🎓 Course.",
+"- En **haut**, les menus, la recherche de blocs (touche /) et le bouton ⬇ Télécharger.": "- At the **top**, the menus, the block search (/ key) and the ⬇ Download button.",
+"🧩 Les formes des blocs": "🧩 The shapes of the blocks",
+"- **Bloc à encoche** : une action. Il s'empile sous un autre.": "- **Notched block**: an action. It stacks under another one.",
+"- **Bloc arrondi** : une valeur (nombre, texte, calque, variable). Il se glisse dans un trou.": "- **Rounded block**: a value (number, text, layer, variable). It slots into a hole.",
+"- **Bloc pointu (hexagonal)** : une condition vraie/fausse, pour « si » et « tant que ».": "- **Pointed (hexagonal) block**: a true/false condition, for \"if\" and \"while\".",
+"- **Bloc en C** : il contient d'autres blocs (boucles, conditions, raccourcis).": "- **C block**: it holds other blocks (loops, conditions, shortcuts).",
+"Un bloc grisé est désactivé : il n'est pas dans le code. Clic droit sur un bloc : dupliquer, commenter, désactiver, replier, aide.": "A greyed-out block is disabled: it is not in the code. Right-click a block: duplicate, comment, disable, collapse, help.",
+"▶ Le bloc de départ": "▶ The start block",
+"Le bloc jaune **▶ Quand je lance** décrit ton plug-in : son nom dans le menu, le menu où il apparaît, s'il a besoin d'une image ouverte, et ses réglages (« d'abord, demander »).": "The yellow **▶ When I run** block describes your plug-in: its name in the menu, the menu where it appears, whether it needs an open image, and its settings (\"first, ask\").",
+"Les réglages deviennent la fenêtre que GIMP affiche avant de lancer le plug-in. Utilise leur valeur avec les blocs 🎛️ de la catégorie ▶ Démarrer.": "Settings become the window GIMP shows before running the plug-in. Use their value with the 🎛️ blocks of the ▶ Start category.",
+"**Paramètres ▸ Mon plug-in** règle le reste : auteur, annulation groupée, gestion des erreurs, modules importés.": "**Settings ▸ My plug-in** sets the rest: author, grouped undo, error handling, imported modules.",
+"⬇ Télécharger et installer": "⬇ Download and install",
+"Clique sur **⬇ Télécharger** : tu obtiens un fichier `.py`. Range-le dans le dossier plug-ins de GIMP et redémarre GIMP.": "Click **⬇ Download**: you get a `.py` file. Put it in GIMP's plug-ins folder and restart GIMP.",
+"- **Linux** : `~/.config/GIMP/2.10/plug-ins`, puis `chmod +x fichier.py`": "- **Linux**: `~/.config/GIMP/2.10/plug-ins`, then `chmod +x file.py`",
+"Le dossier exact est dans **Édition ▸ Préférences ▸ Dossiers ▸ Greffons**. Les plug-ins faits ici marchent dans **GIMP 2.10** (pas dans GIMP 3, qui a une autre API).": "The exact folder is in **Edit ▸ Preferences ▸ Folders ▸ Plug-ins**. Plug-ins made here work in **GIMP 2.10** (not in GIMP 3, which has a different API).",
+"**Fichier ▸ Importer un script Python**, ou glisse le fichier `.py` sur la page. Chaque ligne devient un bloc Python.": "**File ▸ Import a Python script**, or drop the `.py` file on the page. Each line becomes a Python block.",
+"Garantie : tant que tu ne changes rien, le téléchargement redonne **le même fichier, octet pour octet** (commentaires, espaces, tabulations compris). Si tu modifies un bloc, seules ses lignes sont réécrites.": "Guarantee: as long as you change nothing, the download gives back **the same file, byte for byte** (comments, spaces and tabs included). If you change a block, only its lines are rewritten.",
+"Un script avec une erreur de syntaxe s'importe quand même : la partie fautive devient un bloc 🧱 « code brut » à corriger.": "A script with a syntax error still imports: the faulty part becomes a 🧱 \"raw code\" block to fix.",
+"🟠 Les blocs Python et leurs pastilles": "🟠 Python blocks and their pills",
+"- **orange** : variable ; **violet** : constante de GIMP ; **jaune** : fonction de GIMP ; **vert foncé** : autre fonction ; blocs verts : calculs et comparaisons ; cases blanches : valeurs écrites telles quelles.": "- **orange**: variable; **violet**: GIMP constant; **yellow**: GIMP function; **dark green**: other function; green blocks: calculations and comparisons; white slots: values written as is.",
+"Clique sur une pastille et tape : une liste de propositions s'ouvre (flèches ↑↓ puis Entrée, ou clic). Pour une fonction de GIMP, les cases manquantes se remplissent toutes seules.": "Click a pill and type: a list of suggestions opens (arrows ↑↓ then Enter, or click). For a GIMP function, the missing slots fill themselves.",
+"Clic droit sur un appel de fonction : ajouter ou retirer un argument. Clic droit sur « si » : ajouter « sinon si » ou « sinon ».": "Right-click a function call: add or remove an argument. Right-click \"if\": add \"else if\" or \"else\".",
+"La catégorie 🐍 Python liste les variables de ton script et des **raccourcis GIMP** tout prêts (annulation groupée, boucle sur les images, sur les calques…).": "The 🐍 Python category lists your script's variables and ready-made **GIMP shortcuts** (grouped undo, loop over images, over layers…).",
+"⚙️ Les 857 fonctions de GIMP (PDB)": "⚙️ The 857 GIMP functions (PDB)",
+"Deux façons de les utiliser : le bloc « ⚙️ fonction GIMP » (🧰 Avancé) dans un plug-in en blocs simples, ou le bloc « appeler … » dans les blocs Python.": "Two ways to use them: the \"⚙️ GIMP function\" block (🧰 Advanced) in a simple-blocks plug-in, or the \"call …\" block in Python blocks.",
+"Recherche : tape un mot en français ou en anglais (flou, calque, sélection, texte…). Les fonctions les plus utilisées sont en premier ; « ancienne » signale une fonction dépréciée qui a une remplaçante.": "Search: type a word in English or French (blur, layer, selection, text…). The most used functions come first; \"old\" marks a deprecated function that has a replacement.",
+"Le `run_mode` n'est jamais à fournir : pygimp l'ajoute. Les tableaux ont souvent un compteur juste avant (ex. `num_points` puis `points`).": "The `run_mode` is never provided: pygimp adds it. Arrays often have a counter just before them (e.g. `num_points` then `points`).",
+"⚡ Raccourcis GIMP": "⚡ GIMP shortcuts",
+"Des blocs qui remplacent ce que tous les scripts écrivent à la main :": "Blocks that replace what every script writes by hand:",
+"- « en une seule annulation » : tout compte pour un seul Ctrl+Z, même en cas d'erreur ;": "- \"as a single undo step\": everything counts as one Ctrl+Z, even if an error happens;",
+"- « en remettant ensuite… » les couleurs et outils, la sélection ou le calque actif ;": "- \"then restore…\" the colours and tools, the selection or the active layer;",
+"- « pour chaque image ouverte », « pour chaque calque de toutes les images », « pour chaque fichier du dossier » ;": "- \"for each open image\", \"for each layer of all images\", \"for each file of the folder\";",
+"- « nouveau calque de la taille de l'image », « copier le calque dans une autre image ».": "- \"new layer the size of the image\", \"copy the layer into another image\".",
+"✅ Vérification et erreurs": "✅ Check and errors",
+"L'onglet **✅ Vérification** relit ton plug-in à chaque modification : 🛑 erreur (il ne marcherait pas), ⚠️ à regarder, ℹ️ information. Clique sur une ligne pour aller au bloc.": "The **✅ Check** tab rereads your plug-in after every change: 🛑 error (it would not work), ⚠️ worth a look, ℹ️ information. Click a line to go to the block.",
+"Dans GIMP : **Fenêtres ▸ Fenêtres ancrables ▸ Console d'erreurs** montre les erreurs Python. Les plug-ins faits ici affichent aussi l'erreur complète dans un message.": "In GIMP: **Windows ▸ Dockable Dialogs ▸ Error Console** shows Python errors. Plug-ins made here also show the full error in a message.",
+"**Filtres ▸ Python-Fu ▸ Console** : pour essayer une ligne de Python directement dans GIMP.": "**Filters ▸ Python-Fu ▸ Console**: to try a line of Python directly in GIMP.",
+"🤖 L'assistant IA": "🤖 The AI assistant",
+"**IA ▸ Choisir l'IA** : n'importe quel service compatible (OpenAI, Anthropic, Gemini, Mistral…), une IA locale (Ollama, LM Studio) ou le mode copier-coller, sans connexion.": "**AI ▸ Choose the AI**: any compatible service (OpenAI, Anthropic, Gemini, Mistral…), a local AI (Ollama, LM Studio) or copy-and-paste mode, with no connection.",
+"Demande une fonction, un plug-in entier, une correction ou une explication. La réponse est vérifiée et réparée automatiquement avant de devenir des blocs.": "Ask for a function, a whole plug-in, a fix or an explanation. The answer is checked and repaired automatically before it becomes blocks.",
+"💾 Sauvegarder ton travail": "💾 Save your work",
+"L'atelier garde automatiquement ton travail dans ce navigateur.": "The workshop automatically keeps your work in this browser.",
+"Pour le garder ailleurs ou le partager : **Fichier ▸ Sauvegarder le projet** (fichier `.json`). Le `.py` téléchargé contient aussi l'empreinte des blocs : en le réimportant, tu retrouves tes blocs à l'identique.": "To keep it elsewhere or share it: **File ▸ Save the project** (`.json` file). The downloaded `.py` also contains the blocks' fingerprint: re-import it and you get your blocks back exactly.",
+"❓ Problèmes fréquents": "❓ Common problems",
+"- **Le plug-in n'apparaît pas** : mauvais dossier, GIMP pas redémarré, fichier non exécutable (Linux), ou Python-Fu absent (Linux : paquet `gimp-python`).": "- **The plug-in does not show up**: wrong folder, GIMP not restarted, file not executable (Linux), or Python-Fu missing (Linux: `gimp-python` package).",
+"- **Le menu est grisé** : le plug-in a besoin d'une image ouverte (case du bloc ▶).": "- **The menu is greyed out**: the plug-in needs an open image (checkbox of the ▶ block).",
+"- **« argument count » / « wrong type »** : regarde l'onglet ✅ Vérification, il indique le nombre d'arguments attendu.": "- **\"argument count\" / \"wrong type\"**: look at the ✅ Check tab, it tells the expected number of arguments.",
+"- **Accents bizarres** : utilise les blocs de texte de l'atelier, ils gèrent l'UTF-8 pour toi.": "- **Strange accents**: use the workshop's text blocks, they handle UTF-8 for you.",
+"Mission réussie !": "Mission accomplished!",
+"leçons réussies": "lessons done",
+"Cours : de débutant complet à pro": "Course: from complete beginner to pro",
+"Chaque leçon explique une idée, puis te donne une mission. L'atelier vérifie tout seul quand tu as réussi.": "Each lesson explains one idea, then gives you a mission. The workshop checks by itself when you have succeeded.",
+"Continuer": "Continue",
+"Commencer le cours": "Start the course",
+"Guide d'utilisation": "User guide",
+"Recommencer le cours": "Restart the course",
+"Ajouter ce bloc": "Add this block",
+"Toutes les leçons": "All lessons",
+"Ta mission": "Your mission",
+"Clique sur un bloc pour l'ajouter :": "Click a block to add it:",
+"J'ai réussi": "I did it",
+"L'atelier vérifie ta mission pendant que tu travailles.": "The workshop checks your mission while you work.",
+"Un indice ?": "A hint?",
+"Précédente": "Previous",
+"Suivante": "Next",
+"Recommencer le cours ?": "Restart the course?",
+"Ta progression dans le cours sera effacée.": "Your progress in the course will be erased.",
+"Recommencer": "Restart",
+"Suivre le cours": "Follow the course",
+"🎓 Cours": "🎓 Course",
+"🎓 Cours : de débutant à pro": "🎓 Course: from beginner to pro",
+"📘 Guide d'utilisation": "📘 User guide",
+"🧭 Visite de l'écran (2 min)": "🧭 Screen tour (2 min)",
+"Commencer seul": "Start on my own",
+"🎓 Suivre le cours": "🎓 Follow the course",
+"🎓 Tu débutes ? Le": "🎓 New to this? The",
+"cours": "course",
+"t'emmène pas à pas de ton premier plug-in jusqu'au vrai code Python, avec des missions vérifiées automatiquement.": "takes you step by step from your first plug-in to real Python code, with missions checked automatically.",
+"🎓 Nouveau ici ? Suis le": "🎓 New here? Follow the",
+"(onglet 🎓 Cours), ou ouvre le": "(🎓 Course tab), or open the",
+"guide": "guide",
+": menu Aide ▸ 📘 Guide d'utilisation.": ": Help menu ▸ 📘 User guide.",
+"sous « ▶ puis faire ».": "under \"▶ then do\"."
 });
 })(typeof window !== 'undefined' ? window : globalThis);
 
@@ -6411,7 +6721,7 @@ GA.actions = {
   appearance: function () { GA.openAppearance(); },
   theme: function () { var t = GA.prefs.theme; GA.prefs.theme = t === 'auto' ? (GA.isDark() ? 'light' : 'dark') : (t === 'dark' ? 'light' : 'dark'); GA.savePrefs(); GA.applyLivePrefs(); },
   langFr: function () { GA.setLang('fr'); }, langEn: function () { GA.setLang('en'); },   // anciens noms (raccourcis enregistrés)
-  tour: function () { GA.tour.start(); }, shortcuts: function () { GA.openShortcuts(); }, about: function () { GA.openAbout(); },
+  tour: function () { GA.tour.start(); }, learn: function () { GA.learn.open(); }, guide: function () { GA.openGuide(); }, shortcuts: function () { GA.openShortcuts(); }, about: function () { GA.openAbout(); },
   saveProject: function () { GA.app.saveProject(); }, importFile: function () { var f = $('#fileOpen'); f.value = ''; f.click(); },
   aiPanel: function () { if (GA.ai) GA.ai.show(); }, aiSettings: function () { if (GA.ai) GA.ai.openSettings(); },
   downloadAtelier: function () { if (GA.ai) GA.ai.downloadAtelier(); }
@@ -6690,6 +7000,427 @@ if (root.addEventListener) {
   root.addEventListener('resize', place);
   root.addEventListener('wheel', function () { if (cur && !document.body.contains(cur.input)) close(); else place(); }, { passive: true });
 }
+})(typeof window !== 'undefined' ? window : globalThis);
+
+</script>
+<script data-ga>
+/* Atelier — le cours (de débutant complet à pro) et le guide d'utilisation.
+   Tous les textes sont en français ici ; les traductions passent par GA.T (i18n_learn_en.js + paquets de langue).
+   Mise en forme des textes : **gras**, `code`, et une ligne qui commence par « - » devient une puce. */
+(function (root) {
+'use strict';
+var GA = root.GA;
+var T = function (x) { return GA.T ? GA.T(x) : x; };
+
+/* ---------- outils pour les vérifications (indépendants de la langue : on regarde les types de blocs) ---------- */
+function hat(ws) { return ws.getBlocksByType('g_start', false)[0] || ws.getBlocksByType('py_file', false)[0] || null; }
+function prog(ws) { var h = hat(ws); return h ? h.getDescendants(false).filter(function (b) { return b.isEnabled() && !b.isShadow(); }) : []; }
+function inProg(ws, types) { types = [].concat(types); return prog(ws).filter(function (b) { return types.indexOf(b.type) >= 0; }); }
+function has(ws, types) { return inProg(ws, types).length > 0; }
+// dans les cases du bloc (corps d'une boucle, argument…), pas dans les blocs empilés en dessous
+function inside(b, types) {
+  types = [].concat(types);
+  return b.inputList.some(function (inp) {
+    var t = inp.connection && inp.connection.targetBlock();
+    return t && t.getDescendants(false).some(function (d) { return types.indexOf(d.type) >= 0 && d.isEnabled(); });
+  });
+}
+function hasInside(ws, outer, inner) { return inProg(ws, outer).some(function (b) { return inside(b, inner); }); }
+function settings(ws) { var s = ws.getBlocksByType('g_start', false)[0]; if (!s) return []; var out = [], b = s.getInputTargetBlock('SETTINGS'); while (b) { out.push(b); b = b.getNextBlock(); } return out; }
+function calls(ws) { return inProg(ws, ['py_callst', 'py_call']).filter(function (b) { return !b.f_; }).map(function (b) { return { b: b, f: String(b.getFieldValue('FUNC') || '') }; }); }
+var LAYER_ACTIONS = ['lyr_rename', 'lyr_visible', 'lyr_opacity', 'lyr_mode', 'lyr_delete', 'lyr_move', 'lyr_scale', 'lyr_alpha', 'lyr_dup', 'paint_blur', 'paint_fill_all', 'paint_desat', 'paint_invert', 'paint_bc', 'txt_set', 'txt_color', 'txt_size'];
+var NEW_LAYER = ['lyr_new', 'fast_layer_new'];
+
+/* ---------- les leçons ---------- */
+GA.LEARN_LEVELS = [
+  { n: 1, t: '🌱 Niveau 1 — Premiers pas', d: 'Tu n\'as jamais programmé ? Parfait, on commence ici.' },
+  { n: 2, t: '🌿 Niveau 2 — Les bases de la programmation', d: 'Variables, boucles, conditions : les 3 idées qui font tous les programmes.' },
+  { n: 3, t: '🌳 Niveau 3 — GIMP pour de vrai', d: 'Sélections, texte, plusieurs images, dossiers entiers.' },
+  { n: 4, t: '🚀 Niveau 4 — Vers le code (pro)', d: 'Lire et écrire du Python, utiliser les 857 fonctions de GIMP, déboguer.' }
+];
+GA.LEARN = [
+  { id: 'hello', lvl: 1, t: 'Ton premier plug-in',
+    goal: 'Faire afficher « Bonjour » par GIMP.',
+    p: ['Un **plug-in** est un petit programme qui ajoute une commande dans les menus de GIMP. Ici, tu le construis en emboîtant des blocs, comme un puzzle : l\'atelier écrit le vrai code Python à ta place.',
+      'Tout plug-in commence par le bloc jaune **▶ Quand je lance**. Les blocs rangés sous « puis faire » s\'exécutent **de haut en bas**, un par un.'],
+    steps: ['Clique sur le bloc ci-dessous pour l\'ajouter : il s\'accroche tout seul sous « puis faire ».', 'Clique dans la case blanche du message et écris ton texte.', 'Regarde l\'onglet 🐍 Code : la ligne `pdb.gimp_message(...)` est apparue.'],
+    blocks: ['msg_show'],
+    check: function (ws) { return has(ws, 'msg_show'); },
+    hint: 'Il faut un bloc « 💬 afficher le message » accroché sous « puis faire ».' },
+  { id: 'install', lvl: 1, t: 'Installer ton plug-in dans GIMP',
+    goal: 'Voir ton plug-in dans les menus de GIMP et le lancer.',
+    p: ['GIMP charge les plug-ins au démarrage, depuis un dossier spécial appelé **plug-ins**.',
+      '- **Windows** : `C:\\Users\\<toi>\\AppData\\Roaming\\GIMP\\2.10\\plug-ins`',
+      '- **Linux** : `~/.config/GIMP/2.10/plug-ins` (puis rends le fichier exécutable : `chmod +x fichier.py`)',
+      '- **macOS** : `~/Library/Application Support/GIMP/2.10/plug-ins`',
+      'Le chemin exact est écrit dans GIMP : **Édition ▸ Préférences ▸ Dossiers ▸ Greffons**.'],
+    steps: ['Dans le bloc ▶, donne un nom à ton plug-in et choisis son menu.', 'Clique sur **⬇ Télécharger** en haut à droite.', 'Range le fichier `.py` dans le dossier plug-ins, puis **redémarre GIMP**.', 'Ouvre une image et cherche ton plug-in dans le menu choisi. Clique : ton message apparaît !', 'Quand ça marche, clique sur « J\'ai réussi ».'],
+    acts: [{ a: 'download', l: '⬇ Télécharger le plug-in' }],
+    manual: true,
+    tip: 'Le plug-in n\'apparaît pas ? Vérifie que le fichier est bien dans le dossier plug-ins (pas dans un sous-dossier en trop), qu\'il se termine par .py, et que GIMP a été redémarré. Sous Linux, il faut aussi le paquet gimp-python.' },
+  { id: 'layer', lvl: 1, t: 'Agir sur l\'image : un nouveau calque',
+    goal: 'Créer un calque rempli de blanc dans l\'image.',
+    p: ['Un **calque** est une feuille transparente posée sur l\'image. Les blocs violets (📑 Calques) les créent et les modifient.',
+      'Le bloc « nouveau calque » de la catégorie ⚡ Raccourcis fait en une fois ce que les programmeurs écrivent en 3 lignes : créer le calque, l\'ajouter à l\'image, le remplir.',
+      'Remarque les ovales bleus « 🖼️ image actuelle » : ce sont des **valeurs**. Ils désignent l\'image sur laquelle tu as lancé le plug-in.'],
+    steps: ['Ajoute le bloc ci-dessous.', 'Change son nom (« Mon calque ») et choisis « blanc » dans la liste.', 'Télécharge, remplace l\'ancien fichier dans GIMP, redémarre et essaie.'],
+    blocks: ['fast_layer_new'],
+    check: function (ws) { return has(ws, NEW_LAYER); },
+    hint: 'Il faut un bloc qui crée un calque (catégorie 📑 Calques ou ⚡ Raccourcis).' },
+  { id: 'settings', lvl: 1, t: 'Poser une question à l\'utilisateur',
+    goal: 'Demander un nombre au lancement et s\'en servir.',
+    p: ['Quand un plug-in a des **réglages**, GIMP ouvre une petite fenêtre avant de le lancer : l\'utilisateur y choisit un nombre, un texte, une couleur…',
+      'Les réglages se rangent dans la partie « d\'abord, demander » du bloc ▶. Ensuite, le bloc « 🎛️ valeur du réglage » (catégorie ▶ Démarrer) donne ce que l\'utilisateur a choisi.'],
+    steps: ['Ouvre la catégorie **▶ Démarrer & réglages** et glisse un réglage « 🔢 nombre entier » dans « d\'abord, demander ». Donne-lui un nom, par exemple `opacite`.', 'Ajoute le bloc « opacité de … » ci-dessous.', 'Dans sa case du pourcentage, dépose le bloc 🎛️ du réglage (il apparaît dans la catégorie ▶ Démarrer une fois le réglage créé).'],
+    blocks: ['lyr_opacity'],
+    check: function (ws) { return settings(ws).some(function (b) { return GA.SPEC[b.type] && GA.SPEC[b.type].kind === 'setting'; }) && has(ws, 'g_setting_get'); },
+    hint: 'Il faut au moins un réglage dans « d\'abord, demander » ET un bloc 🎛️ qui l\'utilise dans les actions.' },
+
+  { id: 'vars', lvl: 2, t: 'Les variables : des boîtes pour retenir',
+    goal: 'Ranger une valeur dans une variable, puis la réutiliser.',
+    p: ['Une **variable** est une boîte avec un nom. On y range une valeur (un nombre, un texte, un calque…) pour s\'en resservir plus tard.',
+      '« mettre `x` à 5 » range 5 dans la boîte `x`. Ensuite, chaque bloc `x` vaut 5. Si tu remets autre chose dans `x`, l\'ancienne valeur est remplacée.',
+      'Les blocs qui créent quelque chose (calque, texte, image) ont souvent une flèche **→ dans** : le résultat est rangé dans une variable, pour que tu puisses le modifier ensuite.'],
+    steps: ['Ouvre **📦 Variables & listes** et clique sur « ➕ Créer une variable ». Appelle-la `nom`.', 'Ajoute « mettre … à … » et mets-y un texte, par exemple « Bonjour ».', 'Ajoute « 💬 afficher le message » et dépose-y le bloc de ta variable.'],
+    blocks: ['msg_show'],
+    check: function (ws) { return has(ws, 'g_var_set') && has(ws, 'g_var_get'); },
+    hint: 'Il faut un bloc « mettre … à … » ET un bloc variable qui la relit.' },
+  { id: 'loops', lvl: 2, t: 'Répéter : les boucles',
+    goal: 'Créer 5 calques d\'un coup.',
+    p: ['Un ordinateur ne se lasse jamais : une **boucle** refait les mêmes blocs autant de fois qu\'on veut.',
+      '« répéter 10 fois » est la plus simple. « compter avec `i` de 1 à 10 » fait pareil, mais la variable `i` vaut 1, puis 2, puis 3… : pratique pour numéroter.',
+      'Les blocs en forme de **C** contiennent d\'autres blocs : tout ce qui est à l\'intérieur est répété.'],
+    steps: ['Ajoute le bloc « compter avec … » ci-dessous et mets 5 comme fin.', 'Glisse un bloc « nouveau calque » **à l\'intérieur** du C.', 'Bonus : dans le nom du calque, utilise « regrouper … et … » (🧮 Calculs & texte) pour écrire « Calque » + `i`.'],
+    blocks: ['c_for', 'fast_layer_new'],
+    check: function (ws) { return hasInside(ws, ['c_repeat', 'c_for', 'c_while'], NEW_LAYER); },
+    hint: 'Le bloc qui crée le calque doit être DANS le C de la boucle, pas en dessous.' },
+  { id: 'ifs', lvl: 2, t: 'Choisir : les conditions',
+    goal: 'Faire quelque chose seulement si l\'image est plus large que haute.',
+    p: ['« **si** … **alors** … » ne fait les blocs de l\'intérieur que si la condition est vraie.',
+      'Une condition est un bloc **hexagonal** (pointu des deux côtés) : une comparaison comme « … > … », « … contient … », « … et … ».',
+      'Avec « si … alors … sinon … », tu choisis entre deux chemins.'],
+    steps: ['Ajoute « si … alors ».', 'Dans sa case pointue, dépose une comparaison « … > … ».', 'À gauche, mets « largeur de image actuelle » ; à droite, « hauteur de image actuelle ».', 'Dans le C, mets un message « Image en paysage ! ».'],
+    blocks: ['c_if', 'op_compare', 'img_width', 'img_height', 'msg_show'],
+    check: function (ws) { return inProg(ws, ['c_if', 'c_ifelse']).some(function (b) { var c = b.getInputTargetBlock('C'); return !!c; }); },
+    hint: 'Il faut un « si … alors » dont la case pointue contient une condition.' },
+  { id: 'eachlayer', lvl: 2, t: 'Parcourir tous les calques',
+    goal: 'Faire la même chose sur chaque calque de l\'image.',
+    p: ['« pour chaque calque `calque` de image actuelle » est une boucle spéciale : à chaque tour, la variable `calque` contient **un** calque de l\'image, puis le suivant…',
+      'C\'est comme ça qu\'on renomme, cache ou modifie 200 calques en un clic. Avec la case « chercher aussi dans les groupes », les calques rangés dans des dossiers sont aussi visités.'],
+    steps: ['Ajoute « pour chaque calque ».', 'Dedans, mets « opacité de … » et dépose la variable `calque` dans sa première case.', 'Choisis 50 % : tous tes calques deviennent à moitié transparents.'],
+    blocks: ['c_foreach_layer', 'lyr_opacity'],
+    check: function (ws) { return hasInside(ws, ['c_foreach_layer', 'c_each_layer_all'], LAYER_ACTIONS); },
+    hint: 'Il faut une action sur un calque (opacité, renommer, visibilité…) DANS la boucle « pour chaque calque ».' },
+
+  { id: 'select', lvl: 3, t: 'Sélectionner et peindre',
+    goal: 'Remplir un rectangle de couleur.',
+    p: ['La **sélection** (les pointillés) limite les actions à une zone. Dans GIMP, presque tous les filtres et remplissages ne touchent que la sélection.',
+      'Les positions se comptent en pixels depuis le **coin en haut à gauche** : x vers la droite, y vers le bas.',
+      'Pense à tout désélectionner à la fin, pour rendre la main proprement à l\'utilisateur.'],
+    steps: ['Ajoute « couleur de premier plan » et choisis une couleur.', 'Ajoute « sélectionner un rectangle » (x 0, y 0, 200 × 100).', 'Ajoute « remplir la sélection de … avec couleur de premier plan ».', 'Termine par « tout désélectionner ».'],
+    blocks: ['paint_fg', 'sel_rect', 'paint_fill_sel', 'sel_none'],
+    check: function (ws) { return has(ws, ['sel_rect', 'sel_ellipse', 'sel_all', 'sel_color', 'sel_item']) && has(ws, ['paint_fill_sel', 'paint_stroke_sel', 'paint_clear']); },
+    hint: 'Il faut une sélection (rectangle, ellipse…) ET un remplissage de la sélection.' },
+  { id: 'text', lvl: 3, t: 'Écrire du texte',
+    goal: 'Ajouter un calque de texte sur l\'image.',
+    p: ['Le bloc « écrire … » crée un **calque de texte** : police, taille, couleur et position se règlent dans le bloc.',
+      'Le calque de texte est rangé dans une variable (→ dans `texte`) : tu peux ensuite le déplacer, changer son opacité, etc.'],
+    steps: ['Ajoute le bloc « écrire ».', 'Mets ton texte, une taille de 60 px, une couleur.', 'Bonus : utilise un réglage « texte court » pour que l\'utilisateur choisisse le texte.'],
+    blocks: ['txt_new'],
+    check: function (ws) { return has(ws, 'txt_new'); },
+    hint: 'Il faut un bloc « écrire … » (catégorie 🔤 Texte).' },
+  { id: 'allimages', lvl: 3, t: 'Travailler sur toutes les images ouvertes',
+    goal: 'Appliquer une action à chaque image ouverte, avec une annulation propre.',
+    p: ['Un plug-in n\'est pas obligé de travailler seulement sur l\'image actuelle. « pour chaque image ouverte » passe sur **toutes** les images ouvertes dans GIMP.',
+      'Chaque action compte normalement comme une étape d\'annulation. Le raccourci ⚡ regroupe tout ce que le plug-in fait sur une image en **un seul Ctrl+Z**.',
+      'Dans la boucle, utilise la variable `img` à la place de « image actuelle ».'],
+    steps: ['Ajoute « pour chaque image ouverte (une annulation par image) ».', 'Dedans, mets « aplatir … » et dépose `img` dans sa case.', 'Ouvre 3 images dans GIMP et lance ton plug-in.'],
+    blocks: ['c_each_image_undo', 'img_flatten'],
+    check: function (ws) { return inProg(ws, ['c_each_image_undo', 'c_foreach_image', 'c_each_layer_all']).some(function (b) { return b.getInputTargetBlock('DO'); }); },
+    hint: 'Il faut une boucle sur les images ouvertes avec au moins un bloc à l\'intérieur.' },
+  { id: 'batch', lvl: 3, t: 'Traiter un dossier entier (lot)',
+    goal: 'Ouvrir chaque image d\'un dossier, la modifier et l\'exporter en PNG.',
+    p: ['Le **traitement par lot** est la vraie superpuissance des scripts : 500 fichiers traités pendant que tu prends un café.',
+      'Le raccourci « pour chaque fichier image du dossier » ouvre chaque fichier sans fenêtre, fait tes blocs, puis libère la mémoire.',
+      'Astuce : ajoute un réglage « 📁 dossier à choisir » pour que l\'utilisateur choisisse le dossier dans GIMP.'],
+    steps: ['Ajoute le bloc de lot ci-dessous, avec l\'extension `.jpg`.', 'Dedans, mets « exporter … en PNG vers … » avec `img`.', 'Pour le chemin, regroupe le nom du fichier et « .png » (🧮 Calculs & texte).'],
+    blocks: ['c_each_file_open', 'file_png'],
+    check: function (ws) { return hasInside(ws, ['c_each_file_open', 'c_foreach_file'], ['file_png', 'file_jpg', 'file_save_xcf', 'file_save_next', 'file_layer_png']); },
+    hint: 'Il faut un enregistrement ou un export DANS une boucle sur les fichiers d\'un dossier.' },
+
+  { id: 'readcode', lvl: 4, t: 'Lire le Python que tu as construit',
+    goal: 'Comprendre le lien entre un bloc et ses lignes de code.',
+    p: ['Chaque bloc correspond à une ou plusieurs lignes de **Python 2.7**, le langage des plug-ins de GIMP 2.10.',
+      'Dans l\'onglet 🐍 Code, **clique sur un bloc** : ses lignes s\'allument. **Clique sur une ligne** : son bloc est sélectionné. C\'est la meilleure façon d\'apprendre à lire le code.',
+      'À retenir : en Python, ce qui est **décalé vers la droite** (l\'indentation) est « à l\'intérieur » — exactement comme les blocs dans un C.',
+      '- `pdb.gimp_...(...)` : un appel à une fonction de GIMP',
+      '- `x = ...` : on range une valeur dans la variable `x`',
+      '- `for ... in ...:` : une boucle ; `if ...:` : une condition'],
+    steps: ['Ouvre l\'onglet 🐍 Code.', 'Clique sur trois blocs différents et regarde les lignes qui s\'allument.'],
+    acts: [{ a: 'tab', x: 'code', l: '🐍 Ouvrir l\'onglet Code' }],
+    check: function (ws, f) { return !!f.tab_code; },
+    hint: 'Ouvre l\'onglet 🐍 Code, dans le panneau de droite.' },
+  { id: 'pyblocks', lvl: 4, t: 'Passer aux blocs Python',
+    goal: 'Transformer ton plug-in en blocs Python, une ligne = un bloc.',
+    p: ['Les blocs simples sont confortables, mais les blocs **Python** te montrent tout le code, ligne par ligne, et te laissent tout modifier.',
+      'Dans les blocs Python, les couleurs t\'aident :',
+      '- pastille **orange** : une variable (`image`, `calque`, `x`)',
+      '- pastille **violette** : une constante de GIMP (`FILL_WHITE`, `NORMAL_MODE`)',
+      '- pastille **jaune** : une fonction de GIMP (`pdb.…`)',
+      '- blocs verts : les calculs et comparaisons (`+`, `==`, `and`…)',
+      'Clique sur une pastille et tape quelques lettres : une liste de propositions s\'ouvre.'],
+    steps: ['Clique sur le bouton ci-dessous (ou Fichier ▸ Voir ce plug-in en blocs Python).', 'Explore : clique sur une pastille orange et regarde les variables proposées.'],
+    acts: [{ a: 'convert', l: '🔁 Voir mon plug-in en blocs Python' }],
+    check: function (ws) { return !!ws.getBlocksByType('py_file', false)[0]; },
+    hint: 'Il faut convertir ton plug-in (ou importer un script) : un bloc « 📄 script Python » doit être présent.' },
+  { id: 'pdb', lvl: 4, t: 'Les 857 fonctions de GIMP',
+    goal: 'Appeler une fonction de la PDB avec les bons arguments.',
+    p: ['La **PDB** (Procedure DataBase) est la liste de tout ce que GIMP sait faire : 857 fonctions. Tout ce que tu fais à la souris dans GIMP a sa fonction.',
+      'Dans un bloc « appeler … », clique sur le nom de la fonction et tape un mot, en français ou en anglais : **flou**, **calque**, **texte**… La liste montre chaque fonction avec ses arguments et une explication. Choisis : les cases se remplissent toutes seules.',
+      'Le 🔍 du bloc ouvre la liste complète, rangée par groupes.',
+      'Règle d\'or : le `run_mode` ne se passe **jamais** — pygimp l\'ajoute lui-même.'],
+    steps: ['Ajoute un bloc « appeler … » (catégorie 🐍 Python).', 'Clique sur son nom, tape « flou » et choisis `plug_in_gauss`.', 'Remplace les 0.0 par 5.0 pour un flou de 5 pixels.'],
+    blocks: ['py_callst'],
+    check: function (ws) { return calls(ws).some(function (c) { var m = /^pdb\.(\w+)$/.exec(c.f), s = m && GA.SIGS && GA.SIGS[m[1]]; return s && c.b.a_.length === s[4].length && c.b.a_.every(function (k, i) { return c.b.getInputTargetBlock('A' + i); }); }); },
+    hint: 'Il faut un appel `pdb.…` vers une vraie fonction de GIMP, avec toutes ses cases remplies.' },
+  { id: 'debug', lvl: 4, t: 'Déboguer comme un pro',
+    goal: 'Trouver et comprendre une erreur.',
+    p: ['Tout le monde fait des erreurs, même les pros. La différence : ils savent **où regarder**.',
+      '- L\'onglet **✅ Vérification** trouve beaucoup d\'erreurs **avant** GIMP : case vide, mauvais nombre d\'arguments, fonction inconnue… Clique sur un problème pour voir le bloc.',
+      '- Dans GIMP, les erreurs s\'affichent dans **Fenêtres ▸ Fenêtres ancrables ▸ Console d\'erreurs**.',
+      '- Pour voir ce que vaut une variable pendant l\'exécution, affiche-la : `pdb.gimp_message(str(x))`.',
+      '- **Filtres ▸ Python-Fu ▸ Console** permet d\'essayer une ligne de Python directement dans GIMP.',
+      'Lis les erreurs **de bas en haut** : la dernière ligne dit ce qui ne va pas, celle du dessus dit où.'],
+    steps: ['Ouvre l\'onglet ✅ Vérification.', 'Ajoute un « appeler … » vers `pdb.gimp_message` et mets une variable dedans, par exemple `str(image.width)`.'],
+    acts: [{ a: 'tab', x: 'check', l: '✅ Ouvrir la Vérification' }],
+    check: function (ws, f) { return !!f.tab_check && calls(ws).some(function (c) { return /^(pdb\.gimp_message|gimp\.message)$/.test(c.f) && inside(c.b, 'py_var'); }); },
+    hint: 'Ouvre l\'onglet ✅ Vérification, puis ajoute un message qui affiche une variable.' },
+  { id: 'functions', lvl: 4, t: 'Écrire tes propres fonctions',
+    goal: 'Ranger un morceau de code dans une fonction et l\'appeler.',
+    p: ['Quand tu répètes les mêmes lignes à plusieurs endroits, range-les dans une **fonction** : « définir `ma_fonction(calque)` ». Ensuite, un seul bloc « appeler `ma_fonction(...)` » fait tout.',
+      'Les **paramètres** (entre parenthèses) sont des variables remplies au moment de l\'appel. « retourner … » renvoie un résultat.',
+      'Un bon nom de fonction dit ce qu\'elle fait : `mettre_en_gris`, `numeroter_calques`… Tes fonctions apparaissent aussi dans les suggestions.'],
+    steps: ['Ajoute « définir … » avec le nom `griser` et le paramètre `calque`.', 'Dedans, appelle `pdb.gimp_drawable_desaturate(calque, DESATURATE_LUMINANCE)`.', 'Ailleurs, appelle `griser(drawable)`.'],
+    blocks: ['py_def', 'py_callst'],
+    check: function (ws) { var defs = inProg(ws, 'py_def').map(function (b) { return b.getFieldValue('NAME'); }); return calls(ws).some(function (c) { return defs.indexOf(c.f) >= 0 && !/^python_fu_/.test(c.f); }); },
+    hint: 'Il faut un bloc « définir … » ET un appel à cette fonction (même nom).' },
+  { id: 'pro', lvl: 4, t: 'Importer, modifier, partager',
+    goal: 'Ouvrir un vrai script existant et le modifier sans le casser.',
+    p: ['Tu as trouvé un plug-in sur Internet ? **Fichier ▸ Importer un script Python** : chaque ligne devient un bloc, et le téléchargement redonne **exactement le même fichier** tant que tu ne changes rien. Si tu modifies un bloc, seules ses lignes changent.',
+      'L\'**assistant IA** (onglet 🤖) peut écrire une fonction, expliquer un script ou corriger une erreur. Ses réponses sont vérifiées (Python 2.7, vraies fonctions de GIMP, bon nombre d\'arguments) avant de devenir des blocs.',
+      'Tu es maintenant capable de lire, écrire et corriger des plug-ins GIMP. La suite : ouvre des scripts d\'autres personnes, lis-les bloc par bloc, et construis les tiens. **Bravo !**'],
+    steps: ['Importe un script `.py` (ou un exemple : Fichier ▸ Exemples, puis convertis-le).', 'Change une valeur et regarde dans l\'onglet 🐍 Code quelles lignes ont changé.', 'Quand c\'est fait, clique sur « J\'ai réussi ».'],
+    acts: [{ a: 'import', l: '🐍 Importer un script Python' }, { a: 'examples', l: '✨ Exemples' }],
+    manual: true }
+];
+
+/* ---------- guide d'utilisation ---------- */
+GA.GUIDE = [
+  { t: '🗺️ L\'écran de l\'atelier', p: [
+    '- À **gauche**, les catégories de blocs. Clique sur une catégorie pour voir ses blocs, puis glisse un bloc dans la zone de construction.',
+    '- Au **centre**, la zone de construction. Molette : défiler ; Ctrl + molette : zoomer ; glisser dans le vide : se déplacer.',
+    '- À **droite**, le panneau : 💡 Aide (sur le bloc sélectionné), 🐍 Code (le Python produit), ✅ Vérification, 🤖 IA et 🎓 Cours.',
+    '- En **haut**, les menus, la recherche de blocs (touche /) et le bouton ⬇ Télécharger.'] },
+  { t: '🧩 Les formes des blocs', p: [
+    '- **Bloc à encoche** : une action. Il s\'empile sous un autre.',
+    '- **Bloc arrondi** : une valeur (nombre, texte, calque, variable). Il se glisse dans un trou.',
+    '- **Bloc pointu (hexagonal)** : une condition vraie/fausse, pour « si » et « tant que ».',
+    '- **Bloc en C** : il contient d\'autres blocs (boucles, conditions, raccourcis).',
+    'Un bloc grisé est désactivé : il n\'est pas dans le code. Clic droit sur un bloc : dupliquer, commenter, désactiver, replier, aide.'] },
+  { t: '▶ Le bloc de départ', p: [
+    'Le bloc jaune **▶ Quand je lance** décrit ton plug-in : son nom dans le menu, le menu où il apparaît, s\'il a besoin d\'une image ouverte, et ses réglages (« d\'abord, demander »).',
+    'Les réglages deviennent la fenêtre que GIMP affiche avant de lancer le plug-in. Utilise leur valeur avec les blocs 🎛️ de la catégorie ▶ Démarrer.',
+    '**Paramètres ▸ Mon plug-in** règle le reste : auteur, annulation groupée, gestion des erreurs, modules importés.'] },
+  { t: '⬇ Télécharger et installer', p: [
+    'Clique sur **⬇ Télécharger** : tu obtiens un fichier `.py`. Range-le dans le dossier plug-ins de GIMP et redémarre GIMP.',
+    '- **Windows** : `C:\\Users\\<toi>\\AppData\\Roaming\\GIMP\\2.10\\plug-ins`',
+    '- **Linux** : `~/.config/GIMP/2.10/plug-ins`, puis `chmod +x fichier.py`',
+    '- **macOS** : `~/Library/Application Support/GIMP/2.10/plug-ins`',
+    'Le dossier exact est dans **Édition ▸ Préférences ▸ Dossiers ▸ Greffons**. Les plug-ins faits ici marchent dans **GIMP 2.10** (pas dans GIMP 3, qui a une autre API).'] },
+  { t: '🐍 Importer un script Python', p: [
+    '**Fichier ▸ Importer un script Python**, ou glisse le fichier `.py` sur la page. Chaque ligne devient un bloc Python.',
+    'Garantie : tant que tu ne changes rien, le téléchargement redonne **le même fichier, octet pour octet** (commentaires, espaces, tabulations compris). Si tu modifies un bloc, seules ses lignes sont réécrites.',
+    'Un script avec une erreur de syntaxe s\'importe quand même : la partie fautive devient un bloc 🧱 « code brut » à corriger.'] },
+  { t: '🟠 Les blocs Python et leurs pastilles', p: [
+    '- **orange** : variable ; **violet** : constante de GIMP ; **jaune** : fonction de GIMP ; **vert foncé** : autre fonction ; blocs verts : calculs et comparaisons ; cases blanches : valeurs écrites telles quelles.',
+    'Clique sur une pastille et tape : une liste de propositions s\'ouvre (flèches ↑↓ puis Entrée, ou clic). Pour une fonction de GIMP, les cases manquantes se remplissent toutes seules.',
+    'Clic droit sur un appel de fonction : ajouter ou retirer un argument. Clic droit sur « si » : ajouter « sinon si » ou « sinon ».',
+    'La catégorie 🐍 Python liste les variables de ton script et des **raccourcis GIMP** tout prêts (annulation groupée, boucle sur les images, sur les calques…).'] },
+  { t: '⚙️ Les 857 fonctions de GIMP (PDB)', p: [
+    'Deux façons de les utiliser : le bloc « ⚙️ fonction GIMP » (🧰 Avancé) dans un plug-in en blocs simples, ou le bloc « appeler … » dans les blocs Python.',
+    'Recherche : tape un mot en français ou en anglais (flou, calque, sélection, texte…). Les fonctions les plus utilisées sont en premier ; « ancienne » signale une fonction dépréciée qui a une remplaçante.',
+    'Le `run_mode` n\'est jamais à fournir : pygimp l\'ajoute. Les tableaux ont souvent un compteur juste avant (ex. `num_points` puis `points`).'] },
+  { t: '⚡ Raccourcis GIMP', p: [
+    'Des blocs qui remplacent ce que tous les scripts écrivent à la main :',
+    '- « en une seule annulation » : tout compte pour un seul Ctrl+Z, même en cas d\'erreur ;',
+    '- « en remettant ensuite… » les couleurs et outils, la sélection ou le calque actif ;',
+    '- « pour chaque image ouverte », « pour chaque calque de toutes les images », « pour chaque fichier du dossier » ;',
+    '- « nouveau calque de la taille de l\'image », « copier le calque dans une autre image ».'] },
+  { t: '✅ Vérification et erreurs', p: [
+    'L\'onglet **✅ Vérification** relit ton plug-in à chaque modification : 🛑 erreur (il ne marcherait pas), ⚠️ à regarder, ℹ️ information. Clique sur une ligne pour aller au bloc.',
+    'Dans GIMP : **Fenêtres ▸ Fenêtres ancrables ▸ Console d\'erreurs** montre les erreurs Python. Les plug-ins faits ici affichent aussi l\'erreur complète dans un message.',
+    '**Filtres ▸ Python-Fu ▸ Console** : pour essayer une ligne de Python directement dans GIMP.'] },
+  { t: '🤖 L\'assistant IA', p: [
+    '**IA ▸ Choisir l\'IA** : n\'importe quel service compatible (OpenAI, Anthropic, Gemini, Mistral…), une IA locale (Ollama, LM Studio) ou le mode copier-coller, sans connexion.',
+    'Demande une fonction, un plug-in entier, une correction ou une explication. La réponse est vérifiée et réparée automatiquement avant de devenir des blocs.'] },
+  { t: '💾 Sauvegarder ton travail', p: [
+    'L\'atelier garde automatiquement ton travail dans ce navigateur.',
+    'Pour le garder ailleurs ou le partager : **Fichier ▸ Sauvegarder le projet** (fichier `.json`). Le `.py` téléchargé contient aussi l\'empreinte des blocs : en le réimportant, tu retrouves tes blocs à l\'identique.'] },
+  { t: '❓ Problèmes fréquents', p: [
+    '- **Le plug-in n\'apparaît pas** : mauvais dossier, GIMP pas redémarré, fichier non exécutable (Linux), ou Python-Fu absent (Linux : paquet `gimp-python`).',
+    '- **Le menu est grisé** : le plug-in a besoin d\'une image ouverte (case du bloc ▶).',
+    '- **« argument count » / « wrong type »** : regarde l\'onglet ✅ Vérification, il indique le nombre d\'arguments attendu.',
+    '- **Accents bizarres** : utilise les blocs de texte de l\'atelier, ils gèrent l\'UTF-8 pour toi.'] }
+];
+
+/* ---------- mise en forme ---------- */
+function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', '\'': '&#39;' }[c]; }); }
+function md(s) {
+  return esc(s).replace(/`([^`]+)`/g, '<code>$1</code>').replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>');
+}
+function paras(list) {
+  var h = '', ul = false;
+  list.forEach(function (x) {
+    var t = T(x);
+    if (/^- /.test(t)) { if (!ul) { h += '<ul>'; ul = true; } h += '<li>' + md(t.slice(2)) + '</li>'; }
+    else { if (ul) { h += '</ul>'; ul = false; } h += '<p>' + md(t) + '</p>'; }
+  });
+  return h + (ul ? '</ul>' : '');
+}
+GA.learnMd = paras;
+
+/* ---------- progression ---------- */
+var KEY = 'atelier-gimp-learn';
+function load() { try { return JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { return {}; } }
+function save(st) { try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) { /* ok */ } }
+var state = load();
+state.done = state.done || {}; state.flags = state.flags || {};
+function lesson(id) { return GA.LEARN.filter(function (l) { return l.id === id; })[0]; }
+
+GA.learn = {
+  flag: function (name) { if (!state.flags[name]) { state.flags[name] = 1; save(state); GA.learn.check(); } },
+  isDone: function (id) { return !!state.done[id]; },
+  progress: function () { return GA.LEARN.filter(function (l) { return state.done[l.id]; }).length; },
+  current: function () { return state.cur && lesson(state.cur) ? state.cur : null; },
+  open: function (id) {
+    state.cur = id || state.cur || GA.LEARN[0].id; save(state);
+    if (GA.app && GA.app.showTab) GA.app.showTab('learn');
+    GA.learn.render();
+  },
+  list: function () { state.cur = null; save(state); GA.learn.render(); },
+  /* vérifie la mission de la leçon ouverte (appelé à chaque modification) */
+  check: function () {
+    var l = GA.learn.current() && lesson(state.cur), ws = GA.ws;
+    if (!l || !ws || l.manual || state.done[l.id]) return;
+    var ok = false;
+    try { ok = !!l.check(ws, state.flags); } catch (e) { ok = false; }
+    if (ok) { state.done[l.id] = 1; save(state); GA.learn.render(); if (GA.toast) GA.toast('🎉 ' + T('Mission réussie !')); }
+  },
+  reset: function () { state = { done: {}, flags: {} }; save(state); GA.learn.render(); },
+  render: function () {
+    var el = document.getElementById('p-learn');
+    if (!el) return;
+    var l = GA.learn.current() && lesson(state.cur);
+    el.innerHTML = l ? lessonHtml(l) : listHtml();
+    wire(el, l);
+  }
+};
+
+function bar() {
+  var n = GA.learn.progress(), tot = GA.LEARN.length;
+  return '<div class="lnBar"><div style="width:' + Math.round(100 * n / tot) + '%"></div></div><div class="lnCount">' + n + ' / ' + tot + ' ' + esc(T('leçons réussies')) + '</div>';
+}
+function listHtml() {
+  var h = '<h2>🎓 ' + esc(T('Cours : de débutant complet à pro')) + '</h2><p class="muted">' + esc(T('Chaque leçon explique une idée, puis te donne une mission. L\'atelier vérifie tout seul quand tu as réussi.')) + '</p>' + bar();
+  var next = GA.LEARN.filter(function (x) { return !state.done[x.id]; })[0];
+  if (next) h += '<p><button class="btn primary" data-open="' + next.id + '">▶ ' + esc(GA.learn.progress() ? T('Continuer') : T('Commencer le cours')) + ' : ' + esc(T(next.t)) + '</button></p>';
+  GA.LEARN_LEVELS.forEach(function (lv) {
+    h += '<h3>' + esc(T(lv.t)) + '</h3><p class="muted lnLvl">' + esc(T(lv.d)) + '</p><div class="lnList">';
+    GA.LEARN.filter(function (x) { return x.lvl === lv.n; }).forEach(function (x, i) {
+      h += '<button class="lnItem' + (state.done[x.id] ? ' done' : '') + '" data-open="' + x.id + '"><span class="lnMark">' + (state.done[x.id] ? '✅' : (GA.LEARN.indexOf(x) + 1)) + '</span><span>' + esc(T(x.t)) + '</span></button>';
+    });
+    h += '</div>';
+  });
+  h += '<p class="lnFoot"><button class="btn" data-guide="1">📘 ' + esc(T('Guide d\'utilisation')) + '</button> <button class="btn" data-reset="1">↺ ' + esc(T('Recommencer le cours')) + '</button></p>';
+  return h;
+}
+function blockChip(type) {
+  var sp = GA.SPEC[type];
+  if (!sp) return '';
+  var cat = GA.CAT[sp.cat] || {}, title = GA.titleOf ? GA.titleOf(sp) : type;
+  var col = sp.cat === 'py' ? '#3776AB' : cat.colour;
+  return '<button class="lnBlock" data-add="' + type + '" style="background:' + col + '" title="' + esc(T('Ajouter ce bloc')) + '">＋ ' + esc(title) + '</button>';
+}
+function lessonHtml(l) {
+  var idx = GA.LEARN.indexOf(l), lv = GA.LEARN_LEVELS[l.lvl - 1], done = !!state.done[l.id];
+  var h = '<p class="lnNav"><button class="btn" data-list="1">☰ ' + esc(T('Toutes les leçons')) + '</button><span class="muted">' + esc(T(lv.t)) + ' · ' + (idx + 1) + ' / ' + GA.LEARN.length + '</span></p>';
+  h += '<h2>' + esc(T(l.t)) + '</h2>';
+  h += '<div class="lnGoal">🎯 ' + md(T(l.goal)) + '</div>';
+  h += '<div class="lnText">' + paras(l.p) + '</div>';
+  h += '<h3>🧭 ' + esc(T('Ta mission')) + '</h3><ol class="steps">' + l.steps.map(function (s) { return '<li>' + md(T(s)) + '</li>'; }).join('') + '</ol>';
+  if (l.blocks && l.blocks.length) h += '<p class="muted">' + esc(T('Clique sur un bloc pour l\'ajouter :')) + '</p><div class="lnBlocks">' + l.blocks.map(blockChip).join('') + '</div>';
+  if (l.acts) h += '<div class="lnActs">' + l.acts.map(function (a, i) { return '<button class="btn" data-act-i="' + i + '">' + esc(T(a.l)) + '</button>'; }).join('') + '</div>';
+  if (l.tip) h += '<div class="tip">💡 ' + md(T(l.tip)) + '</div>';
+  if (done) h += '<div class="lnOk">🎉 ' + esc(T('Mission réussie !')) + '</div>';
+  else if (l.manual) h += '<p><button class="btn primary" data-manual="1">✔ ' + esc(T('J\'ai réussi')) + '</button></p>';
+  else h += '<div class="lnWait"><span>⏳ ' + esc(T('L\'atelier vérifie ta mission pendant que tu travailles.')) + '</span><button class="btn" data-hint="1">' + esc(T('Un indice ?')) + '</button></div><div class="lnHint" hidden>💡 ' + md(T(l.hint || '')) + '</div>';
+  h += '<p class="lnNav2">' + (idx > 0 ? '<button class="btn" data-open="' + GA.LEARN[idx - 1].id + '">← ' + esc(T('Précédente')) + '</button>' : '<span></span>') +
+    (idx < GA.LEARN.length - 1 ? '<button class="btn' + (done ? ' primary' : '') + '" data-open="' + GA.LEARN[idx + 1].id + '">' + esc(T('Suivante')) + ' →</button>' : '') + '</p>';
+  return h;
+}
+function wire(el, l) {
+  el.querySelectorAll('[data-open]').forEach(function (b) { b.onclick = function () { GA.learn.open(b.getAttribute('data-open')); el.scrollTop = 0; }; });
+  el.querySelectorAll('[data-list]').forEach(function (b) { b.onclick = GA.learn.list; });
+  el.querySelectorAll('[data-guide]').forEach(function (b) { b.onclick = function () { GA.openGuide(); }; });
+  el.querySelectorAll('[data-reset]').forEach(function (b) { b.onclick = function () { GA.app.confirmBox(T('Recommencer le cours ?'), T('Ta progression dans le cours sera effacée.'), T('Recommencer'), function (ok) { if (ok) GA.learn.reset(); }); }; });
+  el.querySelectorAll('[data-add]').forEach(function (b) { b.onclick = function () { addBlock(b.getAttribute('data-add')); }; });
+  el.querySelectorAll('[data-manual]').forEach(function (b) { b.onclick = function () { state.done[l.id] = 1; save(state); GA.learn.render(); }; });
+  el.querySelectorAll('[data-hint]').forEach(function (b) { b.onclick = function () { var x = el.querySelector('.lnHint'); if (x) x.hidden = false; }; });
+  el.querySelectorAll('[data-act-i]').forEach(function (b) { b.onclick = function () { runAct(l.acts[+b.getAttribute('data-act-i')]); }; });
+}
+function runAct(a) {
+  var app = GA.app || {};
+  if (a.a === 'tab' && app.showTab) app.showTab(a.x);
+  else if (a.a === 'download' && app.openExport) app.openExport();
+  else if (a.a === 'convert' && app.convertToPython) app.convertToPython();
+  else if (a.a === 'import' && GA.actions) GA.actions.importFile();
+  else if (a.a === 'examples' && app.openExamples) app.openExamples();
+}
+/* ajoute un bloc ; une action s'accroche au bout du programme (sous « puis faire » ou dans le script) */
+function addBlock(type) {
+  var ws = GA.ws, Blockly = root.Blockly;
+  if (!ws || !Blockly) return;
+  var st = GA.toolboxEntry(GA.SPEC[type]);
+  delete st.kind;
+  var blk = Blockly.serialization.blocks.append(st, ws);
+  var h = hat(ws), input = h && (h.getInput('DO') ? 'DO' : null);
+  if (blk.previousConnection && input) {
+    var c = h.getInput(input).connection, last = h.getInputTargetBlock(input);
+    while (last && last.getNextBlock()) last = last.getNextBlock();
+    try { (last ? last.nextConnection : c).connect(blk.previousConnection); } catch (e) { /* forme incompatible : on le pose à côté */ }
+  }
+  if (!blk.getParent()) { var vm = ws.getMetricsManager().getViewMetrics(true); blk.moveBy(vm.left + vm.width * 0.35, vm.top + 60); }
+  blk.select();
+  ws.centerOnBlock(blk.id);
+}
+
+/* ---------- le guide ---------- */
+GA.openGuide = function (k) {
+  if (!GA.app || !GA.app.openDialog) return;
+  k = k || 0;
+  var toc = GA.GUIDE.map(function (s, i) { return '<button class="gdTab' + (i === k ? ' on' : '') + '" data-g="' + i + '">' + esc(T(s.t)) + '</button>'; }).join('');
+  var d = GA.app.openDialog('<h2>📘 ' + esc(T('Guide d\'utilisation')) + '</h2><div class="gdWrap"><nav class="gdToc">' + toc + '</nav><div class="gdBody" id="gdBody"></div></div>' +
+    '<div class="foot"><button class="btn" id="gdCourse">🎓 ' + esc(T('Suivre le cours')) + '</button><button class="btn primary" id="gdOk">OK</button></div>', 'wide');
+  function show(i) {
+    d.querySelectorAll('.gdTab').forEach(function (b) { b.classList.toggle('on', +b.getAttribute('data-g') === i); });
+    d.querySelector('#gdBody').innerHTML = '<h3>' + esc(T(GA.GUIDE[i].t)) + '</h3>' + paras(GA.GUIDE[i].p);
+    d.querySelector('#gdBody').scrollTop = 0;
+  }
+  d.querySelectorAll('.gdTab').forEach(function (b) { b.onclick = function () { show(+b.getAttribute('data-g')); }; });
+  d.querySelector('#gdOk').onclick = GA.app.closeDialog;
+  d.querySelector('#gdCourse').onclick = function () { GA.app.closeDialog(); GA.learn.open(); };
+  show(k);
+};
 })(typeof window !== 'undefined' ? window : globalThis);
 
 </script>
@@ -7356,6 +8087,7 @@ function refresh() {
   try { issues = GA.check(ws, opts, built); }
   catch (err2) { console.error(err2); issues = []; }
   renderCode(); renderChecks(); applyWarnings(); updateBadges(); renderHelp(); save();
+  if (GA.learn) GA.learn.check();
 }
 function applyWarnings() {
   var by = {};
@@ -7522,6 +8254,7 @@ function defaultHelp() {
     '<li><b>Emboîte-les</b> sous « ▶ puis faire » dans le bloc jaune. Ils s\'exécutent de haut en bas.</li>' +
     '<li><b>Clique « Télécharger le plug-in »</b> et range le fichier dans le dossier plug-ins de GIMP.</li></ol>' +
     '<div class="tip">💡 Clique sur n\'importe quel bloc : son explication et son code apparaissent ici.</div>' +
+    '<div class="tip">🎓 Nouveau ici ? Suis le <b>cours</b> (onglet 🎓 Cours), ou ouvre le <b>guide</b> : menu Aide ▸ 📘 Guide d\'utilisation.</div>' +
     '<div class="tip">🐍 Tu as déjà un script ? <b>📂 Projet ▸ Importer un script Python</b> (ou glisse le fichier ici) : chaque ligne devient un bloc, et le téléchargement redonne le même script.</div>' +
     '<h3>Les formes des blocs</h3><dl class="gloss">' +
     '<dt>🧩 Bloc à encoche</dt><dd>Une action. Il s\'empile sous un autre bloc.</dd>' +
@@ -7573,6 +8306,7 @@ function showTab(name) {
   document.querySelectorAll('.tab[data-pane]').forEach(function (t) { t.setAttribute('aria-selected', t.getAttribute('data-pane') === name ? 'true' : 'false'); });
   document.querySelectorAll('.pane').forEach(function (p) { p.classList.toggle('on', p.id === 'p-' + name); });
   if (name === 'code') highlightCode(true);
+  if (GA.learn) { GA.learn.flag('tab_' + name); if (name === 'learn') GA.learn.render(); }
 }
 function sheet(open) { $('#side').classList.toggle('open', open); document.body.classList.toggle('sheet-open', open); }
 $('#sheetClose').onclick = function () { sheet(false); };
@@ -7928,9 +8662,11 @@ function openWelcome() {
     '<ol class="steps"><li><b>Prends des blocs</b> dans les catégories de gauche.</li><li><b>Emboîte-les</b> sous « ▶ puis faire ».</li><li><b>Télécharge</b> ton plug-in et range-le dans le dossier plug-ins de GIMP.</li></ol></div>' +
     '<div class="stack" aria-hidden="true"><div class="pb hat" style="background:#C8930A">▶ Quand je lance « Crédits +1 »</div><div class="pb in" style="background:#E0701A">pour chaque calque</div>' +
     '<div class="pb in" style="background:#D43F7C;margin-left:44px">changer le texte</div><div class="pb in" style="background:#5E6F8A">💬 afficher « Terminé ! »</div></div></div>' +
-    '<div class="foot"><button class="btn" id="wEx">✨ Voir un exemple</button><button class="btn" id="wTour">🎓 Tutoriel (2 min)</button><button class="btn primary" id="wGo" autofocus>Commencer</button></div>', 'wide', function () { store.set(KEY_SEEN, '1'); });
+    '<div class="tip">🎓 Tu débutes ? Le <b>cours</b> t\'emmène pas à pas de ton premier plug-in jusqu\'au vrai code Python, avec des missions vérifiées automatiquement.</div>' +
+    '<div class="foot"><button class="btn" id="wEx">✨ Voir un exemple</button><button class="btn" id="wGuide">📘 Guide d\'utilisation</button><button class="btn" id="wGo">Commencer seul</button><button class="btn primary" id="wLearn" autofocus>🎓 Suivre le cours</button></div>', 'wide', function () { store.set(KEY_SEEN, '1'); });
   d.querySelector('#wGo').onclick = closeDialog;
-  d.querySelector('#wTour').onclick = function () { closeDialog(); if (GA.tour) GA.tour.start(); };
+  d.querySelector('#wLearn').onclick = function () { closeDialog(); if (GA.learn) GA.learn.open(); };
+  d.querySelector('#wGuide').onclick = function () { closeDialog(); if (GA.openGuide) GA.openGuide(); };
   d.querySelector('#wEx').onclick = function () { closeDialog(); openExamples(); };
 }
 
@@ -8143,7 +8879,7 @@ function init() {
     if (e.type === Blockly.Events.SELECTED) {
       selectedId = e.newElementId || null;
       renderHelp(); highlightCode(true);
-      if (selectedId && window.innerWidth >= 900) showTab($('#p-check').classList.contains('on') ? 'check' : ($('#p-code').classList.contains('on') ? 'code' : 'help'));
+      if (selectedId && window.innerWidth >= 900 && !$('#p-learn').classList.contains('on')) showTab($('#p-check').classList.contains('on') ? 'check' : ($('#p-code').classList.contains('on') ? 'code' : 'help'));
       return;
     }
     if (e.type === Blockly.Events.TOOLBOX_ITEM_SELECT && e.newItem && $('#q').value) { $('#q').value = ''; }
@@ -8160,7 +8896,7 @@ function init() {
   if (GA.ai) GA.ai.init();
   if (!store.get(KEY_SEEN)) openWelcome();
   window.addEventListener('resize', function () { Blockly.svgResize(ws); });
-  GA.ws = ws; GA.app = { openDialog: openDialog, closeDialog: closeDialog, confirmBox: confirmBox, saveFile: saveFile, openExamples: openExamples, openSettings: openSettings, saveProject: saveProject, openPaste: openPaste, convertToPython: convertToPython, openWelcome: openWelcome, importText: importText, handleFile: handleFile, readZip: readZip, exportCode: exportCode, refresh: refresh, openExport: openExport, openExamples: openExamples, openSettings: openSettings, openPicker: openPicker, loadState: loadState, getBuilt: function () { return built; }, getIssues: function () { return issues; }, getOpts: function () { return opts; } };
+  GA.ws = ws; GA.app = { openDialog: openDialog, closeDialog: closeDialog, confirmBox: confirmBox, saveFile: saveFile, openExamples: openExamples, openSettings: openSettings, saveProject: saveProject, openPaste: openPaste, convertToPython: convertToPython, openWelcome: openWelcome, importText: importText, handleFile: handleFile, readZip: readZip, exportCode: exportCode, refresh: refresh, openExport: openExport, openExamples: openExamples, openSettings: openSettings, openPicker: openPicker, showTab: showTab, loadState: loadState, getBuilt: function () { return built; }, getIssues: function () { return issues; }, getOpts: function () { return opts; } };
 }
 function start() {
   if (!window.Blockly) { $('#loading').textContent = 'Impossible de charger Blockly (connexion ?). Recharge la page.'; return; }
