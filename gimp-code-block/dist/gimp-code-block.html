@@ -251,6 +251,11 @@ main { flex: 1; display: flex; min-height: 0; }
 .sgDesc { font-size: 12.5px; color: var(--muted); margin-top: 2px; line-height: 1.35; }
 .sgRow:hover { background: var(--accent-soft); } .sgRow.cur { outline: 2px solid var(--accent-soft); }
 .vmFilter { width: 100%; box-sizing: border-box; margin: 0 0 6px; padding: 5px 9px; border: 1.5px solid var(--line); border-radius: 9px; background: var(--panel2); color: var(--ink); font: inherit; }
+.sesNew { display: flex; gap: 8px; margin: 10px 0; } .sesNew input { flex: 1; min-width: 0; padding: 8px 10px; border: 1.5px solid var(--line); border-radius: 10px; background: var(--panel2); color: var(--ink); font: inherit; }
+.sesList { max-height: 50vh; overflow: auto; display: flex; flex-direction: column; gap: 8px; }
+.sesRow { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 12px; border: 1.5px solid var(--line); border-radius: 12px; }
+.sesInfo { display: flex; flex-direction: column; min-width: 0; } .sesInfo span { font-size: 12.5px; color: var(--muted); }
+.sesBtns { display: flex; gap: 6px; flex-wrap: wrap; }
 .vmActs { border-top: 1px solid var(--line); margin-top: 4px; padding-top: 4px; font-weight: 700; }
 .pick .ar { display: block; font: 12px var(--mono); color: var(--muted); margin-top: 2px; word-break: break-word; }
 .status { border-radius: 13px; padding: 12px 14px; font-weight: 800; margin-bottom: 14px; }
@@ -391,6 +396,7 @@ table.keys kbd { font: 700 12px var(--mono); background: var(--panel2); border: 
         <button role="menuitem" id="mImport"><span>🐍 Importer un script Python</span><kbd>Ctrl+O</kbd></button>
         <button role="menuitem" id="mPaste"><span>📋 Coller du code Python</span></button>
         <button role="menuitem" id="mSave"><span>💾 Sauvegarder le projet</span><kbd>Ctrl+S</kbd></button>
+        <button role="menuitem" data-act="sessions"><span>💼 Sessions (projet + interface)…</span></button>
         <hr>
         <button role="menuitem" id="bExamples"><span>✨ Exemples</span></button>
         <button role="menuitem" id="mConvert"><span>🔁 Voir ce plug-in en blocs Python</span></button>
@@ -1456,6 +1462,138 @@ GA.EN_RX.push(
 [/^paramètre de (.+)$/, 'parameter of $1'], [/^ta fonction \((.*)\)$/, 'your function ($1)'],
 [/^🟠 « (.+) » est utilisée (\d+) fois dans ce script\. Clique sur la pastille pour choisir une autre variable\.$/, '🟠 "$1" is used $2 time(s) in this script. Click the pill to pick another variable.']
 );
+Object.assign(GA.EN, {
+/* ---- variables de script, valeurs prédites, sessions ---- */
+"Un nom de variable : des lettres (sans accent), des chiffres et _, sans commencer par un chiffre. Exemple : mon_calque": "A variable name: letters (no accents), digits and _, not starting with a digit. Example: my_layer",
+"Nouveau nom pour « %1 » (changé partout dans le script) :": "New name for \"%1\" (changed everywhere in the script):",
+"Nom de la nouvelle variable :": "Name of the new variable:",
+"valeurs habituelles": "usual values",
+"filtrer…": "filter…",
+"Aucune variable pour l'instant.": "No variables yet.",
+"Renommer « %1 » partout…": "Rename \"%1\" everywhere…",
+"Nouvelle variable…": "New variable…",
+"Écrire le nom au clavier": "Type the name",
+"utiliser « %1 »": "use \"%1\"",
+"Choisir une autre variable…": "Pick another variable…",
+"Type de réglage (la case s'adapte toute seule)": "Setting type (the tuple adapts by itself)",
+"Réglage": "Setting",
+"Ajouter un réglage": "Add a setting",
+"📋 Déclarer le plug-in (register) :": "📋 Declare the plug-in (register):",
+"Déjà rempli avec ton nom, l'année et ta fonction : clique une case pour d'autres choix.": "Already filled with your name, the year and your function: click a box for other choices.",
+"Réglages à glisser dans la liste des paramètres :": "Settings to drag into the parameter list:",
+"Plus de place pour les sessions : supprime-en une ou exporte-la en fichier.": "No room left for sessions: delete one or export it to a file.",
+"Ma session": "My session",
+"Ouvrir": "Open",
+"Garder mon projet actuel, reprendre seulement l'interface": "Keep my current project, restore only the interface",
+"Interface seule": "Interface only",
+"Exporter en fichier": "Export to a file",
+"Aucune session enregistrée pour l'instant.": "No saved sessions yet.",
+"Sessions": "Sessions",
+"Une session garde ton projet, l'apparence, la langue, la disposition de l'écran, tes progrès dans le cours et les auteurs retenus. Ta clé d'IA n'est jamais incluse.": "A session keeps your project, the appearance, the language, the screen layout, your progress in the course and the remembered authors. Your AI key is never included.",
+"Enregistrer la session actuelle": "Save the current session",
+"Importer une session (.json)": "Import a session (.json)",
+"Session enregistrée.": "Session saved.",
+"Remplacer la session ?": "Replace the session?",
+"Une session porte déjà ce nom. La remplacer par l'état actuel ?": "A session already has this name. Replace it with the current state?",
+"Ce fichier n'est pas une session de l'atelier.": "This file is not a workshop session.",
+"Session importée.": "Session imported.",
+"Ouvrir la session ?": "Open the session?",
+"Ton projet actuel sera remplacé par celui de la session (enregistre d'abord ta session actuelle si tu veux la garder).": "Your current project will be replaced by the session's one (save your current session first if you want to keep it).",
+"Supprimer la session ?": "Delete the session?",
+"Pour leur donner une valeur :": "To give them a value:",
+"Variables des blocs simples :": "Variables of the simple blocks:",
+"Variables : écrire leur nom au clavier (au lieu du menu de choix)": "Variables: type their name (instead of the pick menu)",
+"Mes sessions": "My sessions",
+"💼 Sessions (projet + interface)…": "💼 Sessions (project + interface)…",
+"variable créée": "created variable",
+"nom unique habituel": "usual unique name",
+"le nom de la fonction": "the function's name",
+"le nom lisible": "the readable name",
+"déjà utilisé": "already used",
+"l'année": "the year",
+"licence libre": "free licence",
+"cette année": "this year",
+"aujourd'hui": "today",
+"le nom dans le menu": "the name in the menu",
+"le nom seul (avec menu=\"…\")": "the name alone (with menu=\"…\")",
+"image + calque actif (le plus courant)": "image + active layer (most common)",
+"aucun réglage": "no settings",
+"rien (le plus courant)": "nothing (most common)",
+"valeur de départ habituelle": "usual starting value",
+"blanc": "white",
+"rouge": "red",
+"noir": "black",
+"oui": "yes",
+"habituel": "usual",
+"0 à 255": "0 to 255",
+"1 à 1000 pixels": "1 to 1000 pixels",
+"0 à 1, précis": "0 to 1, fine steps",
+"rien (facultatif)": "nothing (optional)",
+"la dernière image ouverte": "the last opened image",
+"le calque actif": "the active layer",
+"couleur de premier plan": "foreground colour",
+"couleur d'arrière-plan": "background colour",
+"largeur de l'image": "image width",
+"hauteur de l'image": "image height",
+"opaque": "opaque",
+"minimum": "minimum",
+"maximum": "maximum",
+"texte vide": "empty text",
+"l'image": "the image",
+"un calque": "a layer",
+"un canal": "a channel",
+"un chemin": "a path",
+"une case à cocher": "a checkbox",
+"oui / non": "yes / no",
+"un nombre entier": "a whole number",
+"un nombre à virgule": "a decimal number",
+"un curseur (min, max, pas)": "a slider (min, max, step)",
+"un nombre avec flèches (min, max, pas)": "a number with arrows (min, max, step)",
+"comme PF_SPINNER": "like PF_SPINNER",
+"un texte sur une ligne": "a one-line text",
+"un texte sur plusieurs lignes": "a multi-line text",
+"une couleur": "a colour",
+"une liste déroulante": "a drop-down list",
+"des boutons radio": "radio buttons",
+"une police": "a font",
+"une brosse": "a brush",
+"un motif": "a pattern",
+"un dégradé": "a gradient",
+"une palette": "a palette",
+"un fichier": "a file",
+"un dossier": "a folder",
+"menu Filtres": "Filters menu",
+"menu Calque": "Layer menu",
+"son propre menu Python-Fu": "its own Python-Fu menu",
+"menu Image": "Image menu",
+"menu Couleurs": "Colors menu",
+"menu Sélection": "Select menu",
+"menu Édition": "Edit menu",
+"menu Fichier": "File menu",
+"menu Outils": "Tools menu",
+"Filtres ▸ Artistiques": "Filters ▸ Artistic",
+"Filtres ▸ Ombres et lumières": "Filters ▸ Light and Shadow",
+"Filtres ▸ Décor": "Filters ▸ Decor",
+"clic droit dans la fenêtre Calques": "right-click in the Layers window",
+"sans image ouverte (menu Fichier ▸ Créer)": "without an open image (File ▸ Create menu)",
+"toutes les images": "all images",
+"couleur et niveaux de gris": "colour and greyscale",
+"images couleur": "colour images",
+"aucune image nécessaire (menu <Toolbox>)": "no image needed (<Toolbox> menu)",
+"couleur avec transparence": "colour with transparency",
+"niveaux de gris": "greyscale",
+"images indexées": "indexed images",
+"description": "description",
+"aide": "help",
+"auteur": "author",
+"copyright": "copyright",
+"date": "date",
+"libellé": "label",
+"types d'image": "image types",
+"résultats": "results",
+"fonction": "function",
+"menu": "menu"
+});
 })(typeof window !== 'undefined' ? window : globalThis);
 
 </script>
@@ -3801,7 +3939,136 @@ Object.assign(GA.EN, {
 "ztkqfq":"Recorrer",
 "zuhmx8":"- «devolviendo luego…» los colores y herramientas, la selección o la capa activa;",
 "zx60ba":"📂 Archivo ▸ Importar un script de Python",
-"zzefpz":"- bloques verdes: cálculos y comparaciones (`+`, `==`, `and`…)"
+"zzefpz":"- bloques verdes: cálculos y comparaciones (`+`, `==`, `and`…)",
+"jhr8wn":"Un nombre de variable: letras (sin acentos), cifras y _, sin empezar por una cifra. Ejemplo: mi_capa",
+"aynseu":"Nuevo nombre para «%1» (se cambia en todo el script):",
+"1e4csmf":"Nombre de la nueva variable:",
+"1an6v0x":"valores habituales",
+"1u9wko5":"filtrar…",
+"1b1gur8":"Todavía no hay variables.",
+"1s5eayp":"Renombrar «%1» en todas partes…",
+"5wb3wl":"Nueva variable…",
+"137fyr0":"Escribir el nombre con el teclado",
+"1wfjwqe":"usar «%1»",
+"5swl0v":"Elegir otra variable…",
+"1ottkp3":"Tipo de ajuste (la casilla se adapta sola)",
+"dxxqxy":"Ajuste",
+"alqsot":"Añadir un ajuste",
+"1g99rmk":"📋 Declarar el plug-in (register):",
+"1oz0ohc":"Ya relleno con tu nombre, el año y tu función: haz clic en una casilla para ver otras opciones.",
+"xihdvj":"Ajustes para arrastrar a la lista de parámetros:",
+"1vn4lqf":"No queda espacio para sesiones: borra una o expórtala a un archivo.",
+"12jtn5v":"Mi sesión",
+"eprwia":"Abrir",
+"1l5bac7":"Mantener mi proyecto actual, recuperar solo la interfaz",
+"yxhv2w":"Solo la interfaz",
+"5k68id":"Exportar a un archivo",
+"vifpiv":"Todavía no hay sesiones guardadas.",
+"12t62wc":"Sesiones",
+"u6176g":"Una sesión guarda tu proyecto, la apariencia, el idioma, la disposición de la pantalla, tu progreso en el curso y los autores recordados. Tu clave de IA nunca se incluye.",
+"gred09":"Guardar la sesión actual",
+"1xsg6vu":"Importar una sesión (.json)",
+"1rlua2u":"Sesión guardada.",
+"1ni4y0i":"¿Reemplazar la sesión?",
+"19wmwwz":"Ya hay una sesión con este nombre. ¿Reemplazarla por el estado actual?",
+"259wdu":"Este archivo no es una sesión del taller.",
+"hi0wi0":"Sesión importada.",
+"jlhas4":"¿Abrir la sesión?",
+"qxofqm":"Tu proyecto actual se reemplazará por el de la sesión (guarda primero tu sesión actual si quieres conservarla).",
+"1e8gyd2":"¿Eliminar la sesión?",
+"6m4q3m":"Para darles un valor:",
+"wmhf42":"Variables de los bloques simples:",
+"1gnt4gw":"Variables: escribir su nombre con el teclado (en lugar del menú de opciones)",
+"1w1cjdl":"Mis sesiones",
+"te7b6a":"💼 Sesiones (proyecto + interfaz)…",
+"13vw613":"variable creada",
+"1w0j4gc":"nombre único habitual",
+"1bpcvcg":"el nombre de la función",
+"1l7wf7g":"el nombre legible",
+"1ukgcoz":"ya usado",
+"1rd5je5":"el año",
+"p1g8zu":"licencia libre",
+"jxiczd":"este año",
+"1b5qgh8":"hoy",
+"12ybw1y":"el nombre en el menú",
+"18e740d":"solo el nombre (con menu=\"…\")",
+"j9xbel":"imagen + capa activa (lo más común)",
+"3s7zuy":"ningún ajuste",
+"vqlrt5":"nada (lo más común)",
+"1lxx90i":"valor inicial habitual",
+"1pv60dl":"blanco",
+"12s4r79":"rojo",
+"1tecg5d":"negro",
+"1o2kzgo":"sí",
+"ycb3wh":"habitual",
+"wocdr":"de 0 a 255",
+"15n3g82":"de 1 a 1000 píxeles",
+"z1p2ke":"de 0 a 1, preciso",
+"1bo40tf":"nada (opcional)",
+"h6ri4y":"la última imagen abierta",
+"nih19g":"la capa activa",
+"9stzz8":"color de primer plano",
+"2mqvxe":"color de fondo",
+"fdqd9o":"ancho de la imagen",
+"kktueq":"alto de la imagen",
+"qra89q":"opaco",
+"uo535j":"mínimo",
+"1uawbep":"máximo",
+"m4l7bp":"texto vacío",
+"11xotxt":"la imagen",
+"5uf3uj":"una capa",
+"txv6nd":"un canal",
+"1drji8k":"un trazo",
+"55q4lr":"una casilla de verificación",
+"904iha":"sí / no",
+"l1yyoe":"un número entero",
+"1pnj2xt":"un número decimal",
+"1ndo26u":"un deslizador (mín, máx, paso)",
+"xld18m":"un número con flechas (mín, máx, paso)",
+"blkw8":"como PF_SPINNER",
+"pyc0mt":"un texto de una línea",
+"ffdmcy":"un texto de varias líneas",
+"as1w58":"un color",
+"5b6x03":"una lista desplegable",
+"zgo4zw":"botones de opción",
+"1mgnzj1":"una fuente",
+"5189p5":"un pincel",
+"rfsk6t":"un patrón",
+"bgyysg":"un degradado",
+"1by2g32":"una paleta",
+"fgccg":"un archivo",
+"1qaw7b":"una carpeta",
+"1htn8ln":"menú Filtros",
+"8514or":"menú Capa",
+"1epyrgc":"su propio menú Python-Fu",
+"3lpzfn":"menú Imagen",
+"1mwjuqg":"menú Colores",
+"1y8250c":"menú Selección",
+"1gcqhkg":"menú Editar",
+"e9beio":"menú Archivo",
+"1evtlws":"menú Herramientas",
+"1f6mkd2":"Filtros ▸ Artísticos",
+"1f1sygy":"Filtros ▸ Luces y sombras",
+"lysinv":"Filtros ▸ Decorativos",
+"1xa5j1v":"clic derecho en la ventana Capas",
+"hnpt7m":"sin imagen abierta (menú Archivo ▸ Crear)",
+"usiz1l":"todas las imágenes",
+"6acqp9":"color y escala de grises",
+"lfvsfq":"imágenes en color",
+"1u0jdjw":"no hace falta imagen (menú <Toolbox>)",
+"m6t65x":"color con transparencia",
+"17gmuet":"escala de grises",
+"vrb84q":"imágenes indexadas",
+"1y6q949":"descripción",
+"e45oi4":"ayuda",
+"14tlhkf":"autor",
+"yxxnr2":"copyright",
+"2tuxzt":"fecha",
+"1oyt5xi":"etiqueta",
+"16a5268":"tipos de imagen",
+"106ucn6":"resultados",
+"wd0lh3":"función",
+"1kxe64a":"menú"
 }; })(typeof window !== 'undefined' ? window : globalThis);
 
 </script>
@@ -5558,7 +5825,136 @@ Object.assign(GA.EN, {
 "ztkqfq":"Durchlaufen",
 "zuhmx8":"- „danach wiederherstellen…“ die Farben und Werkzeuge, die Auswahl oder die aktive Ebene;",
 "zx60ba":"📂 Datei ▸ Python-Skript importieren",
-"zzefpz":"- grüne Blöcke: Rechnungen und Vergleiche (`+`, `==`, `and`…)"
+"zzefpz":"- grüne Blöcke: Rechnungen und Vergleiche (`+`, `==`, `and`…)",
+"jhr8wn":"Ein Variablenname: Buchstaben (ohne Akzente), Ziffern und _, nicht mit einer Ziffer beginnend. Beispiel: meine_ebene",
+"aynseu":"Neuer Name für „%1“ (wird im ganzen Skript geändert):",
+"1e4csmf":"Name der neuen Variable:",
+"1an6v0x":"übliche Werte",
+"1u9wko5":"filtern…",
+"1b1gur8":"Noch keine Variablen.",
+"1s5eayp":"„%1“ überall umbenennen…",
+"5wb3wl":"Neue Variable…",
+"137fyr0":"Namen eintippen",
+"1wfjwqe":"„%1“ verwenden",
+"5swl0v":"Andere Variable wählen…",
+"1ottkp3":"Art der Einstellung (das Feld passt sich von selbst an)",
+"dxxqxy":"Einstellung",
+"alqsot":"Einstellung hinzufügen",
+"1g99rmk":"📋 Das Plug-in anmelden (register):",
+"1oz0ohc":"Schon mit deinem Namen, dem Jahr und deiner Funktion ausgefüllt: Klicke auf ein Feld für andere Möglichkeiten.",
+"xihdvj":"Einstellungen zum Ziehen in die Parameterliste:",
+"1vn4lqf":"Kein Platz mehr für Sitzungen: Lösche eine oder exportiere sie als Datei.",
+"12jtn5v":"Meine Sitzung",
+"eprwia":"Öffnen",
+"1l5bac7":"Mein aktuelles Projekt behalten, nur die Oberfläche übernehmen",
+"yxhv2w":"Nur Oberfläche",
+"5k68id":"Als Datei exportieren",
+"vifpiv":"Noch keine gespeicherten Sitzungen.",
+"12t62wc":"Sitzungen",
+"u6176g":"Eine Sitzung speichert dein Projekt, das Aussehen, die Sprache, die Bildschirmaufteilung, deinen Kursfortschritt und die gemerkten Autoren. Dein KI-Schlüssel ist nie dabei.",
+"gred09":"Aktuelle Sitzung speichern",
+"1xsg6vu":"Sitzung importieren (.json)",
+"1rlua2u":"Sitzung gespeichert.",
+"1ni4y0i":"Sitzung ersetzen?",
+"19wmwwz":"Es gibt schon eine Sitzung mit diesem Namen. Durch den aktuellen Stand ersetzen?",
+"259wdu":"Diese Datei ist keine Sitzung der Werkstatt.",
+"hi0wi0":"Sitzung importiert.",
+"jlhas4":"Sitzung öffnen?",
+"qxofqm":"Dein aktuelles Projekt wird durch das der Sitzung ersetzt (speichere zuerst deine aktuelle Sitzung, wenn du sie behalten willst).",
+"1e8gyd2":"Sitzung löschen?",
+"6m4q3m":"Um ihnen einen Wert zu geben:",
+"wmhf42":"Variablen der einfachen Blöcke:",
+"1gnt4gw":"Variablen: Namen eintippen (statt Auswahlmenü)",
+"1w1cjdl":"Meine Sitzungen",
+"te7b6a":"💼 Sitzungen (Projekt + Oberfläche)…",
+"13vw613":"erstellte Variable",
+"1w0j4gc":"üblicher eindeutiger Name",
+"1bpcvcg":"der Name der Funktion",
+"1l7wf7g":"der lesbare Name",
+"1ukgcoz":"schon verwendet",
+"1rd5je5":"das Jahr",
+"p1g8zu":"freie Lizenz",
+"jxiczd":"dieses Jahr",
+"1b5qgh8":"heute",
+"12ybw1y":"der Name im Menü",
+"18e740d":"nur der Name (mit menu=\"…\")",
+"j9xbel":"Bild + aktive Ebene (am häufigsten)",
+"3s7zuy":"keine Einstellungen",
+"vqlrt5":"nichts (am häufigsten)",
+"1lxx90i":"üblicher Startwert",
+"1pv60dl":"weiß",
+"12s4r79":"rot",
+"1tecg5d":"schwarz",
+"1o2kzgo":"ja",
+"ycb3wh":"üblich",
+"wocdr":"0 bis 255",
+"15n3g82":"1 bis 1000 Pixel",
+"z1p2ke":"0 bis 1, fein",
+"1bo40tf":"nichts (optional)",
+"h6ri4y":"das zuletzt geöffnete Bild",
+"nih19g":"die aktive Ebene",
+"9stzz8":"Vordergrundfarbe",
+"2mqvxe":"Hintergrundfarbe",
+"fdqd9o":"Bildbreite",
+"kktueq":"Bildhöhe",
+"qra89q":"deckend",
+"uo535j":"Minimum",
+"1uawbep":"Maximum",
+"m4l7bp":"leerer Text",
+"11xotxt":"das Bild",
+"5uf3uj":"eine Ebene",
+"txv6nd":"ein Kanal",
+"1drji8k":"ein Pfad",
+"55q4lr":"ein Kontrollkästchen",
+"904iha":"ja / nein",
+"l1yyoe":"eine ganze Zahl",
+"1pnj2xt":"eine Dezimalzahl",
+"1ndo26u":"ein Schieberegler (Min, Max, Schritt)",
+"xld18m":"eine Zahl mit Pfeilen (Min, Max, Schritt)",
+"blkw8":"wie PF_SPINNER",
+"pyc0mt":"ein einzeiliger Text",
+"ffdmcy":"ein mehrzeiliger Text",
+"as1w58":"eine Farbe",
+"5b6x03":"eine Auswahlliste",
+"zgo4zw":"Optionsfelder",
+"1mgnzj1":"eine Schrift",
+"5189p5":"ein Pinsel",
+"rfsk6t":"ein Muster",
+"bgyysg":"ein Farbverlauf",
+"1by2g32":"eine Palette",
+"fgccg":"eine Datei",
+"1qaw7b":"ein Ordner",
+"1htn8ln":"Menü Filter",
+"8514or":"Menü Ebene",
+"1epyrgc":"ein eigenes Python-Fu-Menü",
+"3lpzfn":"Menü Bild",
+"1mwjuqg":"Menü Farben",
+"1y8250c":"Menü Auswahl",
+"1gcqhkg":"Menü Bearbeiten",
+"e9beio":"Menü Datei",
+"1evtlws":"Menü Werkzeuge",
+"1f6mkd2":"Filter ▸ Künstlerisch",
+"1f1sygy":"Filter ▸ Licht und Schatten",
+"lysinv":"Filter ▸ Dekoration",
+"1xa5j1v":"Rechtsklick im Ebenen-Fenster",
+"hnpt7m":"ohne offenes Bild (Menü Datei ▸ Erstellen)",
+"usiz1l":"alle Bilder",
+"6acqp9":"Farbe und Graustufen",
+"lfvsfq":"Farbbilder",
+"1u0jdjw":"kein Bild nötig (Menü <Toolbox>)",
+"m6t65x":"Farbe mit Transparenz",
+"17gmuet":"Graustufen",
+"vrb84q":"indizierte Bilder",
+"1y6q949":"Beschreibung",
+"e45oi4":"Hilfe",
+"14tlhkf":"Autor",
+"yxxnr2":"Copyright",
+"2tuxzt":"Datum",
+"1oyt5xi":"Beschriftung",
+"16a5268":"Bildtypen",
+"106ucn6":"Ergebnisse",
+"wd0lh3":"Funktion",
+"1kxe64a":"Menü"
 }; })(typeof window !== 'undefined' ? window : globalThis);
 
 </script>
@@ -7315,7 +7711,136 @@ Object.assign(GA.EN, {
 "ztkqfq":"Percorrer",
 "zuhmx8":"- \"devolvendo depois…\" as cores e ferramentas, a seleção ou a camada ativa;",
 "zx60ba":"📂 Arquivo ▸ Importar um script Python",
-"zzefpz":"- blocos verdes: cálculos e comparações (`+`, `==`, `and`…)"
+"zzefpz":"- blocos verdes: cálculos e comparações (`+`, `==`, `and`…)",
+"jhr8wn":"Um nome de variável: letras (sem acento), números e _, sem começar com número. Exemplo: minha_camada",
+"aynseu":"Novo nome para \"%1\" (muda em todo o script):",
+"1e4csmf":"Nome da nova variável:",
+"1an6v0x":"valores comuns",
+"1u9wko5":"filtrar…",
+"1b1gur8":"Nenhuma variável por enquanto.",
+"1s5eayp":"Renomear \"%1\" em todo lugar…",
+"5wb3wl":"Nova variável…",
+"137fyr0":"Digitar o nome",
+"1wfjwqe":"usar \"%1\"",
+"5swl0v":"Escolher outra variável…",
+"1ottkp3":"Tipo de ajuste (a caixa se adapta sozinha)",
+"dxxqxy":"Ajuste",
+"alqsot":"Adicionar um ajuste",
+"1g99rmk":"📋 Declarar o plug-in (register):",
+"1oz0ohc":"Já preenchido com seu nome, o ano e sua função: clique em uma caixa para outras opções.",
+"xihdvj":"Ajustes para arrastar para a lista de parâmetros:",
+"1vn4lqf":"Sem espaço para sessões: apague uma ou exporte-a para um arquivo.",
+"12jtn5v":"Minha sessão",
+"eprwia":"Abrir",
+"1l5bac7":"Manter meu projeto atual, recuperar só a interface",
+"yxhv2w":"Só a interface",
+"5k68id":"Exportar para arquivo",
+"vifpiv":"Nenhuma sessão salva por enquanto.",
+"12t62wc":"Sessões",
+"u6176g":"Uma sessão guarda seu projeto, a aparência, o idioma, a disposição da tela, seu progresso no curso e os autores lembrados. Sua chave de IA nunca é incluída.",
+"gred09":"Salvar a sessão atual",
+"1xsg6vu":"Importar uma sessão (.json)",
+"1rlua2u":"Sessão salva.",
+"1ni4y0i":"Substituir a sessão?",
+"19wmwwz":"Já existe uma sessão com esse nome. Substituí-la pelo estado atual?",
+"259wdu":"Este arquivo não é uma sessão do ateliê.",
+"hi0wi0":"Sessão importada.",
+"jlhas4":"Abrir a sessão?",
+"qxofqm":"Seu projeto atual será substituído pelo da sessão (salve antes sua sessão atual se quiser mantê-la).",
+"1e8gyd2":"Excluir a sessão?",
+"6m4q3m":"Para dar um valor a elas:",
+"wmhf42":"Variáveis dos blocos simples:",
+"1gnt4gw":"Variáveis: digitar o nome (em vez do menu de escolha)",
+"1w1cjdl":"Minhas sessões",
+"te7b6a":"💼 Sessões (projeto + interface)…",
+"13vw613":"variável criada",
+"1w0j4gc":"nome único comum",
+"1bpcvcg":"o nome da função",
+"1l7wf7g":"o nome legível",
+"1ukgcoz":"já usado",
+"1rd5je5":"o ano",
+"p1g8zu":"licença livre",
+"jxiczd":"este ano",
+"1b5qgh8":"hoje",
+"12ybw1y":"o nome no menu",
+"18e740d":"só o nome (com menu=\"…\")",
+"j9xbel":"imagem + camada ativa (o mais comum)",
+"3s7zuy":"nenhum ajuste",
+"vqlrt5":"nada (o mais comum)",
+"1lxx90i":"valor inicial comum",
+"1pv60dl":"branco",
+"12s4r79":"vermelho",
+"1tecg5d":"preto",
+"1o2kzgo":"sim",
+"ycb3wh":"comum",
+"wocdr":"0 a 255",
+"15n3g82":"1 a 1000 pixels",
+"z1p2ke":"0 a 1, preciso",
+"1bo40tf":"nada (opcional)",
+"h6ri4y":"a última imagem aberta",
+"nih19g":"a camada ativa",
+"9stzz8":"cor de primeiro plano",
+"2mqvxe":"cor de fundo",
+"fdqd9o":"largura da imagem",
+"kktueq":"altura da imagem",
+"qra89q":"opaco",
+"uo535j":"mínimo",
+"1uawbep":"máximo",
+"m4l7bp":"texto vazio",
+"11xotxt":"a imagem",
+"5uf3uj":"uma camada",
+"txv6nd":"um canal",
+"1drji8k":"um caminho",
+"55q4lr":"uma caixa de seleção",
+"904iha":"sim / não",
+"l1yyoe":"um número inteiro",
+"1pnj2xt":"um número decimal",
+"1ndo26u":"um controle deslizante (mín, máx, passo)",
+"xld18m":"um número com setas (mín, máx, passo)",
+"blkw8":"como PF_SPINNER",
+"pyc0mt":"um texto de uma linha",
+"ffdmcy":"um texto de várias linhas",
+"as1w58":"uma cor",
+"5b6x03":"uma lista suspensa",
+"zgo4zw":"botões de opção",
+"1mgnzj1":"uma fonte",
+"5189p5":"um pincel",
+"rfsk6t":"um padrão",
+"bgyysg":"um gradiente",
+"1by2g32":"uma paleta",
+"fgccg":"um arquivo",
+"1qaw7b":"uma pasta",
+"1htn8ln":"menu Filtros",
+"8514or":"menu Camada",
+"1epyrgc":"um menu Python-Fu próprio",
+"3lpzfn":"menu Imagem",
+"1mwjuqg":"menu Cores",
+"1y8250c":"menu Seleção",
+"1gcqhkg":"menu Editar",
+"e9beio":"menu Arquivo",
+"1evtlws":"menu Ferramentas",
+"1f6mkd2":"Filtros ▸ Artísticos",
+"1f1sygy":"Filtros ▸ Luz e sombra",
+"lysinv":"Filtros ▸ Decoração",
+"1xa5j1v":"clique direito na janela Camadas",
+"hnpt7m":"sem imagem aberta (menu Arquivo ▸ Criar)",
+"usiz1l":"todas as imagens",
+"6acqp9":"cor e tons de cinza",
+"lfvsfq":"imagens coloridas",
+"1u0jdjw":"nenhuma imagem necessária (menu <Toolbox>)",
+"m6t65x":"cor com transparência",
+"17gmuet":"tons de cinza",
+"vrb84q":"imagens indexadas",
+"1y6q949":"descrição",
+"e45oi4":"ajuda",
+"14tlhkf":"autor",
+"yxxnr2":"copyright",
+"2tuxzt":"data",
+"1oyt5xi":"rótulo",
+"16a5268":"tipos de imagem",
+"106ucn6":"resultados",
+"wd0lh3":"função",
+"1kxe64a":"menu"
 }; })(typeof window !== 'undefined' ? window : globalThis);
 
 </script>
@@ -9072,7 +9597,136 @@ Object.assign(GA.EN, {
 "ztkqfq":"Перебор",
 "zuhmx8":"- «затем вернуть…» цвета и инструменты, выделение или активный слой;",
 "zx60ba":"📂 Файл ▸ Импортировать скрипт Python",
-"zzefpz":"- зелёные блоки: вычисления и сравнения (`+`, `==`, `and`…)"
+"zzefpz":"- зелёные блоки: вычисления и сравнения (`+`, `==`, `and`…)",
+"jhr8wn":"Имя переменной: латинские буквы, цифры и _, не начиная с цифры. Пример: my_layer",
+"aynseu":"Новое имя для «%1» (изменится во всём скрипте):",
+"1e4csmf":"Имя новой переменной:",
+"1an6v0x":"обычные значения",
+"1u9wko5":"фильтр…",
+"1b1gur8":"Переменных пока нет.",
+"1s5eayp":"Переименовать «%1» везде…",
+"5wb3wl":"Новая переменная…",
+"137fyr0":"Ввести имя с клавиатуры",
+"1wfjwqe":"использовать «%1»",
+"5swl0v":"Выбрать другую переменную…",
+"1ottkp3":"Тип настройки (поле подстроится само)",
+"dxxqxy":"Настройка",
+"alqsot":"Добавить настройку",
+"1g99rmk":"📋 Объявить плагин (register):",
+"1oz0ohc":"Уже заполнено вашим именем, годом и функцией: нажмите на поле, чтобы увидеть другие варианты.",
+"xihdvj":"Настройки, которые можно перетащить в список параметров:",
+"1vn4lqf":"Нет места для сессий: удалите одну или экспортируйте её в файл.",
+"12jtn5v":"Моя сессия",
+"eprwia":"Открыть",
+"1l5bac7":"Оставить текущий проект, восстановить только интерфейс",
+"yxhv2w":"Только интерфейс",
+"5k68id":"Экспортировать в файл",
+"vifpiv":"Сохранённых сессий пока нет.",
+"12t62wc":"Сессии",
+"u6176g":"Сессия хранит ваш проект, внешний вид, язык, расположение экрана, прогресс в курсе и запомненных авторов. Ваш ключ ИИ никогда не включается.",
+"gred09":"Сохранить текущую сессию",
+"1xsg6vu":"Импортировать сессию (.json)",
+"1rlua2u":"Сессия сохранена.",
+"1ni4y0i":"Заменить сессию?",
+"19wmwwz":"Сессия с таким именем уже есть. Заменить её текущим состоянием?",
+"259wdu":"Этот файл не является сессией мастерской.",
+"hi0wi0":"Сессия импортирована.",
+"jlhas4":"Открыть сессию?",
+"qxofqm":"Текущий проект будет заменён проектом из сессии (сначала сохраните текущую сессию, если хотите её оставить).",
+"1e8gyd2":"Удалить сессию?",
+"6m4q3m":"Чтобы задать им значение:",
+"wmhf42":"Переменные простых блоков:",
+"1gnt4gw":"Переменные: вводить имя с клавиатуры (вместо меню выбора)",
+"1w1cjdl":"Мои сессии",
+"te7b6a":"💼 Сессии (проект + интерфейс)…",
+"13vw613":"созданная переменная",
+"1w0j4gc":"обычное уникальное имя",
+"1bpcvcg":"имя функции",
+"1l7wf7g":"понятное имя",
+"1ukgcoz":"уже использовалось",
+"1rd5je5":"год",
+"p1g8zu":"свободная лицензия",
+"jxiczd":"этот год",
+"1b5qgh8":"сегодня",
+"12ybw1y":"имя в меню",
+"18e740d":"только имя (с menu=\"…\")",
+"j9xbel":"изображение + активный слой (чаще всего)",
+"3s7zuy":"без настроек",
+"vqlrt5":"ничего (чаще всего)",
+"1lxx90i":"обычное начальное значение",
+"1pv60dl":"белый",
+"12s4r79":"красный",
+"1tecg5d":"чёрный",
+"1o2kzgo":"да",
+"ycb3wh":"обычно",
+"wocdr":"от 0 до 255",
+"15n3g82":"от 1 до 1000 пикселей",
+"z1p2ke":"от 0 до 1, точно",
+"1bo40tf":"ничего (необязательно)",
+"h6ri4y":"последнее открытое изображение",
+"nih19g":"активный слой",
+"9stzz8":"цвет переднего плана",
+"2mqvxe":"цвет фона",
+"fdqd9o":"ширина изображения",
+"kktueq":"высота изображения",
+"qra89q":"непрозрачный",
+"uo535j":"минимум",
+"1uawbep":"максимум",
+"m4l7bp":"пустой текст",
+"11xotxt":"изображение",
+"5uf3uj":"слой",
+"txv6nd":"канал",
+"1drji8k":"контур",
+"55q4lr":"флажок",
+"904iha":"да / нет",
+"l1yyoe":"целое число",
+"1pnj2xt":"дробное число",
+"1ndo26u":"ползунок (мин, макс, шаг)",
+"xld18m":"число со стрелками (мин, макс, шаг)",
+"blkw8":"как PF_SPINNER",
+"pyc0mt":"текст в одну строку",
+"ffdmcy":"многострочный текст",
+"as1w58":"цвет",
+"5b6x03":"выпадающий список",
+"zgo4zw":"переключатели",
+"1mgnzj1":"шрифт",
+"5189p5":"кисть",
+"rfsk6t":"текстура",
+"bgyysg":"градиент",
+"1by2g32":"палитра",
+"fgccg":"файл",
+"1qaw7b":"папка",
+"1htn8ln":"меню «Фильтры»",
+"8514or":"меню «Слой»",
+"1epyrgc":"собственное меню Python-Fu",
+"3lpzfn":"меню «Изображение»",
+"1mwjuqg":"меню «Цвет»",
+"1y8250c":"меню «Выделение»",
+"1gcqhkg":"меню «Правка»",
+"e9beio":"меню «Файл»",
+"1evtlws":"меню «Инструменты»",
+"1f6mkd2":"Фильтры ▸ Имитация",
+"1f1sygy":"Фильтры ▸ Свет и тень",
+"lysinv":"Фильтры ▸ Оформление",
+"1xa5j1v":"правый щелчок в окне «Слои»",
+"hnpt7m":"без открытого изображения (меню Файл ▸ Создать)",
+"usiz1l":"все изображения",
+"6acqp9":"цветные и в оттенках серого",
+"lfvsfq":"цветные изображения",
+"1u0jdjw":"изображение не нужно (меню <Toolbox>)",
+"m6t65x":"цвет с прозрачностью",
+"17gmuet":"оттенки серого",
+"vrb84q":"индексированные изображения",
+"1y6q949":"описание",
+"e45oi4":"справка",
+"14tlhkf":"автор",
+"yxxnr2":"авторские права",
+"2tuxzt":"дата",
+"1oyt5xi":"подпись",
+"16a5268":"типы изображений",
+"106ucn6":"результаты",
+"wd0lh3":"функция",
+"1kxe64a":"меню"
 }; })(typeof window !== 'undefined' ? window : globalThis);
 
 </script>
@@ -10829,7 +11483,136 @@ Object.assign(GA.EN, {
 "ztkqfq":"से होकर गुज़रें",
 "zuhmx8":"- \"फिर लौटाएँ…\" रंग और टूल, चयन या सक्रिय लेयर;",
 "zx60ba":"📂 फ़ाइल ▸ Python स्क्रिप्ट इम्पोर्ट करें",
-"zzefpz":"- हरे ब्लॉक: गणनाएँ और तुलनाएँ (`+`, `==`, `and`…)"
+"zzefpz":"- हरे ब्लॉक: गणनाएँ और तुलनाएँ (`+`, `==`, `and`…)",
+"jhr8wn":"वेरिएबल का नाम: अंग्रेज़ी अक्षर, अंक और _, अंक से शुरू नहीं। उदाहरण: my_layer",
+"aynseu":"\"%1\" का नया नाम (पूरी स्क्रिप्ट में बदलेगा):",
+"1e4csmf":"नए वेरिएबल का नाम:",
+"1an6v0x":"सामान्य मान",
+"1u9wko5":"छाँटें…",
+"1b1gur8":"अभी कोई वेरिएबल नहीं।",
+"1s5eayp":"\"%1\" का नाम हर जगह बदलें…",
+"5wb3wl":"नया वेरिएबल…",
+"137fyr0":"नाम टाइप करें",
+"1wfjwqe":"\"%1\" इस्तेमाल करें",
+"5swl0v":"दूसरा वेरिएबल चुनें…",
+"1ottkp3":"सेटिंग का प्रकार (खाना अपने आप ढल जाता है)",
+"dxxqxy":"सेटिंग",
+"alqsot":"सेटिंग जोड़ें",
+"1g99rmk":"📋 प्लग-इन घोषित करें (register):",
+"1oz0ohc":"आपके नाम, साल और फ़ंक्शन से पहले से भरा हुआ: दूसरे विकल्पों के लिए किसी खाने पर क्लिक करें।",
+"xihdvj":"पैरामीटर सूची में खींचने के लिए सेटिंग:",
+"1vn4lqf":"सत्रों के लिए जगह नहीं बची: एक हटाएँ या उसे फ़ाइल में निर्यात करें।",
+"12jtn5v":"मेरा सत्र",
+"eprwia":"खोलें",
+"1l5bac7":"मौजूदा प्रोजेक्ट रखें, सिर्फ़ इंटरफ़ेस वापस लाएँ",
+"yxhv2w":"सिर्फ़ इंटरफ़ेस",
+"5k68id":"फ़ाइल में निर्यात करें",
+"vifpiv":"अभी कोई सहेजा गया सत्र नहीं।",
+"12t62wc":"सत्र",
+"u6176g":"एक सत्र आपका प्रोजेक्ट, रूप-रंग, भाषा, स्क्रीन की व्यवस्था, कोर्स में आपकी प्रगति और याद रखे गए लेखक सहेजता है। आपकी AI कुंजी कभी शामिल नहीं होती।",
+"gred09":"मौजूदा सत्र सहेजें",
+"1xsg6vu":"सत्र आयात करें (.json)",
+"1rlua2u":"सत्र सहेजा गया।",
+"1ni4y0i":"सत्र बदलें?",
+"19wmwwz":"इस नाम का सत्र पहले से है। इसे मौजूदा स्थिति से बदलें?",
+"259wdu":"यह फ़ाइल वर्कशॉप का सत्र नहीं है।",
+"hi0wi0":"सत्र आयात हुआ।",
+"jlhas4":"सत्र खोलें?",
+"qxofqm":"आपका मौजूदा प्रोजेक्ट सत्र वाले से बदल जाएगा (उसे रखना हो तो पहले अपना मौजूदा सत्र सहेजें)।",
+"1e8gyd2":"सत्र हटाएँ?",
+"6m4q3m":"उन्हें मान देने के लिए:",
+"wmhf42":"सरल ब्लॉकों के वेरिएबल:",
+"1gnt4gw":"वेरिएबल: नाम टाइप करें (चुनने वाले मेनू के बजाय)",
+"1w1cjdl":"मेरे सत्र",
+"te7b6a":"💼 सत्र (प्रोजेक्ट + इंटरफ़ेस)…",
+"13vw613":"बनाया गया वेरिएबल",
+"1w0j4gc":"सामान्य अनोखा नाम",
+"1bpcvcg":"फ़ंक्शन का नाम",
+"1l7wf7g":"पढ़ने योग्य नाम",
+"1ukgcoz":"पहले इस्तेमाल हुआ",
+"1rd5je5":"साल",
+"p1g8zu":"मुक्त लाइसेंस",
+"jxiczd":"इस साल",
+"1b5qgh8":"आज",
+"12ybw1y":"मेनू में नाम",
+"18e740d":"सिर्फ़ नाम (menu=\"…\" के साथ)",
+"j9xbel":"इमेज + सक्रिय लेयर (सबसे आम)",
+"3s7zuy":"कोई सेटिंग नहीं",
+"vqlrt5":"कुछ नहीं (सबसे आम)",
+"1lxx90i":"सामान्य शुरुआती मान",
+"1pv60dl":"सफ़ेद",
+"12s4r79":"लाल",
+"1tecg5d":"काला",
+"1o2kzgo":"हाँ",
+"ycb3wh":"सामान्य",
+"wocdr":"0 से 255",
+"15n3g82":"1 से 1000 पिक्सेल",
+"z1p2ke":"0 से 1, बारीक",
+"1bo40tf":"कुछ नहीं (वैकल्पिक)",
+"h6ri4y":"आखिरी खोली गई इमेज",
+"nih19g":"सक्रिय लेयर",
+"9stzz8":"अग्रभूमि रंग",
+"2mqvxe":"पृष्ठभूमि रंग",
+"fdqd9o":"इमेज की चौड़ाई",
+"kktueq":"इमेज की ऊँचाई",
+"qra89q":"अपारदर्शी",
+"uo535j":"न्यूनतम",
+"1uawbep":"अधिकतम",
+"m4l7bp":"खाली टेक्स्ट",
+"11xotxt":"इमेज",
+"5uf3uj":"एक लेयर",
+"txv6nd":"एक चैनल",
+"1drji8k":"एक पथ",
+"55q4lr":"एक चेकबॉक्स",
+"904iha":"हाँ / नहीं",
+"l1yyoe":"एक पूर्ण संख्या",
+"1pnj2xt":"एक दशमलव संख्या",
+"1ndo26u":"एक स्लाइडर (न्यूनतम, अधिकतम, कदम)",
+"xld18m":"तीरों वाली संख्या (न्यूनतम, अधिकतम, कदम)",
+"blkw8":"PF_SPINNER जैसा",
+"pyc0mt":"एक पंक्ति का टेक्स्ट",
+"ffdmcy":"कई पंक्तियों का टेक्स्ट",
+"as1w58":"एक रंग",
+"5b6x03":"एक ड्रॉप-डाउन सूची",
+"zgo4zw":"रेडियो बटन",
+"1mgnzj1":"एक फ़ॉन्ट",
+"5189p5":"एक ब्रश",
+"rfsk6t":"एक पैटर्न",
+"bgyysg":"एक ग्रेडिएंट",
+"1by2g32":"एक पैलेट",
+"fgccg":"एक फ़ाइल",
+"1qaw7b":"एक फ़ोल्डर",
+"1htn8ln":"Filters मेनू",
+"8514or":"Layer मेनू",
+"1epyrgc":"अपना Python-Fu मेनू",
+"3lpzfn":"Image मेनू",
+"1mwjuqg":"Colors मेनू",
+"1y8250c":"Select मेनू",
+"1gcqhkg":"Edit मेनू",
+"e9beio":"File मेनू",
+"1evtlws":"Tools मेनू",
+"1f6mkd2":"Filters ▸ Artistic",
+"1f1sygy":"Filters ▸ Light and Shadow",
+"lysinv":"Filters ▸ Decor",
+"1xa5j1v":"Layers विंडो में राइट-क्लिक",
+"hnpt7m":"बिना खुली इमेज के (File ▸ Create मेनू)",
+"usiz1l":"सभी इमेज",
+"6acqp9":"रंगीन और ग्रेस्केल",
+"lfvsfq":"रंगीन इमेज",
+"1u0jdjw":"इमेज की ज़रूरत नहीं (<Toolbox> मेनू)",
+"m6t65x":"पारदर्शिता वाला रंग",
+"17gmuet":"ग्रेस्केल",
+"vrb84q":"इंडेक्स्ड इमेज",
+"1y6q949":"विवरण",
+"e45oi4":"सहायता",
+"14tlhkf":"लेखक",
+"yxxnr2":"कॉपीराइट",
+"2tuxzt":"तारीख़",
+"1oyt5xi":"लेबल",
+"16a5268":"इमेज प्रकार",
+"106ucn6":"परिणाम",
+"wd0lh3":"फ़ंक्शन",
+"1kxe64a":"मेनू"
 }; })(typeof window !== 'undefined' ? window : globalThis);
 
 </script>
@@ -12586,7 +13369,136 @@ Object.assign(GA.EN, {
 "ztkqfq":"المرور على",
 "zuhmx8":"- «ثم أرجِع…» الألوان والأدوات، أو التحديد، أو الطبقة النشطة؛",
 "zx60ba":"📂 ملف ▸ استيراد سكربت Python",
-"zzefpz":"- كتل خضراء: الحسابات والمقارنات (`+`، `==`، `and`…)"
+"zzefpz":"- كتل خضراء: الحسابات والمقارنات (`+`، `==`، `and`…)",
+"jhr8wn":"اسم المتغير: حروف لاتينية وأرقام و _، دون أن يبدأ برقم. مثال: my_layer",
+"aynseu":"اسم جديد لـ «%1» (يتغيّر في كل السكربت):",
+"1e4csmf":"اسم المتغير الجديد:",
+"1an6v0x":"القيم المعتادة",
+"1u9wko5":"تصفية…",
+"1b1gur8":"لا توجد متغيرات بعد.",
+"1s5eayp":"إعادة تسمية «%1» في كل مكان…",
+"5wb3wl":"متغير جديد…",
+"137fyr0":"كتابة الاسم بلوحة المفاتيح",
+"1wfjwqe":"استخدام «%1»",
+"5swl0v":"اختيار متغير آخر…",
+"1ottkp3":"نوع الإعداد (تتكيّف الخانة تلقائياً)",
+"dxxqxy":"إعداد",
+"alqsot":"إضافة إعداد",
+"1g99rmk":"📋 تعريف الإضافة (register):",
+"1oz0ohc":"مملوء مسبقاً باسمك والسنة ودالتك: انقر على خانة لخيارات أخرى.",
+"xihdvj":"إعدادات لسحبها إلى قائمة المعاملات:",
+"1vn4lqf":"لا توجد مساحة للجلسات: احذف واحدة أو صدّرها إلى ملف.",
+"12jtn5v":"جلستي",
+"eprwia":"فتح",
+"1l5bac7":"الاحتفاظ بمشروعي الحالي واستعادة الواجهة فقط",
+"yxhv2w":"الواجهة فقط",
+"5k68id":"تصدير إلى ملف",
+"vifpiv":"لا توجد جلسات محفوظة بعد.",
+"12t62wc":"الجلسات",
+"u6176g":"تحفظ الجلسة مشروعك والمظهر واللغة وترتيب الشاشة وتقدّمك في الدورة والمؤلفين المحفوظين. مفتاح الذكاء الاصطناعي لا يُضمَّن أبداً.",
+"gred09":"حفظ الجلسة الحالية",
+"1xsg6vu":"استيراد جلسة (.json)",
+"1rlua2u":"تم حفظ الجلسة.",
+"1ni4y0i":"استبدال الجلسة؟",
+"19wmwwz":"توجد جلسة بهذا الاسم. هل تستبدلها بالحالة الحالية؟",
+"259wdu":"هذا الملف ليس جلسة من الورشة.",
+"hi0wi0":"تم استيراد الجلسة.",
+"jlhas4":"فتح الجلسة؟",
+"qxofqm":"سيُستبدل مشروعك الحالي بمشروع الجلسة (احفظ جلستك الحالية أولاً إن أردت الاحتفاظ بها).",
+"1e8gyd2":"حذف الجلسة؟",
+"6m4q3m":"لإعطائها قيمة:",
+"wmhf42":"متغيرات الكتل البسيطة:",
+"1gnt4gw":"المتغيرات: كتابة الاسم بلوحة المفاتيح (بدل قائمة الاختيار)",
+"1w1cjdl":"جلساتي",
+"te7b6a":"💼 الجلسات (المشروع + الواجهة)…",
+"13vw613":"متغير منشأ",
+"1w0j4gc":"الاسم الفريد المعتاد",
+"1bpcvcg":"اسم الدالة",
+"1l7wf7g":"الاسم المقروء",
+"1ukgcoz":"مستخدم سابقاً",
+"1rd5je5":"السنة",
+"p1g8zu":"ترخيص حر",
+"jxiczd":"هذه السنة",
+"1b5qgh8":"اليوم",
+"12ybw1y":"الاسم في القائمة",
+"18e740d":"الاسم وحده (مع menu=\"…\")",
+"j9xbel":"الصورة + الطبقة النشطة (الأكثر شيوعاً)",
+"3s7zuy":"بلا إعدادات",
+"vqlrt5":"لا شيء (الأكثر شيوعاً)",
+"1lxx90i":"القيمة الابتدائية المعتادة",
+"1pv60dl":"أبيض",
+"12s4r79":"أحمر",
+"1tecg5d":"أسود",
+"1o2kzgo":"نعم",
+"ycb3wh":"المعتاد",
+"wocdr":"من 0 إلى 255",
+"15n3g82":"من 1 إلى 1000 بكسل",
+"z1p2ke":"من 0 إلى 1، بدقة",
+"1bo40tf":"لا شيء (اختياري)",
+"h6ri4y":"آخر صورة مفتوحة",
+"nih19g":"الطبقة النشطة",
+"9stzz8":"لون المقدمة",
+"2mqvxe":"لون الخلفية",
+"fdqd9o":"عرض الصورة",
+"kktueq":"ارتفاع الصورة",
+"qra89q":"معتم",
+"uo535j":"الحد الأدنى",
+"1uawbep":"الحد الأقصى",
+"m4l7bp":"نص فارغ",
+"11xotxt":"الصورة",
+"5uf3uj":"طبقة",
+"txv6nd":"قناة",
+"1drji8k":"مسار",
+"55q4lr":"خانة اختيار",
+"904iha":"نعم / لا",
+"l1yyoe":"عدد صحيح",
+"1pnj2xt":"عدد عشري",
+"1ndo26u":"شريط تمرير (أدنى، أقصى، خطوة)",
+"xld18m":"عدد بأسهم (أدنى، أقصى، خطوة)",
+"blkw8":"مثل PF_SPINNER",
+"pyc0mt":"نص من سطر واحد",
+"ffdmcy":"نص من عدة أسطر",
+"as1w58":"لون",
+"5b6x03":"قائمة منسدلة",
+"zgo4zw":"أزرار اختيار",
+"1mgnzj1":"خط",
+"5189p5":"فرشاة",
+"rfsk6t":"نقش",
+"bgyysg":"تدرّج",
+"1by2g32":"لوحة ألوان",
+"fgccg":"ملف",
+"1qaw7b":"مجلد",
+"1htn8ln":"قائمة المرشحات",
+"8514or":"قائمة الطبقة",
+"1epyrgc":"قائمة Python-Fu خاصة",
+"3lpzfn":"قائمة الصورة",
+"1mwjuqg":"قائمة الألوان",
+"1y8250c":"قائمة التحديد",
+"1gcqhkg":"قائمة التحرير",
+"e9beio":"قائمة الملف",
+"1evtlws":"قائمة الأدوات",
+"1f6mkd2":"المرشحات ▸ فنية",
+"1f1sygy":"المرشحات ▸ الضوء والظل",
+"lysinv":"المرشحات ▸ زخرفة",
+"1xa5j1v":"النقر بالزر الأيمن في نافذة الطبقات",
+"hnpt7m":"دون صورة مفتوحة (قائمة ملف ▸ إنشاء)",
+"usiz1l":"كل الصور",
+"6acqp9":"ملونة وتدرّج رمادي",
+"lfvsfq":"صور ملونة",
+"1u0jdjw":"لا حاجة إلى صورة (قائمة <Toolbox>)",
+"m6t65x":"لون مع شفافية",
+"17gmuet":"تدرّج رمادي",
+"vrb84q":"صور مفهرسة",
+"1y6q949":"الوصف",
+"e45oi4":"المساعدة",
+"14tlhkf":"المؤلف",
+"yxxnr2":"حقوق النشر",
+"2tuxzt":"التاريخ",
+"1oyt5xi":"التسمية",
+"16a5268":"أنواع الصور",
+"106ucn6":"النتائج",
+"wd0lh3":"الدالة",
+"1kxe64a":"القائمة"
 }; })(typeof window !== 'undefined' ? window : globalThis);
 
 </script>
@@ -14556,6 +15468,14 @@ GA.pyInit = function (Blockly, G) {
   function pill(v, kind) { return new PillField(v, kind); }
   GA.PillField = PillField;
   function mtxt(v) { return new Blockly.FieldMultilineInput(v); }
+  /* case valeur : en l'ouvrant, l'atelier propose les valeurs habituelles à cet endroit (register, PF_…, pdb) */
+  class LeafField extends Blockly.FieldMultilineInput {
+    showEditor_(e, quiet) {
+      super.showEditor_(e, quiet);
+      var h = GA.valueHints && this.htmlInput_ ? GA.valueHints(this.getSourceBlock()) : null;
+      if (h && h.items.length && GA.suggest) GA.suggest.open(this, 'val', this.htmlInput_, h);
+    }
+  }
   function mutate(block, fn) {
     var before = JSON.stringify(block.saveExtraState() || {});
     Blockly.Events.setGroup(true);
@@ -14810,7 +15730,7 @@ GA.pyInit = function (Blockly, G) {
       if (k.indexOf('k:') === 0) lab = (!ext && i ? ', ' : '') + k.slice(2) + ' =';
       else if (k === '*' || k === '**') lab = (!ext && i ? ', ' : '') + k;
       else if (ext && sig && sig[4][i]) lab = sig[4][i][0];
-      else if (ext && func === 'register' && REGISTER_ARGS[i]) lab = REGISTER_ARGS[i];
+      else if (ext && func === 'register' && REGISTER_ARGS[i]) lab = T(REGISTER_ARGS[i]);
       else if (!ext && i) lab = ',';
       f.setValue(lab);
     });
@@ -14923,7 +15843,7 @@ GA.pyInit = function (Blockly, G) {
       this.appendDummyInput().appendField(f, 'NAME');
     },
     gen: function (b) { return [String(b.getFieldValue('NAME')), 0]; } });
-  defVal('py_leaf', { style: 'cat_pyleaf', init: function () { this.appendDummyInput().appendField(mtxt('0'), 'CODE'); },
+  defVal('py_leaf', { style: 'cat_pyleaf', init: function () { this.appendDummyInput().appendField(new LeafField('0'), 'CODE'); },
     gen: function (b) { var t = String(b.getFieldValue('CODE')); return [tx(t), leafOrd(t)]; } });
   var BINOPS = ['+', '-', '*', '/', '//', '%', '**', '<<', '>>', '|', '^', '&', '@'];
   defVal('py_binop', { init: function () { this.appendValueInput('A'); this.appendValueInput('B').appendField(new Blockly.FieldDropdown(BINOPS.map(function (o) { return [o, o]; })), 'OP'); },
@@ -15051,6 +15971,7 @@ GA.pyInit = function (Blockly, G) {
     }
     this.n_ = n; this.d_ = d.slice();
   };
+  if (GA.pyVarsInit) GA.pyVarsInit();
 };
 })(typeof window !== 'undefined' ? window : globalThis);
 
@@ -15716,7 +16637,9 @@ GA.setup = function (Blockly, DATA) {
         String(b.getFieldValue('T') || '').split(/[,()\s]+/).forEach(add);
       });
     }
-    return names.filter(function (n) { return !GA.isPyConst(n); }).sort(function (a, b) { return a.toLowerCase().localeCompare(b.toLowerCase()); });
+    var defs = {};
+    main.getBlocksByType('py_def', false).forEach(function (b) { defs[b.getFieldValue('NAME')] = 1; });
+    return names.filter(function (n) { return !GA.isPyConst(n) && !defs[n]; }).sort(function (a, b) { return a.toLowerCase().localeCompare(b.toLowerCase()); });
   };
   GA.pyFlyout = function (ws) {
     var main = ws.targetWorkspace || ws, names = GA.pyVarNames(main);
@@ -15724,7 +16647,7 @@ GA.setup = function (Blockly, DATA) {
     var vars = [{ kind: 'label', text: GA.T('Variables de ton script :'), 'web-class': 'gaSep' }];
     if (!names.length) vars.push({ kind: 'label', text: GA.T('(importe ou écris un script pour voir ses variables)'), 'web-class': 'gaHint' });
     names.slice(0, 80).forEach(function (n) { vars.push({ kind: 'block', type: 'py_var', fields: { NAME: n } }); });
-    return out.slice(0, 1).concat(vars, GA.pyShortcuts(), out.slice(1));
+    return out.slice(0, 1).concat(vars, GA.pyShortcuts(), GA.registerFlyout ? GA.registerFlyout(main) : [], out.slice(1));
   };
   /* raccourcis GIMP en blocs Python : ce que presque tous les scripts écrivent */
   var PY_SHORTCUTS = [
@@ -17257,7 +18180,7 @@ GA.actions = {
   theme: function () { var t = GA.prefs.theme; GA.prefs.theme = t === 'auto' ? (GA.isDark() ? 'light' : 'dark') : (t === 'dark' ? 'light' : 'dark'); GA.savePrefs(); GA.applyLivePrefs(); },
   langFr: function () { GA.setLang('fr'); }, langEn: function () { GA.setLang('en'); },   // anciens noms (raccourcis enregistrés)
   tour: function () { GA.tour.start(); }, learn: function () { GA.learn.open(); }, guide: function () { GA.openGuide(); }, shortcuts: function () { GA.openShortcuts(); }, about: function () { GA.openAbout(); },
-  saveProject: function () { GA.app.saveProject(); }, importFile: function () { var f = $('#fileOpen'); f.value = ''; f.click(); },
+  saveProject: function () { GA.app.saveProject(); }, sessions: function () { if (GA.sessions) GA.sessions.open(); }, importFile: function () { var f = $('#fileOpen'); f.value = ''; f.click(); },
   aiPanel: function () { if (GA.ai) GA.ai.show(); }, aiSettings: function () { if (GA.ai) GA.ai.openSettings(); },
   downloadAtelier: function () { if (GA.ai) GA.ai.downloadAtelier(); }
 };
@@ -17419,6 +18342,12 @@ function rank(pairs, q, max) {
 /* liste de suggestions : { v: valeur à écrire, chip: texte de la pastille, cls, col, sub, desc } */
 function itemsFor(kind, q, field) {
   var qn = norm(q).trim(), out = [];
+  if (kind === 'val') {
+    // tant qu'on n'a rien tapé : toutes les valeurs habituelles ; sinon celles qui contiennent le texte tapé
+    var all = (cur && cur.hints && cur.hints.items) || [];
+    if (!cur || q === cur.orig) return all.slice();
+    return all.filter(function (it) { return norm(it.v).indexOf(qn) >= 0 || norm(it.desc).indexOf(qn) >= 0; });
+  }
   if (kind === 'var') {
     rank(namesInWorkspace(wsOf(field), field.getSourceBlock()), qn, 40).forEach(function (h) {
       var c = GA.isPyConst(h.p[0]);
@@ -17471,7 +18400,8 @@ function render() {
   // pré-sélection seulement si le début correspond : écrire un nouveau nom puis Entrée ne le remplace pas
   var qn = norm(cur.input.value).trim();
   cur.active = items.length && qn && (norm(items[0].v).indexOf(qn) === 0 || norm(items[0].chip).indexOf(qn) === 0) ? 0 : -1;
-  var head = cur.kind === 'var' ? T('Variables de ton script') : cur.kind === 'attr' ? T('Attributs courants') : T('Fonctions — tape un mot (en français ou en anglais)');
+  if (cur.kind === 'val' && cur.input.value === cur.orig) cur.active = -1;
+  var head = cur.kind === 'val' ? cur.hints.head + ' — ' + T('valeurs habituelles') : cur.kind === 'var' ? T('Variables de ton script') : cur.kind === 'attr' ? T('Attributs courants') : T('Fonctions — tape un mot (en français ou en anglais)');
   var h = '<div class="sgHead">' + esc(head) + (cur.kind === 'func' ? '<button type="button" class="sgAll">🔍 ' + esc(T('Parcourir tout')) + '</button>' : '') + '</div>';
   if (!items.length) h += '<div class="sgNone">' + esc(T('Rien ne correspond. Tu peux quand même écrire ce que tu veux.')) + '</div>';
   items.forEach(function (it, i) {
@@ -17495,6 +18425,12 @@ function setActive(i) {
 function choose(i) {
   if (!cur || !cur.items[i]) return;
   var it = cur.items[i], c = cur, block = c.field.getSourceBlock();
+  if (c.kind === 'val') {
+    close(); root.Blockly.WidgetDiv.hide();
+    if (GA.pickHint) GA.pickHint(block, it);
+    if (GA.afterSuggest) GA.afterSuggest(block);
+    return;
+  }
   c.input.value = it.v;
   c.input.dispatchEvent(new Event('input', { bubbles: true }));
   close();
@@ -17503,10 +18439,10 @@ function choose(i) {
   if (GA.afterSuggest) GA.afterSuggest(block);
 }
 GA.suggest = {
-  open: function (field, kind, input) {
+  open: function (field, kind, input, hints) {
     close();
     if (!input || !root.document) return;
-    cur = { field: field, kind: kind, input: input, items: [], active: -1 };
+    cur = { field: field, kind: kind, input: input, items: [], active: -1, hints: hints, orig: input.value };
     box = document.createElement('div');
     box.className = 'sgBox';
     box.setAttribute('role', 'listbox');
@@ -17540,6 +18476,249 @@ if (root.addEventListener) {
   root.addEventListener('resize', place);
   root.addEventListener('wheel', function () { if (cur && !document.body.contains(cur.input)) close(); else place(); }, { passive: true });
 }
+})(typeof window !== 'undefined' ? window : globalThis);
+
+</script>
+<script data-ga>
+/* Valeurs prédites : quand on clique une case, l'atelier propose ce qu'on écrit presque toujours à cet endroit
+   (register(...), paramètres PF_…, arguments des fonctions GIMP). */
+(function (root) {
+'use strict';
+var GA = root.GA = root.GA || {};
+var T = function (x) { return GA.T ? GA.T(x) : x; };
+var IDENT = /^[A-Za-z_]\w*$/;
+function q(s) { return JSON.stringify(String(s)); }
+function unq(code) { var m = /^[urUR]?(["'])(.*)\1$/.exec(String(code || '').trim()); return m ? m[2] : null; }
+
+/* ---------- mémoire des auteurs (retenus à chaque import / modification) ---------- */
+var AKEY = 'atelier-gimp-authors';
+function authors() { try { return JSON.parse(localStorage.getItem(AKEY) || '[]'); } catch (e) { return []; } }
+GA.rememberAuthor = function (name) {
+  name = String(name || '').trim();
+  if (!name || name.length > 60) return;
+  var a = authors().filter(function (x) { return x !== name; });
+  a.unshift(name);
+  try { localStorage.setItem(AKEY, JSON.stringify(a.slice(0, 8))); } catch (e) { /* ok */ }
+};
+
+/* ---------- ce que contient register(...) ---------- */
+var PF = {
+  PF_IMAGE: ['None', null, 'l\'image', 'image'], PF_DRAWABLE: ['None', null, 'le calque actif', 'drawable'],
+  PF_LAYER: ['None', null, 'un calque', 'layer'], PF_CHANNEL: ['None', null, 'un canal', 'channel'], PF_VECTORS: ['None', null, 'un chemin', 'path'],
+  PF_TOGGLE: ['True', null, 'une case à cocher', 'option'], PF_BOOL: ['True', null, 'oui / non', 'option'],
+  PF_INT: ['0', null, 'un nombre entier', 'number'], PF_FLOAT: ['0.0', null, 'un nombre à virgule', 'value'],
+  PF_SLIDER: ['50', '(0, 100, 1)', 'un curseur (min, max, pas)', 'amount'], PF_SPINNER: ['10', '(1, 100, 1)', 'un nombre avec flèches (min, max, pas)', 'size'],
+  PF_ADJUSTMENT: ['10', '(1, 100, 1)', 'comme PF_SPINNER', 'size'],
+  PF_STRING: ['""', null, 'un texte sur une ligne', 'text'], PF_TEXT: ['""', null, 'un texte sur plusieurs lignes', 'text'],
+  PF_COLOR: ['(0, 0, 0)', null, 'une couleur', 'color'], PF_OPTION: ['0', '["Option 1", "Option 2"]', 'une liste déroulante', 'choice'],
+  PF_RADIO: ['"a"', '(("Choix A", "a"), ("Choix B", "b"))', 'des boutons radio', 'choice'],
+  PF_FONT: ['"Sans-serif"', null, 'une police', 'font'], PF_BRUSH: ['None', null, 'une brosse', 'brush'], PF_PATTERN: ['None', null, 'un motif', 'pattern'],
+  PF_GRADIENT: ['None', null, 'un dégradé', 'gradient'], PF_PALETTE: ['None', null, 'une palette', 'palette'],
+  PF_FILE: ['""', null, 'un fichier', 'filename'], PF_FILENAME: ['""', null, 'un fichier', 'filename'], PF_DIRNAME: ['""', null, 'un dossier', 'folder']
+};
+var PF_ORDER = ['PF_IMAGE', 'PF_DRAWABLE', 'PF_TOGGLE', 'PF_INT', 'PF_STRING', 'PF_OPTION', 'PF_SPINNER', 'PF_SLIDER', 'PF_COLOR', 'PF_FONT', 'PF_FLOAT',
+  'PF_TEXT', 'PF_RADIO', 'PF_BOOL', 'PF_LAYER', 'PF_CHANNEL', 'PF_VECTORS', 'PF_FILE', 'PF_DIRNAME', 'PF_BRUSH', 'PF_PATTERN', 'PF_GRADIENT', 'PF_PALETTE', 'PF_ADJUSTMENT', 'PF_FILENAME'];
+GA.PF_INFO = PF; GA.PF_ORDER = PF_ORDER;
+GA.pfTuple = function (type, name, desc) {
+  var p = PF[type] || PF.PF_INT;
+  name = name || p[3];
+  return '(' + [type, q(name), q(desc || name.replace(/_/g, ' ').replace(/^./, function (c) { return c.toUpperCase(); })), p[0]].concat(p[1] ? [p[1]] : []).join(', ') + ')';
+};
+var MENUS = [['<Image>/Filters', 'menu Filtres'], ['<Image>/Layer', 'menu Calque'], ['<Image>/Python-Fu', 'son propre menu Python-Fu'], ['<Image>/Image', 'menu Image'],
+  ['<Image>/Colors', 'menu Couleurs'], ['<Image>/Select', 'menu Sélection'], ['<Image>/Edit', 'menu Édition'], ['<Image>/File', 'menu Fichier'], ['<Image>/Tools', 'menu Outils'],
+  ['<Image>/Filters/Artistic', 'Filtres ▸ Artistiques'], ['<Image>/Filters/Light and Shadow', 'Filtres ▸ Ombres et lumières'], ['<Image>/Filters/Decor', 'Filtres ▸ Décor'],
+  ['<Layers>', 'clic droit dans la fenêtre Calques'], ['<Toolbox>/Xtns', 'sans image ouverte (menu Fichier ▸ Créer)']];
+var IMAGETYPES = [['"*"', 'toutes les images'], ['"RGB*, GRAY*"', 'couleur et niveaux de gris'], ['"RGB*"', 'images couleur'], ['""', 'aucune image nécessaire (menu <Toolbox>)'],
+  ['"RGBA"', 'couleur avec transparence'], ['"GRAY*"', 'niveaux de gris'], ['"INDEXED*"', 'images indexées']];
+
+function wsOf(b) { var ws = b && b.workspace; return ws && (ws.targetWorkspace || ws); }
+function codeOf(b) {
+  if (!b) return '';
+  if (b.type === 'py_var') return String(b.getFieldValue('NAME'));
+  if (b.type === 'py_leaf') return String(b.getFieldValue('CODE'));
+  try { var r = GA.G.blockToCode(b); return String(Array.isArray(r) ? r[0] : r).replace(/[\u0000-\u0007][^\u0002]*?\u0002|[\u0000-\u0007]/g, ''); } catch (e) { return ''; }
+}
+function argBlock(call, i) { var inp = call.getInput('A' + i); return inp && inp.connection && inp.connection.targetBlock(); }
+/* le nom du script : fonction passée à register, sinon première fonction, sinon nom du fichier */
+function scriptSlug(ws, call) {
+  var f = call && argBlock(call, 10);
+  if (f && f.type === 'py_var') return f.getFieldValue('NAME');
+  var d = ws && ws.getBlocksByType('py_def', false)[0];
+  if (d) return d.getFieldValue('NAME');
+  var hat = ws && GA.getFileHat && GA.getFileHat(ws);
+  return (hat && GA.pyIdent ? GA.pyIdent(hat.getFieldValue('NAME'), 'mon_script') : 'mon_script');
+}
+function human(slug) { return String(slug).replace(/^python_fu_|^plug_in_|^script_fu_/, '').replace(/_+/g, ' ').trim().replace(/^./, function (c) { return c.toUpperCase(); }); }
+function year() { return String(new Date().getFullYear()); }
+function today() { return new Date().toISOString().slice(0, 10); }
+
+/* où se trouve ce bloc ? */
+function context(b) {
+  var parent = b && b.getParent && b.getParent();
+  if (!parent) return null;
+  var inp = parent.getInputWithBlock(b);
+  if (!inp) return null;
+  var m = /^([AE])(\d+)$/.exec(inp.name);
+  if (!m) return null;
+  var i = +m[2];
+  if (m[1] === 'A' && (parent.type === 'py_call' || parent.type === 'py_callst')) {
+    return { kind: 'call', call: parent, i: i, func: String(parent.getFieldValue('FUNC') || ''), arg: (parent.a_ || [])[i] || 'p' };
+  }
+  if (m[1] === 'E' && parent.type === 'py_list' && parent.k_ === 'ptuple') return { kind: 'pf', tuple: parent, i: i };
+  if (m[1] === 'E' && parent.type === 'py_list') {
+    var gp = parent.getParent && parent.getParent(), gi = gp && gp.getInputWithBlock(parent);
+    if (gp && /^py_call/.test(gp.type) && gp.getFieldValue('FUNC') === 'register' && gi && (gi.name === 'A8' || gi.name === 'A9')) return { kind: 'params', list: parent, i: i };
+  }
+  return null;
+}
+function item(v, desc, cls) { return { v: v, chip: v, desc: desc ? T(desc) : '', cls: cls || (IDENT.test(v) ? (GA.isPyConst && GA.isPyConst(v) ? 'const' : 'var') : 'val') }; }
+
+function registerHints(ctx, cur) {
+  var ws = wsOf(ctx.call), slug = scriptSlug(ws, ctx.call), lab = human(slug), out = [];
+  var idx = ctx.arg === 'p' ? ctx.i : { 'k:proc_name': 0, 'k:blurb': 1, 'k:help': 2, 'k:author': 3, 'k:copyright': 4, 'k:date': 5, 'k:label': 6, 'k:imagetypes': 7, 'k:params': 8, 'k:results': 9, 'k:function': 10, 'k:menu': 11 }[ctx.arg];
+  if (idx === undefined) return null;
+  var who = authors(), cv = unq(cur);
+  if (idx === 0) { out.push(item(q('python_fu_' + slug.replace(/^python_fu_/, '')), 'nom unique habituel')); out.push(item(q(slug), 'le nom de la fonction')); }
+  if (idx === 1 || idx === 2) { out.push(item(q(lab), 'le nom lisible')); out.push(item(q(lab + '…'), '')); }
+  if (idx === 3 || idx === 4) {
+    who.forEach(function (a) { out.push(item(q(a), 'déjà utilisé')); });
+    if (idx === 4) { out.push(item(q(year()), 'l\'année')); if (who[0]) out.push(item(q('Copyright ' + year() + ' ' + who[0]), '')); out.push(item('"GPL v3"', 'licence libre')); out.push(item('"MIT"', 'licence libre')); }
+  }
+  if (idx === 5) { out.push(item(q(year()), 'cette année')); out.push(item(q(today()), 'aujourd\'hui')); }
+  if (idx === 6) {
+    // avec menu="…" à part, le libellé est court ; sinon c'est le chemin complet
+    var hasMenu = (ctx.call.a_ || []).indexOf('k:menu') >= 0;
+    if (hasMenu) out.push(item(q(lab + '...'), 'le nom dans le menu'));
+    MENUS.forEach(function (m) { if (!hasMenu && m[0].indexOf('<Image>') === 0) out.push(item(q(m[0] + '/' + lab + '...'), m[1])); });
+    if (!hasMenu) out.push(item(q(lab + '...'), 'le nom seul (avec menu="…")'));
+  }
+  if (idx === 11) MENUS.forEach(function (m) { out.push(item(q(m[0]), m[1])); });
+  if (idx === 7) IMAGETYPES.forEach(function (t) { out.push(item(t[0], t[1])); });
+  if (idx === 8) { out.push(item('[' + GA.pfTuple('PF_IMAGE') + ', ' + GA.pfTuple('PF_DRAWABLE') + ']', 'image + calque actif (le plus courant)')); out.push(item('[]', 'aucun réglage')); }
+  if (idx === 9) out.push(item('[]', 'rien (le plus courant)'));
+  if (idx === 10 && ws) ws.getBlocksByType('py_def', false).forEach(function (d) { out.push(item(d.getFieldValue('NAME'), 'ta fonction (' + d.getFieldValue('ARGS') + ')', 'def')); });
+  if (cv !== null && idx >= 3 && idx <= 4 && cv) GA.rememberAuthor(cv);
+  return { head: T('register') + ' · ' + T(['nom', 'description', 'aide', 'auteur', 'copyright', 'date', 'libellé', 'types d\'image', 'paramètres', 'résultats', 'fonction', 'menu'][idx]), items: out };
+}
+function pfHints(ctx) {
+  var t0 = ctx.tuple.getInput('E0'), tb = t0 && t0.connection.targetBlock(), type = tb ? codeOf(tb) : '', p = PF[type], out = [];
+  if (ctx.i === 0) {
+    PF_ORDER.forEach(function (k) { var x = item(k, PF[k][2], 'const'); x.pf = true; out.push(x); });
+    return { head: T('Type de réglage (la case s\'adapte toute seule)'), items: out };
+  }
+  if (ctx.i === 1 && p) { out.push(item(q(p[3]), '')); if (type === 'PF_IMAGE') out.push(item('"img"', '')); if (type === 'PF_DRAWABLE') out.push(item('"layer"', '')); }
+  if (ctx.i === 2 && p) { var nb = ctx.tuple.getInput('E1'), nm = unq(codeOf(nb && nb.connection.targetBlock())) || p[3]; out.push(item(q(human(nm)), '')); if (type === 'PF_IMAGE') out.push(item('"Input image"', '')); if (type === 'PF_DRAWABLE') out.push(item('"Input drawable"', '')); }
+  if (ctx.i === 3 && p) {
+    out.push(item(p[0], 'valeur de départ habituelle'));
+    if (/TOGGLE|BOOL/.test(type)) out.push(item(p[0] === 'True' ? 'False' : 'True', ''));
+    if (type === 'PF_COLOR') { out.push(item('(255, 255, 255)', 'blanc')); out.push(item('(255, 0, 0)', 'rouge')); }
+    if (/SLIDER|SPINNER|ADJUSTMENT|INT/.test(type)) ['0', '1', '10', '100'].forEach(function (v) { if (v !== p[0]) out.push(item(v, '')); });
+  }
+  if (ctx.i === 4 && p && p[1]) {
+    out.push(item(p[1], 'habituel'));
+    if (/SLIDER|SPINNER|ADJUSTMENT/.test(type)) { out.push(item('(0, 255, 1)', '0 à 255')); out.push(item('(1, 1000, 1)', '1 à 1000 pixels')); out.push(item('(0, 1, 0.01)', '0 à 1, précis')); }
+  }
+  return out.length ? { head: T('Réglage') + ' ' + type, items: out } : null;
+}
+/* arguments des fonctions GIMP (pdb.…) d'après leur type */
+function pdbHints(ctx, blk) {
+  var sig = GA.SIGS && GA.SIGS[ctx.func.slice(4)];
+  if (!sig || ctx.arg !== 'p') return null;
+  var a = sig[4][ctx.i];
+  if (!a) return null;
+  var k = a[1], out = [], ws = wsOf(blk), vars = (GA.scriptVarList ? GA.scriptVarList(ws) : []).map(function (p) { return p[0]; });
+  function like(re) { return vars.filter(function (n) { return re.test(n); }); }
+  if (a[4]) out.push(item('None', 'rien (facultatif)'));
+  if (k === 'enum') (GA.enumOptions ? GA.enumOptions(a) : []).forEach(function (o) { out.push(item(o[1], o[0].replace(/ \(.*\)$/, '') === o[1] ? '' : o[0], 'const')); });
+  else if (k === 'boolean') { out.push(item('True', 'oui')); out.push(item('False', 'non')); }
+  else if (k === 'image') { ['image'].concat(like(/im(a?g|age)/i)).forEach(function (n, i, arr) { if (arr.indexOf(n) === i) out.push(item(n, '')); }); out.push(item('gimp.image_list()[0]', 'la dernière image ouverte')); }
+  else if (k === 'drawable' || k === 'layer' || k === 'item') {
+    ['drawable'].concat(like(/layer|calque|drawable|lyr/i)).forEach(function (n, i, arr) { if (arr.indexOf(n) === i) out.push(item(n, '')); });
+    out.push(item('pdb.gimp_image_get_active_drawable(image)', 'le calque actif'));
+  } else if (k === 'color') { out.push(item('(0, 0, 0)', 'noir')); out.push(item('(255, 255, 255)', 'blanc')); out.push(item('gimp.get_foreground()', 'couleur de premier plan')); out.push(item('gimp.get_background()', 'couleur d\'arrière-plan')); }
+  else if (/^(int32|int16|int8|float)$/.test(k)) {
+    var r = /(-?[\d.]+)\s*<=\s*\w+\s*<=\s*(-?[\d.]+)/.exec(a[2] || '');
+    if (/width/i.test(a[0])) out.push(item('image.width', 'largeur de l\'image'));
+    if (/height/i.test(a[0])) out.push(item('image.height', 'hauteur de l\'image'));
+    if (/opacity/i.test(a[0])) out.push(item('100', 'opaque'));
+    if (r) { out.push(item(r[1], 'minimum')); out.push(item(r[2], 'maximum')); }
+  } else if (k === 'string') { if (/name/i.test(a[0])) out.push(item('"Calque"', '')); out.push(item('""', 'texte vide')); }
+  return out.length ? { head: a[0] + ' — ' + (a[3] || k), items: out } : null;
+}
+GA.valueHints = function (blk) {
+  var ctx = context(blk);
+  if (!ctx) return null;
+  var cur = codeOf(blk);
+  if (ctx.kind === 'call' && ctx.func === 'register') return registerHints(ctx, cur);
+  if (ctx.kind === 'call' && /^pdb\./.test(ctx.func)) return pdbHints(ctx, blk);
+  if (ctx.kind === 'pf') return pfHints(ctx);
+  if (ctx.kind === 'params') return { head: T('Ajouter un réglage'), items: PF_ORDER.slice(0, 12).map(function (k) { var x = item(GA.pfTuple(k), PF[k][2], 'val'); return x; }) };
+  return null;
+};
+
+/* ---------- appliquer un choix ---------- */
+/* remplace un bloc valeur par le code donné (en blocs) ; renvoie le nouveau bloc */
+GA.replaceValue = function (blk, code) {
+  var parent = blk.getParent(), inp = parent && parent.getInputWithBlock(blk);
+  if (!inp || !GA.pySnippet) return null;
+  var st = GA.pySnippet('_ = ' + code), v = st && st.type === 'py_assign' && st.inputs && st.inputs.V && st.inputs.V.block;
+  if (!v) return null;
+  var nb = null;
+  Blockly.Events.setGroup(true);
+  try {
+    blk.dispose(false);
+    nb = Blockly.serialization.blocks.append(v, wsOf(parent));
+    inp.connection.connect(nb.outputConnection);
+  } finally { Blockly.Events.setGroup(false); }
+  return nb;
+};
+/* choisir un type PF_… : le tuple entier se complète (valeur de départ, min/max, options) */
+GA.applyPfType = function (blk, type) {
+  var ctx = context(blk);
+  if (!ctx || ctx.kind !== 'pf' || !PF[type]) return false;
+  var t = ctx.tuple, p = PF[type];
+  function at(i) { var inp = t.getInput('E' + i); return inp && inp.connection.targetBlock(); }
+  var name = at(1) ? codeOf(at(1)) : q(p[3]), desc = at(2) ? codeOf(at(2)) : q(human(p[3]));
+  var code = '(' + [type, name, desc, p[0]].concat(p[1] ? [p[1]] : []).join(', ') + ')';
+  return !!GA.replaceValue(t, code);
+};
+/* après un choix dans les suggestions d'une case valeur */
+GA.pickHint = function (blk, it) {
+  if (!blk) return;
+  if (it.pf) { GA.applyPfType(blk, it.v); return; }
+  var isName = IDENT.test(it.v) && !/^(True|False|None)$/.test(it.v);
+  if (blk.type === 'py_var' && isName) { blk.setFieldValue(it.v, 'NAME'); return; }
+  if (blk.type === 'py_leaf' && !isName && !/[[(,{]/.test(it.v)) { blk.setFieldValue(it.v, 'CODE'); return; }
+  GA.replaceValue(blk, it.v);
+};
+/* un script importé ou modifié : on retient son auteur pour le proposer la prochaine fois */
+GA.learnFromWorkspace = function (ws) {
+  if (!ws) return;
+  ws.getAllBlocks(false).forEach(function (b) {
+    if (!/^py_call/.test(b.type) || b.getFieldValue('FUNC') !== 'register') return;
+    var a = argBlock(b, 3), v = a && a.type === 'py_leaf' ? unq(a.getFieldValue('CODE')) : null;
+    if (v) GA.rememberAuthor(v);
+  });
+};
+
+/* ---------- modèles à glisser (catégorie Python) ---------- */
+GA.registerTemplate = function (ws) {
+  var slug = scriptSlug(ws, null), lab = human(slug), who = authors()[0] || 'Moi';
+  return 'register(\n    ' + [q('python_fu_' + slug.replace(/^python_fu_/, '')), q(lab), q(lab), q(who), q(who), q(year()), q('<Image>/Filters/' + lab + '...'), '"*"',
+    '[\n        ' + GA.pfTuple('PF_IMAGE', 'image', 'Input image') + ',\n        ' + GA.pfTuple('PF_DRAWABLE', 'drawable', 'Input drawable') + '\n    ]', '[]', slug].join(',\n    ') + ')\n\nmain()';
+};
+GA.registerFlyout = function (ws) {
+  var out = [{ kind: 'label', text: T('📋 Déclarer le plug-in (register) :'), 'web-class': 'gaSep' },
+    { kind: 'label', text: T('Déjà rempli avec ton nom, l\'année et ta fonction : clique une case pour d\'autres choix.'), 'web-class': 'gaHint' }];
+  var st = GA.pySnippet && GA.pySnippet(GA.registerTemplate(ws));
+  if (st) { st.kind = 'block'; out.push(st); }
+  out.push({ kind: 'label', text: T('Réglages à glisser dans la liste des paramètres :'), 'web-class': 'gaHint' });
+  PF_ORDER.slice(0, 13).forEach(function (k) {
+    var s = GA.pySnippet && GA.pySnippet('_ = ' + GA.pfTuple(k)), v = s && s.inputs && s.inputs.V && s.inputs.V.block;
+    if (v) { v.kind = 'block'; out.push(v); }
+  });
+  return out;
+};
 })(typeof window !== 'undefined' ? window : globalThis);
 
 </script>
@@ -17642,6 +18821,14 @@ function varFieldOf(b) {
   return null;
 }
 
+/* variables proposées : pas les noms de fonctions (def), triées */
+function varList(ws) {
+  var defs = {};
+  ws.getBlocksByType('py_def', false).forEach(function (b) { defs[b.getFieldValue('NAME')] = 1; });
+  return (GA.scriptVars ? GA.scriptVars(ws, null) : []).filter(function (p) { return !defs[p[0]]; })
+    .sort(function (a, b) { return a[0].toLowerCase().localeCompare(b[0].toLowerCase()); });
+}
+GA.scriptVarList = varList;
 /* ---------- le menu de choix (clic sur la pastille) ---------- */
 var box = null, cur = null;
 function close() {
@@ -17687,9 +18874,9 @@ GA.varMenu = {
     var block = field.getSourceBlock(), ws = mainWs(block);
     if (!ws || !root.document) return;
     var curName = String(field.getValue() || '');
-    var list = GA.scriptVars ? GA.scriptVars(ws, null) : [];
-    var consts = list.filter(function (p) { return GA.isPyConst(p[0]); });
-    list = list.filter(function (p) { return !GA.isPyConst(p[0]); }).sort(function (a, b) { return a[0].toLowerCase().localeCompare(b[0].toLowerCase()); }).concat(consts);
+    var hints = GA.valueHints ? GA.valueHints(block) : null;
+    var isC = GA.isPyConst(curName);
+    var list = varList(ws).filter(function (p) { return isC ? GA.isPyConst(p[0]) : !GA.isPyConst(p[0]); });
     cur = { field: field, active: -1, filter: '' };
     box = document.createElement('div');
     box.className = 'sgBox vmBox';
@@ -17698,7 +18885,14 @@ GA.varMenu = {
     function draw() {
       var q = cur.filter.toLowerCase();
       var shown = list.filter(function (p) { return !q || p[0].toLowerCase().indexOf(q) >= 0; });
-      var h = '<div class="sgHead">' + esc(T('Variables de ton script')) + '</div>';
+      var h = '';
+      if (hints && hints.items.length && !q) {
+        h += '<div class="sgHead">' + esc(hints.head) + ' — ' + esc(T('valeurs habituelles')) + '</div>';
+        hints.items.forEach(function (it, i) {
+          h += '<div class="sgRow" data-h="' + i + '"><span class="sgChip sg-' + it.cls + '">' + esc(it.chip) + '</span>' + (it.desc ? '<div class="sgDesc">' + esc(it.desc) + '</div>' : '') + '</div>';
+        });
+      }
+      h += '<div class="sgHead">' + esc(T('Variables de ton script')) + '</div>';
       if (list.length > 8) h += '<input class="vmFilter" type="search" placeholder="' + esc(T('filtrer…')) + '" value="' + esc(cur.filter) + '">';
       h += '<div class="vmList">';
       shown.forEach(function (p) {
@@ -17721,9 +18915,10 @@ GA.varMenu = {
     box.addEventListener('click', function (e) {
       var row = e.target.closest('.sgRow');
       if (!row) return;
-      var v = row.getAttribute('data-v'), a = row.getAttribute('data-a');
+      var v = row.getAttribute('data-v'), a = row.getAttribute('data-a'), hi = row.getAttribute('data-h');
       close();
-      if (v != null) setValue(field, v);
+      if (hi != null) { GA.pickHint(block, hints.items[+hi]); if (GA.afterSuggest) GA.afterSuggest(block); }
+      else if (v != null) setValue(field, v);
       else if (a === 'rename') GA.askRenameVar(ws, curName);
       else if (a === 'new') GA.createScriptVar(ws, function (n) { setValue(field, n); });
       else if (a === 'type') typeByHand(field);
@@ -17741,7 +18936,8 @@ GA.varMenu = {
 /* ---------- clic droit sur un bloc de variable ---------- */
 function addVarMenu(type) {
   var def = Blockly.Blocks[type];
-  if (!def) return;
+  if (!def || def.gaVarMenu_) return;
+  def.gaVarMenu_ = true;
   var prev = def.customContextMenu;
   def.customContextMenu = function (opts) {
     if (prev) prev.call(this, opts);
@@ -17750,8 +18946,7 @@ function addVarMenu(type) {
     if (!f || !ws) return;
     var extra = [];
     if (GA.isPyIdent(name)) extra.push({ text: '✏️ ' + T('Renommer « %1 » partout…').replace('%1', name), enabled: true, callback: function () { GA.askRenameVar(ws, name); } });
-    var others = (GA.scriptVars ? GA.scriptVars(ws, null) : []).map(function (p) { return p[0]; })
-      .filter(function (n) { return n !== name && !GA.isPyConst(n); }).sort(function (a, b) { return a.toLowerCase().localeCompare(b.toLowerCase()); });
+    var others = varList(ws).map(function (p) { return p[0]; }).filter(function (n) { return n !== name && !GA.isPyConst(n); });
     others.slice(0, 10).forEach(function (n) { extra.push({ text: '↔ ' + T('utiliser « %1 »').replace('%1', n), enabled: true, callback: function () { setValue(f, n); } }); });
     extra.push({ text: '📋 ' + T('Choisir une autre variable…'), enabled: true, callback: function () { GA.varMenu.open(f); } });
     extra.push({ text: '⌨️ ' + T('Écrire le nom au clavier'), enabled: true, callback: function () { typeByHand(f); } });
@@ -17759,9 +18954,149 @@ function addVarMenu(type) {
     opts.unshift.apply(opts, extra);
   };
 }
-if (root.Blockly) ['py_var', 'py_assign', 'py_augassign', 'py_for'].forEach(addVarMenu);
+GA.pyVarsInit = function () { ['py_var', 'py_assign', 'py_augassign', 'py_for'].forEach(addVarMenu); };
+if (root.Blockly && root.Blockly.Blocks && root.Blockly.Blocks.py_var) GA.pyVarsInit();
 if (root.addEventListener) root.addEventListener('resize', function () { if (cur) place(cur.field); });
 })(typeof window !== 'undefined' ? window : globalThis);
+
+</script>
+<script data-ga>
+/* Sessions : on enregistre sous un nom tout ce qui fait « son » atelier
+   (le projet, l'apparence, la langue, la disposition de l'écran, les progrès du cours, les auteurs retenus)
+   pour le retrouver plus tard, ou le passer à un autre ordinateur en fichier .json. */
+(function () {
+'use strict';
+var GA = window.GA;
+var T = function (x) { return GA.T ? GA.T(x) : x; };
+var PREFIX = 'atelier-gimp-', SKEY = 'atelier-gimp-sessions', UKEY = 'atelier-gimp-ui', VKEY = 'atelier-gimp-restore-view';
+var SKIP = { 'atelier-gimp-sessions': 1, 'atelier-gimp-ia': 1, 'atelier-gimp-restore-view': 1 };   // jamais la clé de l'IA
+var PROJECT_KEYS = { 'atelier-gimp-v2-projet': 1 };
+function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', '\'': '&#39;' }[c]; }); }
+function get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+function set(k, v) { try { localStorage.setItem(k, v); return true; } catch (e) { return false; } }
+function list() { try { return JSON.parse(get(SKEY) || '[]'); } catch (e) { return []; } }
+function ws() { return GA.ws; }
+
+/* ---------- l'état de l'écran (panneau, onglet, zoom, position) ---------- */
+function uiState() {
+  var w = ws(), tab = document.querySelector('.tab[aria-selected="true"]');
+  var m = w && w.getMetrics ? w.getMetrics() : null;
+  return { noSide: document.body.classList.contains('noSide'), tab: tab ? tab.getAttribute('data-pane') : 'help',
+    scale: w ? w.scale : 1, sx: m ? m.viewLeft : 0, sy: m ? m.viewTop : 0 };
+}
+var restoring = false;
+function saveUi() { if (!restoring) set(UKEY, JSON.stringify(uiState())); }
+function applyUi(view) {
+  var u; try { u = JSON.parse(get(UKEY) || 'null'); } catch (e) { u = null; }
+  if (!u) return;
+  document.body.classList.toggle('noSide', !!u.noSide);
+  if (u.tab && GA.app.showTab && document.getElementById('p-' + u.tab)) GA.app.showTab(u.tab);
+  if (view && ws()) setTimeout(function () {
+    var w = ws();
+    Blockly.svgResize(w);
+    if (u.scale) w.setScale(u.scale);
+    w.scroll(-(u.sx || 0), -(u.sy || 0));
+  }, 250);
+}
+
+/* ---------- instantané / restauration ---------- */
+function snapshot(name) {
+  if (GA.app.flush) GA.app.flush();
+  saveUi();
+  var data = {};
+  for (var i = 0; i < localStorage.length; i++) {
+    var k = localStorage.key(i);
+    if (k && k.indexOf(PREFIX) === 0 && !SKIP[k]) data[k] = localStorage.getItem(k);
+  }
+  var hat = ws() && GA.getHat ? GA.getHat(ws()) : null;
+  return { app: 'gimp-code-block', kind: 'session', v: 1, name: name, date: new Date().toISOString(),
+    script: hat ? String(hat.getFieldValue('NAME') || hat.getFieldValue('LABEL') || '') : '', blocks: ws() ? ws().getAllBlocks(false).length : 0,
+    lang: GA.lang || get('atelier-gimp-lang') || 'fr', data: data };
+}
+function restore(s, withProject) {
+  Object.keys(s.data || {}).forEach(function (k) {
+    if (k.indexOf(PREFIX) !== 0 || SKIP[k]) return;
+    if (!withProject && PROJECT_KEYS[k]) return;
+    set(k, s.data[k]);
+  });
+  set(VKEY, withProject ? '1' : '');
+  restoring = true;   // ne pas réécrire l'écran actuel par-dessus celui de la session en quittant
+  location.reload();   // langue, forme des blocs, thème : tout repart proprement
+}
+function store(s) {
+  var l = list().filter(function (x) { return x.name !== s.name; });
+  l.unshift(s);
+  if (!set(SKEY, JSON.stringify(l))) { GA.toast(T('Plus de place pour les sessions : supprime-en une ou exporte-la en fichier.')); return false; }
+  return true;
+}
+function download(s) {
+  var blob = new Blob([JSON.stringify(s, null, 1)], { type: 'application/json' });
+  var fn = 'session-' + String(s.name || 'atelier').replace(/[\\/:*?"<>|\s]+/g, '_') + '.json';
+  GA.app.saveFile(fn, blob);
+}
+function when(iso) { try { return new Date(iso).toLocaleString(GA.lang || undefined, { dateStyle: 'medium', timeStyle: 'short' }); } catch (e) { return iso; } }
+function size(s) { var n = JSON.stringify(s).length; return n > 1e6 ? (n / 1e6).toFixed(1) + ' Mo' : Math.max(1, Math.round(n / 1e3)) + ' ko'; }
+
+GA.sessions = {
+  init: function () {
+    var view = get(VKEY) === '1';
+    set(VKEY, '');
+    applyUi(view);
+    window.addEventListener('beforeunload', saveUi);
+    document.addEventListener('visibilitychange', function () { if (document.hidden) saveUi(); });
+  },
+  save: function (name) { var s = snapshot(name); return store(s) ? s : null; },
+  list: list,
+  open: function () {
+    var l = list();
+    var def = (ws() && GA.getHat && GA.getHat(ws()) ? String(GA.getHat(ws()).getFieldValue('NAME') || '') : '') || T('Ma session');
+    var rows = l.length ? l.map(function (s, i) {
+      return '<div class="sesRow"><div class="sesInfo"><b>' + esc(s.name) + '</b><span>' + esc(when(s.date)) + ' · ' + esc(s.script || '—') + ' · ' + s.blocks + ' ' + esc(T('blocs')) + ' · ' + esc(String(s.lang).toUpperCase()) + ' · ' + size(s) + '</span></div>' +
+        '<div class="sesBtns"><button class="btn primary" data-o="' + i + '">' + esc(T('Ouvrir')) + '</button><button class="btn" data-u="' + i + '" title="' + esc(T('Garder mon projet actuel, reprendre seulement l\'interface')) + '">🎨 ' + esc(T('Interface seule')) + '</button>' +
+        '<button class="btn" data-x="' + i + '" title="' + esc(T('Exporter en fichier')) + '">⬇</button><button class="btn" data-d="' + i + '" title="' + esc(T('Supprimer')) + '">🗑</button></div></div>';
+    }).join('') : '<p class="sub">' + esc(T('Aucune session enregistrée pour l\'instant.')) + '</p>';
+    var d = GA.app.openDialog('<h2>💼 ' + esc(T('Sessions')) + '</h2><p class="sub">' + esc(T('Une session garde ton projet, l\'apparence, la langue, la disposition de l\'écran, tes progrès dans le cours et les auteurs retenus. Ta clé d\'IA n\'est jamais incluse.')) + '</p>' +
+      '<div class="sesNew"><input id="sesName" type="text" maxlength="60" value="' + esc(def) + '"><button class="btn primary" id="sesSave">💾 ' + esc(T('Enregistrer la session actuelle')) + '</button></div>' +
+      '<div class="sesList">' + rows + '</div>' +
+      '<div class="foot"><button class="btn" id="sesImport">📂 ' + esc(T('Importer une session (.json)')) + '</button><button class="btn" id="sesClose">' + esc(T('Fermer')) + '</button></div>', 'wide');
+    function q(s) { return d.querySelector(s); }
+    q('#sesSave').onclick = function () {
+      var n = q('#sesName').value.trim() || T('Ma session');
+      var exists = l.some(function (s) { return s.name === n; });
+      function go() { if (GA.sessions.save(n)) { GA.toast(T('Session enregistrée.')); GA.sessions.open(); } }
+      if (exists) GA.app.confirmBox(T('Remplacer la session ?'), T('Une session porte déjà ce nom. La remplacer par l\'état actuel ?'), T('Remplacer'), function (ok) { if (ok) go(); else GA.sessions.open(); });
+      else go();
+    };
+    q('#sesName').onkeydown = function (e) { if (e.key === 'Enter') q('#sesSave').click(); };
+    q('#sesClose').onclick = function () { GA.app.closeDialog(); };
+    q('#sesImport').onclick = function () {
+      var f = document.createElement('input'); f.type = 'file'; f.accept = '.json,application/json';
+      f.onchange = function () {
+        var file = f.files[0]; if (!file) return;
+        file.text().then(function (txt) {
+          var s; try { s = JSON.parse(txt); } catch (e) { s = null; }
+          if (!s || s.kind !== 'session' || !s.data) { GA.toast(T('Ce fichier n\'est pas une session de l\'atelier.')); return; }
+          if (store(s)) { GA.toast(T('Session importée.')); GA.sessions.open(); }
+        });
+      };
+      f.click();
+    };
+    d.querySelectorAll('[data-o]').forEach(function (b) { b.onclick = function () {
+      var s = l[+b.getAttribute('data-o')];
+      GA.app.confirmBox(T('Ouvrir la session ?'), T('Ton projet actuel sera remplacé par celui de la session (enregistre d\'abord ta session actuelle si tu veux la garder).'), T('Ouvrir'), function (ok) { if (ok) restore(s, true); else GA.sessions.open(); });
+    }; });
+    d.querySelectorAll('[data-u]').forEach(function (b) { b.onclick = function () { restore(l[+b.getAttribute('data-u')], false); }; });
+    d.querySelectorAll('[data-x]').forEach(function (b) { b.onclick = function () { download(l[+b.getAttribute('data-x')]); }; });
+    d.querySelectorAll('[data-d]').forEach(function (b) { b.onclick = function () {
+      var s = l[+b.getAttribute('data-d')];
+      GA.app.confirmBox(T('Supprimer la session ?'), '« ' + s.name + ' »', T('Supprimer'), function (ok) {
+        if (ok) set(SKEY, JSON.stringify(list().filter(function (x) { return x.name !== s.name; })));
+        GA.sessions.open();
+      });
+    }; });
+  }
+};
+})();
 
 </script>
 <script data-ga>
@@ -19335,6 +20670,7 @@ function importText(text, name, replaceOk, bytes) {
       if (res.opts) opts = Object.assign(GA.defaultOpts(), res.opts);
       else opts = Object.assign(GA.defaultOpts(), { crlf: opts.crlf });
       loadState(res.state);
+      if (GA.learnFromWorkspace) GA.learnFromWorkspace(ws);
       dlgClose = null; closeDialog();
       res.origText = text; res.origBytes = bytes || null;
       importReport(res);
@@ -19424,9 +20760,10 @@ function openWelcome() {
     '<div class="stack" aria-hidden="true"><div class="pb hat" style="background:#C8930A">▶ Quand je lance « Crédits +1 »</div><div class="pb in" style="background:#E0701A">pour chaque calque</div>' +
     '<div class="pb in" style="background:#D43F7C;margin-left:44px">changer le texte</div><div class="pb in" style="background:#5E6F8A">💬 afficher « Terminé ! »</div></div></div>' +
     '<div class="tip">🎓 Tu débutes ? Le <b>cours</b> t\'emmène pas à pas de ton premier plug-in jusqu\'au vrai code Python, avec des missions vérifiées automatiquement.</div>' +
-    '<div class="foot"><button class="btn" id="wEx">✨ Voir un exemple</button><button class="btn" id="wGuide">📘 Guide d\'utilisation</button><button class="btn" id="wGo">Commencer seul</button><button class="btn primary" id="wLearn" autofocus>🎓 Suivre le cours</button></div>', 'wide', function () { store.set(KEY_SEEN, '1'); });
+    '<div class="foot">' + (GA.sessions && GA.sessions.list().length ? '<button class="btn" id="wSes">💼 ' + T('Mes sessions') + '</button>' : '') + '<button class="btn" id="wEx">✨ Voir un exemple</button><button class="btn" id="wGuide">📘 Guide d\'utilisation</button><button class="btn" id="wGo">Commencer seul</button><button class="btn primary" id="wLearn" autofocus>🎓 Suivre le cours</button></div>', 'wide', function () { store.set(KEY_SEEN, '1'); });
   d.querySelector('#wGo').onclick = closeDialog;
   d.querySelector('#wLearn').onclick = function () { closeDialog(); if (GA.learn) GA.learn.open(); };
+  if (d.querySelector('#wSes')) d.querySelector('#wSes').onclick = function () { closeDialog(); GA.sessions.open(); };
   d.querySelector('#wGuide').onclick = function () { closeDialog(); if (GA.openGuide) GA.openGuide(); };
   d.querySelector('#wEx').onclick = function () { closeDialog(); openExamples(); };
 }
@@ -19658,6 +20995,8 @@ function init() {
   if (!store.get(KEY_SEEN)) openWelcome();
   window.addEventListener('resize', function () { Blockly.svgResize(ws); });
   GA.ws = ws; GA.app = { openDialog: openDialog, closeDialog: closeDialog, confirmBox: confirmBox, saveFile: saveFile, openExamples: openExamples, openSettings: openSettings, saveProject: saveProject, openPaste: openPaste, convertToPython: convertToPython, openWelcome: openWelcome, importText: importText, handleFile: handleFile, readZip: readZip, exportCode: exportCode, refresh: refresh, openExport: openExport, openExamples: openExamples, openSettings: openSettings, openPicker: openPicker, showTab: showTab, loadState: loadState, getBuilt: function () { return built; }, getIssues: function () { return issues; }, getOpts: function () { return opts; } };
+  GA.app.flush = save;
+  if (GA.sessions) GA.sessions.init();
 }
 function start() {
   if (!window.Blockly) { $('#loading').textContent = 'Impossible de charger Blockly (connexion ?). Recharge la page.'; return; }

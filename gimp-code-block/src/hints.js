@@ -89,7 +89,7 @@ function context(b) {
   }
   return null;
 }
-function item(v, desc, cls) { return { v: v, chip: v, desc: desc || '', cls: cls || (IDENT.test(v) ? (GA.isPyConst && GA.isPyConst(v) ? 'const' : 'var') : 'val') }; }
+function item(v, desc, cls) { return { v: v, chip: v, desc: desc ? T(desc) : '', cls: cls || (IDENT.test(v) ? (GA.isPyConst && GA.isPyConst(v) ? 'const' : 'var') : 'val') }; }
 
 function registerHints(ctx, cur) {
   var ws = wsOf(ctx.call), slug = scriptSlug(ws, ctx.call), lab = human(slug), out = [];

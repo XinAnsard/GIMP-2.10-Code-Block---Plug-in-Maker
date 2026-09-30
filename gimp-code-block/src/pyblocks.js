@@ -423,7 +423,7 @@ GA.pyInit = function (Blockly, G) {
       if (k.indexOf('k:') === 0) lab = (!ext && i ? ', ' : '') + k.slice(2) + ' =';
       else if (k === '*' || k === '**') lab = (!ext && i ? ', ' : '') + k;
       else if (ext && sig && sig[4][i]) lab = sig[4][i][0];
-      else if (ext && func === 'register' && REGISTER_ARGS[i]) lab = REGISTER_ARGS[i];
+      else if (ext && func === 'register' && REGISTER_ARGS[i]) lab = T(REGISTER_ARGS[i]);
       else if (!ext && i) lab = ',';
       f.setValue(lab);
     });

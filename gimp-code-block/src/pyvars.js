@@ -164,7 +164,7 @@ GA.varMenu = {
       if (hints && hints.items.length && !q) {
         h += '<div class="sgHead">' + esc(hints.head) + ' — ' + esc(T('valeurs habituelles')) + '</div>';
         hints.items.forEach(function (it, i) {
-          h += '<div class="sgRow" data-h="' + i + '"><span class="sgChip sg-' + it.cls + '">' + esc(it.chip) + '</span>' + (it.desc ? '<div class="sgDesc">' + esc(T(it.desc)) + '</div>' : '') + '</div>';
+          h += '<div class="sgRow" data-h="' + i + '"><span class="sgChip sg-' + it.cls + '">' + esc(it.chip) + '</span>' + (it.desc ? '<div class="sgDesc">' + esc(it.desc) + '</div>' : '') + '</div>';
         });
       }
       h += '<div class="sgHead">' + esc(T('Variables de ton script')) + '</div>';
