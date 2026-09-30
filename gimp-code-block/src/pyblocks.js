@@ -152,6 +152,8 @@ GA.pyInit = function (Blockly, G) {
       if (r) { var h = this.size_.height; r.setAttribute('rx', h / 2); r.setAttribute('ry', h / 2); }
     }
     showEditor_(e, quiet) {
+      // variable : par défaut un menu de choix (comme Scratch) ; la saisie au clavier est une option de l'apparence
+      if (this.kind_ === 'var' && !this.forceText_ && GA.varMenu && !(GA.prefs && GA.prefs.varText)) { GA.varMenu.open(this); return; }
       super.showEditor_(e, quiet);
       if (GA.suggest && this.htmlInput_) GA.suggest.open(this, this.kind_, this.htmlInput_);
     }
@@ -224,9 +226,10 @@ GA.pyInit = function (Blockly, G) {
       if (this.bom_) s.bom = 1;
       if (this.eol_) s.eol = this.eol_;
       if (this.end_ !== undefined) s.end = this.end_;
+      if (this.vars_ && this.vars_.length) s.vars = this.vars_.slice();   // variables créées à la main (pas encore utilisées)
       return Object.keys(s).length ? s : null;
     },
-    loadExtraState: function (s) { s = s || {}; this.py3_ = !!s.py3; this.bom_ = !!s.bom; this.eol_ = s.eol || null; this.end_ = s.end; }
+    loadExtraState: function (s) { s = s || {}; this.py3_ = !!s.py3; this.bom_ = !!s.bom; this.eol_ = s.eol || null; this.end_ = s.end; this.vars_ = (s.vars || []).slice(); }
   };
 
   /* ----- instructions simples ----- */
@@ -653,5 +656,6 @@ GA.pyInit = function (Blockly, G) {
     }
     this.n_ = n; this.d_ = d.slice();
   };
+  if (GA.pyVarsInit) GA.pyVarsInit();
 };
 })(typeof window !== 'undefined' ? window : globalThis);

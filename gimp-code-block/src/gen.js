@@ -613,6 +613,19 @@ GA.setup = function (Blockly, DATA) {
     var out = [{ kind: 'label', text: GA.CAT.vars.intro, 'web-class': 'gaIntro' },
       { kind: 'button', text: '➕ Créer une variable', callbackkey: 'GA_CREATE_VAR' }];
     var vars = main.getAllVariables().sort(function (a, b) { return a.name.localeCompare(b.name); });
+    // script Python (importé ou écrit) : ses variables deviennent des blocs à glisser, comme dans Scratch
+    var sv = GA.pyVarNames(main);
+    if (GA.isFileMode && GA.isFileMode(main) || sv.length) {
+      out.push({ kind: 'label', text: GA.T('Variables de ton script :'), 'web-class': 'gaSep' });
+      if (!sv.length) out.push({ kind: 'label', text: GA.T('(importe ou écris un script pour voir ses variables)'), 'web-class': 'gaHint' });
+      sv.slice(0, 120).forEach(function (n) { out.push({ kind: 'block', type: 'py_var', fields: { NAME: n } }); });
+      var n0 = sv[0] || 'x';
+      out.push({ kind: 'label', text: GA.T('Pour leur donner une valeur :'), 'web-class': 'gaSep' });
+      out.push({ kind: 'block', type: 'py_assign', fields: { T: n0 }, inputs: { V: { block: { type: 'py_leaf', fields: { CODE: '0' } } } } });
+      out.push({ kind: 'block', type: 'py_augassign', fields: { T: n0, OP: '+=' }, inputs: { V: { block: { type: 'py_leaf', fields: { CODE: '1' } } } } });
+      if (!vars.length) return out;
+      out.push({ kind: 'label', text: GA.T('Variables des blocs simples :'), 'web-class': 'gaSep' });
+    }
     if (vars.length) {
       var v0 = { id: vars[0].getId() };
       out.push(GA.withVar(GA.toolboxEntry(GA.SPEC.g_var_set), v0));
@@ -633,18 +646,28 @@ GA.setup = function (Blockly, DATA) {
     return out;
   };
   /* Python : d'abord les variables du script (pastilles orange, comme dans Scratch), puis les blocs */
+  /* noms des variables d'un script, triés, sans les constantes de GIMP */
+  GA.pyVarNames = function (main) {
+    var seen = {}, names = [];
+    function add(n) { if (/^[A-Za-z_]\w*$/.test(n) && !seen[n] && !/^(True|False|None|self)$/.test(n)) { seen[n] = 1; names.push(n); } }
+    if (GA.scriptVars) GA.scriptVars(main, null, true).forEach(function (p) { add(p[0]); });
+    else {
+      main.getBlocksByType('py_var', false).forEach(function (b) { add(b.getFieldValue('NAME')); });
+      main.getAllBlocks(false).forEach(function (b) {
+        if (b.type !== 'py_assign' && b.type !== 'py_for') return;
+        String(b.getFieldValue('T') || '').split(/[,()\s]+/).forEach(add);
+      });
+    }
+    var defs = {};
+    main.getBlocksByType('py_def', false).forEach(function (b) { defs[b.getFieldValue('NAME')] = 1; });
+    return names.filter(function (n) { return !GA.isPyConst(n) && !defs[n]; }).sort(function (a, b) { return a.toLowerCase().localeCompare(b.toLowerCase()); });
+  };
   GA.pyFlyout = function (ws) {
-    var main = ws.targetWorkspace || ws, seen = {}, names = [];
-    main.getBlocksByType('py_var', false).forEach(function (b) { var n = b.getFieldValue('NAME'); if (!seen[n]) { seen[n] = 1; names.push(n); } });
-    main.getAllBlocks(false).forEach(function (b) {
-      if (b.type !== 'py_assign' && b.type !== 'py_for') return;
-      String(b.getFieldValue('T') || '').split(/[,()\s]+/).forEach(function (n) { if (/^[A-Za-z_]\w*$/.test(n) && !seen[n]) { seen[n] = 1; names.push(n); } });
-    });
-    names = names.filter(function (n) { return !GA.isPyConst(n); });
+    var main = ws.targetWorkspace || ws, names = GA.pyVarNames(main);
     var out = GA.flyoutFor('py');
     var vars = [{ kind: 'label', text: GA.T('Variables de ton script :'), 'web-class': 'gaSep' }];
     if (!names.length) vars.push({ kind: 'label', text: GA.T('(importe ou écris un script pour voir ses variables)'), 'web-class': 'gaHint' });
-    names.sort(function (a, b) { return a.toLowerCase().localeCompare(b.toLowerCase()); }).slice(0, 80).forEach(function (n) { vars.push({ kind: 'block', type: 'py_var', fields: { NAME: n } }); });
+    names.slice(0, 80).forEach(function (n) { vars.push({ kind: 'block', type: 'py_var', fields: { NAME: n } }); });
     return out.slice(0, 1).concat(vars, GA.pyShortcuts(), out.slice(1));
   };
   /* raccourcis GIMP en blocs Python : ce que presque tous les scripts écrivent */

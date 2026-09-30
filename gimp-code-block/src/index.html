@@ -249,6 +249,9 @@ main { flex: 1; display: flex; min-height: 0; }
 .sg-var { background: #FF8C1A; } .sg-const { background: #8E5CC7; } .sg-fn { background: #0A5F57; } .sg-def { background: #3776AB; } .sg-attr { background: #2F6B3A; }
 .sgSub { font: 11.5px var(--mono); color: var(--muted); margin-left: 6px; word-break: break-word; }
 .sgDesc { font-size: 12.5px; color: var(--muted); margin-top: 2px; line-height: 1.35; }
+.sgRow:hover { background: var(--accent-soft); } .sgRow.cur { outline: 2px solid var(--accent-soft); }
+.vmFilter { width: 100%; box-sizing: border-box; margin: 0 0 6px; padding: 5px 9px; border: 1.5px solid var(--line); border-radius: 9px; background: var(--panel2); color: var(--ink); font: inherit; }
+.vmActs { border-top: 1px solid var(--line); margin-top: 4px; padding-top: 4px; font-weight: 700; }
 .pick .ar { display: block; font: 12px var(--mono); color: var(--muted); margin-top: 2px; word-break: break-word; }
 .status { border-radius: 13px; padding: 12px 14px; font-weight: 800; margin-bottom: 14px; }
 .status.ok { background: var(--ok-soft); } .status.warn { background: var(--warn-soft); } .status.err { background: var(--err-soft); }

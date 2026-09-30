@@ -8,7 +8,7 @@
   "scripts": {
     "build": "python3 tools/build.py",
     "start": "npm run build && node tools/serve.js",
-    "test": "node test/gen_test.js && node test/parse_test.js && node test/import_test.js && node test/cycle_test.js && node test/edit_test.js && node test/exact_test.js && node test/pill_test.js && node test/i18n_test.js",
+    "test": "node test/gen_test.js && node test/parse_test.js && node test/import_test.js && node test/cycle_test.js && node test/edit_test.js && node test/exact_test.js && node test/pill_test.js && node test/vars_test.js && node test/i18n_test.js",
     "test:gen": "node test/gen_test.js",
     "test:roundtrip": "node test/exact_test.js",
     "test:corpus": "node --max-old-space-size=4096 test/exact_dir.js",

@@ -249,6 +249,9 @@ main { flex: 1; display: flex; min-height: 0; }
 .sg-var { background: #FF8C1A; } .sg-const { background: #8E5CC7; } .sg-fn { background: #0A5F57; } .sg-def { background: #3776AB; } .sg-attr { background: #2F6B3A; }
 .sgSub { font: 11.5px var(--mono); color: var(--muted); margin-left: 6px; word-break: break-word; }
 .sgDesc { font-size: 12.5px; color: var(--muted); margin-top: 2px; line-height: 1.35; }
+.sgRow:hover { background: var(--accent-soft); } .sgRow.cur { outline: 2px solid var(--accent-soft); }
+.vmFilter { width: 100%; box-sizing: border-box; margin: 0 0 6px; padding: 5px 9px; border: 1.5px solid var(--line); border-radius: 9px; background: var(--panel2); color: var(--ink); font: inherit; }
+.vmActs { border-top: 1px solid var(--line); margin-top: 4px; padding-top: 4px; font-weight: 700; }
 .pick .ar { display: block; font: 12px var(--mono); color: var(--muted); margin-top: 2px; word-break: break-word; }
 .status { border-radius: 13px; padding: 12px 14px; font-weight: 800; margin-bottom: 14px; }
 .status.ok { background: var(--ok-soft); } .status.warn { background: var(--warn-soft); } .status.err { background: var(--err-soft); }
@@ -14544,6 +14547,8 @@ GA.pyInit = function (Blockly, G) {
       if (r) { var h = this.size_.height; r.setAttribute('rx', h / 2); r.setAttribute('ry', h / 2); }
     }
     showEditor_(e, quiet) {
+      // variable : par défaut un menu de choix (comme Scratch) ; la saisie au clavier est une option de l'apparence
+      if (this.kind_ === 'var' && !this.forceText_ && GA.varMenu && !(GA.prefs && GA.prefs.varText)) { GA.varMenu.open(this); return; }
       super.showEditor_(e, quiet);
       if (GA.suggest && this.htmlInput_) GA.suggest.open(this, this.kind_, this.htmlInput_);
     }
@@ -14616,9 +14621,10 @@ GA.pyInit = function (Blockly, G) {
       if (this.bom_) s.bom = 1;
       if (this.eol_) s.eol = this.eol_;
       if (this.end_ !== undefined) s.end = this.end_;
+      if (this.vars_ && this.vars_.length) s.vars = this.vars_.slice();   // variables créées à la main (pas encore utilisées)
       return Object.keys(s).length ? s : null;
     },
-    loadExtraState: function (s) { s = s || {}; this.py3_ = !!s.py3; this.bom_ = !!s.bom; this.eol_ = s.eol || null; this.end_ = s.end; }
+    loadExtraState: function (s) { s = s || {}; this.py3_ = !!s.py3; this.bom_ = !!s.bom; this.eol_ = s.eol || null; this.end_ = s.end; this.vars_ = (s.vars || []).slice(); }
   };
 
   /* ----- instructions simples ----- */
@@ -15665,6 +15671,19 @@ GA.setup = function (Blockly, DATA) {
     var out = [{ kind: 'label', text: GA.CAT.vars.intro, 'web-class': 'gaIntro' },
       { kind: 'button', text: '➕ Créer une variable', callbackkey: 'GA_CREATE_VAR' }];
     var vars = main.getAllVariables().sort(function (a, b) { return a.name.localeCompare(b.name); });
+    // script Python (importé ou écrit) : ses variables deviennent des blocs à glisser, comme dans Scratch
+    var sv = GA.pyVarNames(main);
+    if (GA.isFileMode && GA.isFileMode(main) || sv.length) {
+      out.push({ kind: 'label', text: GA.T('Variables de ton script :'), 'web-class': 'gaSep' });
+      if (!sv.length) out.push({ kind: 'label', text: GA.T('(importe ou écris un script pour voir ses variables)'), 'web-class': 'gaHint' });
+      sv.slice(0, 120).forEach(function (n) { out.push({ kind: 'block', type: 'py_var', fields: { NAME: n } }); });
+      var n0 = sv[0] || 'x';
+      out.push({ kind: 'label', text: GA.T('Pour leur donner une valeur :'), 'web-class': 'gaSep' });
+      out.push({ kind: 'block', type: 'py_assign', fields: { T: n0 }, inputs: { V: { block: { type: 'py_leaf', fields: { CODE: '0' } } } } });
+      out.push({ kind: 'block', type: 'py_augassign', fields: { T: n0, OP: '+=' }, inputs: { V: { block: { type: 'py_leaf', fields: { CODE: '1' } } } } });
+      if (!vars.length) return out;
+      out.push({ kind: 'label', text: GA.T('Variables des blocs simples :'), 'web-class': 'gaSep' });
+    }
     if (vars.length) {
       var v0 = { id: vars[0].getId() };
       out.push(GA.withVar(GA.toolboxEntry(GA.SPEC.g_var_set), v0));
@@ -15685,18 +15704,26 @@ GA.setup = function (Blockly, DATA) {
     return out;
   };
   /* Python : d'abord les variables du script (pastilles orange, comme dans Scratch), puis les blocs */
+  /* noms des variables d'un script, triés, sans les constantes de GIMP */
+  GA.pyVarNames = function (main) {
+    var seen = {}, names = [];
+    function add(n) { if (/^[A-Za-z_]\w*$/.test(n) && !seen[n] && !/^(True|False|None|self)$/.test(n)) { seen[n] = 1; names.push(n); } }
+    if (GA.scriptVars) GA.scriptVars(main, null, true).forEach(function (p) { add(p[0]); });
+    else {
+      main.getBlocksByType('py_var', false).forEach(function (b) { add(b.getFieldValue('NAME')); });
+      main.getAllBlocks(false).forEach(function (b) {
+        if (b.type !== 'py_assign' && b.type !== 'py_for') return;
+        String(b.getFieldValue('T') || '').split(/[,()\s]+/).forEach(add);
+      });
+    }
+    return names.filter(function (n) { return !GA.isPyConst(n); }).sort(function (a, b) { return a.toLowerCase().localeCompare(b.toLowerCase()); });
+  };
   GA.pyFlyout = function (ws) {
-    var main = ws.targetWorkspace || ws, seen = {}, names = [];
-    main.getBlocksByType('py_var', false).forEach(function (b) { var n = b.getFieldValue('NAME'); if (!seen[n]) { seen[n] = 1; names.push(n); } });
-    main.getAllBlocks(false).forEach(function (b) {
-      if (b.type !== 'py_assign' && b.type !== 'py_for') return;
-      String(b.getFieldValue('T') || '').split(/[,()\s]+/).forEach(function (n) { if (/^[A-Za-z_]\w*$/.test(n) && !seen[n]) { seen[n] = 1; names.push(n); } });
-    });
-    names = names.filter(function (n) { return !GA.isPyConst(n); });
+    var main = ws.targetWorkspace || ws, names = GA.pyVarNames(main);
     var out = GA.flyoutFor('py');
     var vars = [{ kind: 'label', text: GA.T('Variables de ton script :'), 'web-class': 'gaSep' }];
     if (!names.length) vars.push({ kind: 'label', text: GA.T('(importe ou écris un script pour voir ses variables)'), 'web-class': 'gaHint' });
-    names.sort(function (a, b) { return a.toLowerCase().localeCompare(b.toLowerCase()); }).slice(0, 80).forEach(function (n) { vars.push({ kind: 'block', type: 'py_var', fields: { NAME: n } }); });
+    names.slice(0, 80).forEach(function (n) { vars.push({ kind: 'block', type: 'py_var', fields: { NAME: n } }); });
     return out.slice(0, 1).concat(vars, GA.pyShortcuts(), out.slice(1));
   };
   /* raccourcis GIMP en blocs Python : ce que presque tous les scripts écrivent */
@@ -16940,7 +16967,7 @@ var PALETTES = {
   contraste: { start: '#8A5E00', control: '#A34400', ops: '#1B6E2E', vars: '#A61F18', image: '#0A4FB0', layer: '#4527B0', sel: '#006A5C', paint: '#7C1D92', text: '#9C1A50', path: '#00648A', file: '#5E3C1C', msg: '#35445E', py: '#1C4775', adv: '#222838' },
   mono: {}
 };
-var DEFAULT_PREFS = { preset: 'atelier', theme: 'auto', renderer: 'zelos', palette: 'atelier', colors: {}, font: 11.5, family: 'nunito', zoom: 85, bg: 'dots', icons: true, drag: 'auto', dragN: 60 };
+var DEFAULT_PREFS = { preset: 'atelier', theme: 'auto', renderer: 'zelos', palette: 'atelier', colors: {}, font: 11.5, family: 'nunito', zoom: 85, bg: 'dots', icons: true, drag: 'auto', dragN: 60, varText: false };
 GA.prefs = Object.assign({}, DEFAULT_PREFS, (function () { try { return JSON.parse(localStorage.getItem(PKEY) || '{}'); } catch (e) { return {}; } })());
 GA.savePrefs = function () { try { localStorage.setItem(PKEY, JSON.stringify(GA.prefs)); } catch (e) { /* ok */ } };
 var ORIG = null;
@@ -16990,14 +17017,15 @@ GA.openAppearance = function () {
     '<div class="field"><label>' + T('Police des blocs') + '</label><select id="apFam"><option value="nunito">Nunito</option><option value="system">' + T('Police du système') + '</option><option value="mono">' + T('Machine à écrire (code)') + '</option></select></div></div>' +
     '<div class="row2"><div class="field"><label>' + T('Zoom au démarrage') + ' : <span id="apZoomV"></span> %</label><input type="range" id="apZoom" min="50" max="130" step="5"></div>' +
     '<div class="field"><label>' + T('Silhouette pendant les déplacements') + '</label><select id="apDrag"><option value="auto">' + T('Auto : dès 60 blocs déplacés') + '</option><option value="always">' + T('Toujours (le plus fluide)') + '</option><option value="never">' + T('Jamais (déplacement réel)') + '</option></select></div></div>' +
-    '<div class="checks"><label><input type="checkbox" id="apIcons"><span>' + T('Icônes dans les noms de catégories') + '</span></label></div>' +
+    '<div class="checks"><label><input type="checkbox" id="apIcons"><span>' + T('Icônes dans les noms de catégories') + '</span></label>' +
+    '<label><input type="checkbox" id="apVarText"><span>' + T('Variables : écrire leur nom au clavier (au lieu du menu de choix)') + '</span></label></div>' +
     '<div id="apPerso"><h3>' + T('Couleurs personnalisées') + '</h3><div class="swatches">' + sw + '</div></div>' +
     '<div class="foot"><button class="btn" id="apReset">' + T('Tout réinitialiser') + '</button><button class="btn primary" id="apOk">' + T('Fermer') + '</button></div>', 'wide');
   function v(id) { return d.querySelector(id); }
   function fill() {
     v('#apTheme').value = p.theme; v('#apRend').value = p.renderer; v('#apPal').value = p.palette; v('#apBg').value = p.bg;
     v('#apFont').value = p.font; v('#apFontV').textContent = p.font; v('#apFam').value = p.family;
-    v('#apZoom').value = p.zoom; v('#apZoomV').textContent = p.zoom; v('#apDrag').value = p.drag; v('#apIcons').checked = !!p.icons;
+    v('#apZoom').value = p.zoom; v('#apZoomV').textContent = p.zoom; v('#apDrag').value = p.drag; v('#apIcons').checked = !!p.icons; v('#apVarText').checked = !!p.varText;
     v('#apPerso').style.display = p.palette === 'perso' ? '' : 'none';
     d.querySelectorAll('.preset').forEach(function (b) { b.classList.toggle('on', b.getAttribute('data-p') === p.preset); });
   }
@@ -17020,6 +17048,7 @@ GA.openAppearance = function () {
   v('#apZoom').oninput = function () { p.zoom = Number(this.value); v('#apZoomV').textContent = p.zoom; };
   v('#apZoom').onchange = function () { apply(); ws().setScale(p.zoom / 100); };
   v('#apIcons').onchange = function () { p.icons = this.checked; p.preset = 'perso'; apply(); };
+  v('#apVarText').onchange = function () { p.varText = this.checked; apply(); };
   d.querySelectorAll('.swatch input').forEach(function (inp) { inp.onchange = function () { p.colors = Object.assign({}, p.colors); p.colors[inp.getAttribute('data-cat')] = inp.value; p.palette = 'perso'; p.preset = 'perso'; apply(); }; });
   v('#apReset').onclick = function () { p = Object.assign({}, DEFAULT_PREFS, { colors: {} }); apply(); };
   v('#apOk').onclick = function () {
@@ -17349,7 +17378,7 @@ var ATTRS = [
   ['format', 'Remplit un texte modèle.'], ['join', 'Assemble une liste de textes.'], ['startswith', 'Commence par… ?'], ['endswith', 'Finit par… ?']
 ];
 function wsOf(field) { var b = field.getSourceBlock(); return b && b.workspace; }
-function namesInWorkspace(ws, self) {
+function namesInWorkspace(ws, self, noDefaults) {
   var seen = {}, out = [];
   function add(n, why) {
     n = String(n || '').trim();
@@ -17358,6 +17387,8 @@ function namesInWorkspace(ws, self) {
   }
   function split(t, why) { String(t || '').split(/[,()\s*=]+/).forEach(function (x) { if (x && !/^['"\d]/.test(x)) add(x, why); }); }
   if (!ws) return out;
+  var hat = GA.getFileHat && GA.getFileHat(ws);
+  ((hat && hat.vars_) || []).forEach(function (n) { add(n, 'variable créée'); });
   ws.getAllBlocks(false).forEach(function (b) {
     if (b.isInFlyout || b === self) return;
     if (b.type === 'py_assign' || b.type === 'py_augassign') split(b.getFieldValue('T'), 'variable remplie par « = »');
@@ -17366,10 +17397,13 @@ function namesInWorkspace(ws, self) {
     else if (b.type === 'py_with') for (var i = 0; b.getField('V' + i); i++) split(b.getFieldValue('V' + i), 'ressource « avec »');
     else if (b.type === 'py_var') add(b.getFieldValue('NAME'), 'variable');
   });
+  if (noDefaults) return out;
   add('image', 'l\'image sur laquelle le plug-in est lancé');
   add('drawable', 'le calque (ou masque) actif');
   return out;
 }
+/* les variables d'un script : [[nom, d'où elle vient], …] */
+GA.scriptVars = function (ws, self, noDefaults) { return namesInWorkspace(ws, self, noDefaults); };
 function defsInWorkspace(ws) {
   var out = [];
   if (ws) ws.getBlocksByType('py_def', false).forEach(function (b) { out.push([b.getFieldValue('NAME'), 'ta fonction (' + b.getFieldValue('ARGS') + ')']); });
@@ -17506,6 +17540,227 @@ if (root.addEventListener) {
   root.addEventListener('resize', place);
   root.addEventListener('wheel', function () { if (cur && !document.body.contains(cur.input)) close(); else place(); }, { passive: true });
 }
+})(typeof window !== 'undefined' ? window : globalThis);
+
+</script>
+<script data-ga>
+/* Variables d'un script Python, comme dans Scratch :
+   - un clic sur une pastille de variable ouvre un menu de choix (pas besoin de taper) ;
+   - clic droit : « renommer partout », « utiliser une autre variable » ;
+   - « Créer une variable » marche aussi dans un script importé. */
+(function (root) {
+'use strict';
+var GA = root.GA = root.GA || {};
+var T = function (x) { return GA.T ? GA.T(x) : x; };
+function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', '\'': '&#39;' }[c]; }); }
+var IDENT = /^[A-Za-z_]\w*$/;
+var KEYWORDS = ('and as assert async await break class continue def del elif else except exec finally for from global if import in is lambda ' +
+  'nonlocal not or pass print raise return try while with yield True False None').split(' ');
+GA.isPyIdent = function (n) { return IDENT.test(n || '') && KEYWORDS.indexOf(n) < 0; };
+
+/* renomme un identifiant dans du code Python, sans toucher aux textes, aux commentaires,
+   aux attributs (obj.x) ni aux noms d'arguments nommés (f(x=1)) */
+GA.renameInCode = function (code, from, to) {
+  code = String(code || '');
+  var out = '', i = 0, n = code.length, depth = 0;
+  while (i < n) {
+    var c = code[i];
+    if (c === '#') { var e = code.indexOf('\n', i); if (e < 0) e = n; out += code.slice(i, e); i = e; continue; }
+    if (c === '"' || c === '\'') {
+      var q = code.substr(i, 3) === c + c + c ? c + c + c : c, j = i + q.length;
+      while (j < n && code.substr(j, q.length) !== q) { if (code[j] === '\\') j++; j++; }
+      j = Math.min(n, j + q.length); out += code.slice(i, j); i = j; continue;
+    }
+    if (/[A-Za-z_]/.test(c)) {
+      var k = i; while (k < n && /\w/.test(code[k])) k++;
+      var w = code.slice(i, k);
+      // préfixe de texte (u'', r"", b'') : on laisse la boucle traiter le texte ensuite
+      if (w === from && !/\.\s*$/.test(out) && !(depth > 0 && /^\s*=(?!=)/.test(code.slice(k)))) out += to; else out += w;
+      i = k; continue;
+    }
+    if (/[0-9]/.test(c)) { var m = i; while (m < n && /[\w.]/.test(code[m])) m++; out += code.slice(i, m); i = m; continue; }
+    if (c === '(' || c === '[' || c === '{') depth++;
+    else if ((c === ')' || c === ']' || c === '}') && depth) depth--;
+    out += c; i++;
+  }
+  return out;
+};
+
+var CODE_FIELDS = { py_leaf: ['CODE'], py_stmt: ['CODE'], py_decorator: ['CODE'], py_def: ['ARGS'], py_assign: ['T'], py_augassign: ['T'], py_for: ['T'] };
+function mainWs(b) { var ws = b && b.workspace; return ws && (ws.targetWorkspace || ws); }
+/* renomme la variable dans tout le script (une seule étape d'annulation) */
+GA.renameScriptVar = function (ws, from, to) {
+  if (!ws || !from || !to || from === to) return 0;
+  var count = 0;
+  Blockly.Events.setGroup(true);
+  try {
+    ws.getAllBlocks(false).forEach(function (b) {
+      function set(name, v) { if (b.getField(name) && b.getFieldValue(name) !== v) { b.setFieldValue(v, name); count++; } }
+      if (b.type === 'py_var') { if (b.getFieldValue('NAME') === from) set('NAME', to); return; }
+      (CODE_FIELDS[b.type] || []).forEach(function (f) { if (b.getField(f)) set(f, GA.renameInCode(b.getFieldValue(f), from, to)); });
+      if (b.type === 'py_with') for (var i = 0; b.getField('V' + i); i++) set('V' + i, GA.renameInCode(b.getFieldValue('V' + i), from, to));
+      if (b.type === 'py_try') for (var t = 0; b.getField('N' + t); t++) if (b.getFieldValue('N' + t) === from) set('N' + t, to);
+    });
+    var hat = GA.getFileHat && GA.getFileHat(ws);
+    if (hat && hat.vars_) hat.vars_ = hat.vars_.map(function (v) { return v === from ? to : v; });
+  } finally { Blockly.Events.setGroup(false); }
+  return count;
+};
+function askName(title, def, cb) {
+  Blockly.dialog.prompt(title, def || '', function (v) {
+    if (v == null) return;
+    v = String(v).trim();
+    if (!GA.isPyIdent(v)) { Blockly.dialog.alert(T('Un nom de variable : des lettres (sans accent), des chiffres et _, sans commencer par un chiffre. Exemple : mon_calque'), function () {}); return; }
+    cb(v);
+  });
+}
+GA.askRenameVar = function (ws, from) {
+  askName(T('Nouveau nom pour « %1 » (changé partout dans le script) :').replace('%1', from), from, function (to) {
+    GA.renameScriptVar(ws, from, to);
+    if (ws.refreshToolboxSelection) ws.refreshToolboxSelection();
+  });
+};
+/* « Créer une variable » dans un script : on la garde dans le bloc 📄 pour qu'elle apparaisse tout de suite */
+GA.createScriptVar = function (ws, cb) {
+  askName(T('Nom de la nouvelle variable :'), '', function (n) {
+    var hat = GA.getFileHat(ws);
+    if (hat) {
+      var before = JSON.stringify(hat.saveExtraState() || {});
+      hat.vars_ = (hat.vars_ || []).filter(function (x) { return x !== n; }).concat([n]);
+      var BC = Blockly.Events.BlockChange || Blockly.Events.get(Blockly.Events.BLOCK_CHANGE);
+      Blockly.Events.fire(new BC(hat, 'mutation', null, before, JSON.stringify(hat.saveExtraState() || {})));
+    }
+    if (ws.refreshToolboxSelection) ws.refreshToolboxSelection();
+    if (cb) cb(n);
+  });
+};
+/* nom de variable « simple » porté par un bloc (pour le clic droit) */
+function varFieldOf(b) {
+  if (!b) return null;
+  if (b.type === 'py_var') return b.getField('NAME');
+  if (b.type === 'py_assign' || b.type === 'py_augassign' || b.type === 'py_for') return b.getField('T');
+  return null;
+}
+
+/* ---------- le menu de choix (clic sur la pastille) ---------- */
+var box = null, cur = null;
+function close() {
+  if (box && box.parentNode) box.parentNode.removeChild(box);
+  box = null; cur = null;
+  document.removeEventListener('mousedown', outside, true);
+  document.removeEventListener('keydown', keys, true);
+}
+function outside(e) { if (box && !box.contains(e.target)) close(); }
+function keys(e) {
+  if (!cur) return;
+  var rows = box.querySelectorAll('.sgRow');
+  if (e.key === 'Escape') { e.preventDefault(); close(); return; }
+  if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+    e.preventDefault(); e.stopPropagation();
+    cur.active = (cur.active + (e.key === 'ArrowDown' ? 1 : -1) + rows.length) % rows.length;
+    rows.forEach(function (r, i) { r.classList.toggle('on', i === cur.active); });
+    if (rows[cur.active].scrollIntoView) rows[cur.active].scrollIntoView({ block: 'nearest' });
+  } else if (e.key === 'Enter' && cur.active >= 0 && rows[cur.active]) { e.preventDefault(); e.stopPropagation(); rows[cur.active].click(); }
+}
+function place(field) {
+  var el = field.getSvgRoot ? field.getSvgRoot() : null;
+  var r = el ? el.getBoundingClientRect() : { left: 100, bottom: 100, top: 100 }, vh = window.innerHeight, vw = window.innerWidth;
+  var w = Math.min(340, vw - 16);
+  box.style.width = w + 'px';
+  box.style.left = Math.max(8, Math.min(r.left, vw - w - 8)) + 'px';
+  var below = vh - r.bottom - 12, above = r.top - 12;
+  if (below >= 220 || below >= above) { box.style.top = (r.bottom + 4) + 'px'; box.style.maxHeight = Math.max(140, below) + 'px'; }
+  else { box.style.bottom = (vh - r.top + 4) + 'px'; box.style.maxHeight = Math.max(140, above) + 'px'; }
+}
+function setValue(field, v) {
+  Blockly.Events.setGroup(true);
+  try { field.setValue(v); } finally { Blockly.Events.setGroup(false); }
+  if (GA.afterSuggest) GA.afterSuggest(field.getSourceBlock());
+}
+function typeByHand(field) {
+  field.forceText_ = true;
+  try { field.showEditor(); } finally { field.forceText_ = false; }
+}
+GA.varMenu = {
+  open: function (field) {
+    close();
+    var block = field.getSourceBlock(), ws = mainWs(block);
+    if (!ws || !root.document) return;
+    var curName = String(field.getValue() || '');
+    var list = GA.scriptVars ? GA.scriptVars(ws, null) : [];
+    var consts = list.filter(function (p) { return GA.isPyConst(p[0]); });
+    list = list.filter(function (p) { return !GA.isPyConst(p[0]); }).sort(function (a, b) { return a[0].toLowerCase().localeCompare(b[0].toLowerCase()); }).concat(consts);
+    cur = { field: field, active: -1, filter: '' };
+    box = document.createElement('div');
+    box.className = 'sgBox vmBox';
+    box.setAttribute('role', 'listbox');
+    document.body.appendChild(box);
+    function draw() {
+      var q = cur.filter.toLowerCase();
+      var shown = list.filter(function (p) { return !q || p[0].toLowerCase().indexOf(q) >= 0; });
+      var h = '<div class="sgHead">' + esc(T('Variables de ton script')) + '</div>';
+      if (list.length > 8) h += '<input class="vmFilter" type="search" placeholder="' + esc(T('filtrer…')) + '" value="' + esc(cur.filter) + '">';
+      h += '<div class="vmList">';
+      shown.forEach(function (p) {
+        var c = GA.isPyConst(p[0]);
+        h += '<div class="sgRow' + (p[0] === curName ? ' cur' : '') + '" data-v="' + esc(p[0]) + '"><span class="sgChip sg-' + (c ? 'const' : 'var') + '">' + esc(p[0]) + '</span>' +
+          (p[0] === curName ? ' <span class="sgSub">✓</span>' : '') + (p[1] ? '<div class="sgDesc">' + esc(T(p[1])) + '</div>' : '') + '</div>';
+      });
+      if (!shown.length) h += '<div class="sgNone">' + esc(T('Aucune variable pour l\'instant.')) + '</div>';
+      h += '</div><div class="vmActs">';
+      if (GA.isPyIdent(curName)) h += '<div class="sgRow" data-a="rename">✏️ ' + esc(T('Renommer « %1 » partout…').replace('%1', curName)) + '</div>';
+      h += '<div class="sgRow" data-a="new">➕ ' + esc(T('Nouvelle variable…')) + '</div>';
+      h += '<div class="sgRow" data-a="type">⌨️ ' + esc(T('Écrire le nom au clavier')) + '</div></div>';
+      box.innerHTML = h;
+      var f = box.querySelector('.vmFilter');
+      if (f) {
+        f.oninput = function () { cur.filter = f.value; cur.active = -1; draw(); var g = box.querySelector('.vmFilter'); g.focus(); g.setSelectionRange(g.value.length, g.value.length); };
+      }
+      place(field);
+    }
+    box.addEventListener('click', function (e) {
+      var row = e.target.closest('.sgRow');
+      if (!row) return;
+      var v = row.getAttribute('data-v'), a = row.getAttribute('data-a');
+      close();
+      if (v != null) setValue(field, v);
+      else if (a === 'rename') GA.askRenameVar(ws, curName);
+      else if (a === 'new') GA.createScriptVar(ws, function (n) { setValue(field, n); });
+      else if (a === 'type') typeByHand(field);
+    });
+    draw();
+    setTimeout(function () {
+      document.addEventListener('mousedown', outside, true);
+      document.addEventListener('keydown', keys, true);
+      var f = box && box.querySelector('.vmFilter'); if (f) f.focus();
+    }, 0);
+  },
+  close: close
+};
+
+/* ---------- clic droit sur un bloc de variable ---------- */
+function addVarMenu(type) {
+  var def = Blockly.Blocks[type];
+  if (!def) return;
+  var prev = def.customContextMenu;
+  def.customContextMenu = function (opts) {
+    if (prev) prev.call(this, opts);
+    if (this.isInFlyout) return;
+    var f = varFieldOf(this), ws = mainWs(this), name = f ? String(f.getValue() || '') : '';
+    if (!f || !ws) return;
+    var extra = [];
+    if (GA.isPyIdent(name)) extra.push({ text: '✏️ ' + T('Renommer « %1 » partout…').replace('%1', name), enabled: true, callback: function () { GA.askRenameVar(ws, name); } });
+    var others = (GA.scriptVars ? GA.scriptVars(ws, null) : []).map(function (p) { return p[0]; })
+      .filter(function (n) { return n !== name && !GA.isPyConst(n); }).sort(function (a, b) { return a.toLowerCase().localeCompare(b.toLowerCase()); });
+    others.slice(0, 10).forEach(function (n) { extra.push({ text: '↔ ' + T('utiliser « %1 »').replace('%1', n), enabled: true, callback: function () { setValue(f, n); } }); });
+    extra.push({ text: '📋 ' + T('Choisir une autre variable…'), enabled: true, callback: function () { GA.varMenu.open(f); } });
+    extra.push({ text: '⌨️ ' + T('Écrire le nom au clavier'), enabled: true, callback: function () { typeByHand(f); } });
+    // en tête du menu : c'est ce qu'on cherche en faisant un clic droit sur une variable
+    opts.unshift.apply(opts, extra);
+  };
+}
+if (root.Blockly) ['py_var', 'py_assign', 'py_augassign', 'py_for'].forEach(addVarMenu);
+if (root.addEventListener) root.addEventListener('resize', function () { if (cur) place(cur.field); });
 })(typeof window !== 'undefined' ? window : globalThis);
 
 </script>
@@ -19380,7 +19635,7 @@ function init() {
   ws.registerToolboxCategoryCallback('GA_VARS', function (w) { return GA.varsFlyout(w); });
   ws.registerToolboxCategoryCallback('GA_PY', function (w) { return GA.pyFlyout(w); });
   GA.afterSuggest = function (b) { if (b && !b.disposed) { scheduleRefresh(); if (b.id === selectedId) renderHelp(); } };
-  ws.registerButtonCallback('GA_CREATE_VAR', function (btn) { Blockly.Variables.createVariableButtonHandler(btn.getTargetWorkspace(), null, ''); });
+  ws.registerButtonCallback('GA_CREATE_VAR', function (btn) { var w = btn.getTargetWorkspace(); if (GA.isFileMode(w) && GA.createScriptVar) GA.createScriptVar(w); else Blockly.Variables.createVariableButtonHandler(w, null, ''); });
   ws.addChangeListener(function (e) {
     if (e.type === Blockly.Events.SELECTED) {
       selectedId = e.newElementId || null;

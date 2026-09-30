@@ -21,7 +21,7 @@ var PALETTES = {
   contraste: { start: '#8A5E00', control: '#A34400', ops: '#1B6E2E', vars: '#A61F18', image: '#0A4FB0', layer: '#4527B0', sel: '#006A5C', paint: '#7C1D92', text: '#9C1A50', path: '#00648A', file: '#5E3C1C', msg: '#35445E', py: '#1C4775', adv: '#222838' },
   mono: {}
 };
-var DEFAULT_PREFS = { preset: 'atelier', theme: 'auto', renderer: 'zelos', palette: 'atelier', colors: {}, font: 11.5, family: 'nunito', zoom: 85, bg: 'dots', icons: true, drag: 'auto', dragN: 60 };
+var DEFAULT_PREFS = { preset: 'atelier', theme: 'auto', renderer: 'zelos', palette: 'atelier', colors: {}, font: 11.5, family: 'nunito', zoom: 85, bg: 'dots', icons: true, drag: 'auto', dragN: 60, varText: false };
 GA.prefs = Object.assign({}, DEFAULT_PREFS, (function () { try { return JSON.parse(localStorage.getItem(PKEY) || '{}'); } catch (e) { return {}; } })());
 GA.savePrefs = function () { try { localStorage.setItem(PKEY, JSON.stringify(GA.prefs)); } catch (e) { /* ok */ } };
 var ORIG = null;
@@ -71,14 +71,15 @@ GA.openAppearance = function () {
     '<div class="field"><label>' + T('Police des blocs') + '</label><select id="apFam"><option value="nunito">Nunito</option><option value="system">' + T('Police du système') + '</option><option value="mono">' + T('Machine à écrire (code)') + '</option></select></div></div>' +
     '<div class="row2"><div class="field"><label>' + T('Zoom au démarrage') + ' : <span id="apZoomV"></span> %</label><input type="range" id="apZoom" min="50" max="130" step="5"></div>' +
     '<div class="field"><label>' + T('Silhouette pendant les déplacements') + '</label><select id="apDrag"><option value="auto">' + T('Auto : dès 60 blocs déplacés') + '</option><option value="always">' + T('Toujours (le plus fluide)') + '</option><option value="never">' + T('Jamais (déplacement réel)') + '</option></select></div></div>' +
-    '<div class="checks"><label><input type="checkbox" id="apIcons"><span>' + T('Icônes dans les noms de catégories') + '</span></label></div>' +
+    '<div class="checks"><label><input type="checkbox" id="apIcons"><span>' + T('Icônes dans les noms de catégories') + '</span></label>' +
+    '<label><input type="checkbox" id="apVarText"><span>' + T('Variables : écrire leur nom au clavier (au lieu du menu de choix)') + '</span></label></div>' +
     '<div id="apPerso"><h3>' + T('Couleurs personnalisées') + '</h3><div class="swatches">' + sw + '</div></div>' +
     '<div class="foot"><button class="btn" id="apReset">' + T('Tout réinitialiser') + '</button><button class="btn primary" id="apOk">' + T('Fermer') + '</button></div>', 'wide');
   function v(id) { return d.querySelector(id); }
   function fill() {
     v('#apTheme').value = p.theme; v('#apRend').value = p.renderer; v('#apPal').value = p.palette; v('#apBg').value = p.bg;
     v('#apFont').value = p.font; v('#apFontV').textContent = p.font; v('#apFam').value = p.family;
-    v('#apZoom').value = p.zoom; v('#apZoomV').textContent = p.zoom; v('#apDrag').value = p.drag; v('#apIcons').checked = !!p.icons;
+    v('#apZoom').value = p.zoom; v('#apZoomV').textContent = p.zoom; v('#apDrag').value = p.drag; v('#apIcons').checked = !!p.icons; v('#apVarText').checked = !!p.varText;
     v('#apPerso').style.display = p.palette === 'perso' ? '' : 'none';
     d.querySelectorAll('.preset').forEach(function (b) { b.classList.toggle('on', b.getAttribute('data-p') === p.preset); });
   }
@@ -101,6 +102,7 @@ GA.openAppearance = function () {
   v('#apZoom').oninput = function () { p.zoom = Number(this.value); v('#apZoomV').textContent = p.zoom; };
   v('#apZoom').onchange = function () { apply(); ws().setScale(p.zoom / 100); };
   v('#apIcons').onchange = function () { p.icons = this.checked; p.preset = 'perso'; apply(); };
+  v('#apVarText').onchange = function () { p.varText = this.checked; apply(); };
   d.querySelectorAll('.swatch input').forEach(function (inp) { inp.onchange = function () { p.colors = Object.assign({}, p.colors); p.colors[inp.getAttribute('data-cat')] = inp.value; p.palette = 'perso'; p.preset = 'perso'; apply(); }; });
   v('#apReset').onclick = function () { p = Object.assign({}, DEFAULT_PREFS, { colors: {} }); apply(); };
   v('#apOk').onclick = function () {

@@ -110,7 +110,7 @@ var ATTRS = [
   ['format', 'Remplit un texte modèle.'], ['join', 'Assemble une liste de textes.'], ['startswith', 'Commence par… ?'], ['endswith', 'Finit par… ?']
 ];
 function wsOf(field) { var b = field.getSourceBlock(); return b && b.workspace; }
-function namesInWorkspace(ws, self) {
+function namesInWorkspace(ws, self, noDefaults) {
   var seen = {}, out = [];
   function add(n, why) {
     n = String(n || '').trim();
@@ -119,6 +119,8 @@ function namesInWorkspace(ws, self) {
   }
   function split(t, why) { String(t || '').split(/[,()\s*=]+/).forEach(function (x) { if (x && !/^['"\d]/.test(x)) add(x, why); }); }
   if (!ws) return out;
+  var hat = GA.getFileHat && GA.getFileHat(ws);
+  ((hat && hat.vars_) || []).forEach(function (n) { add(n, 'variable créée'); });
   ws.getAllBlocks(false).forEach(function (b) {
     if (b.isInFlyout || b === self) return;
     if (b.type === 'py_assign' || b.type === 'py_augassign') split(b.getFieldValue('T'), 'variable remplie par « = »');
@@ -127,10 +129,13 @@ function namesInWorkspace(ws, self) {
     else if (b.type === 'py_with') for (var i = 0; b.getField('V' + i); i++) split(b.getFieldValue('V' + i), 'ressource « avec »');
     else if (b.type === 'py_var') add(b.getFieldValue('NAME'), 'variable');
   });
+  if (noDefaults) return out;
   add('image', 'l\'image sur laquelle le plug-in est lancé');
   add('drawable', 'le calque (ou masque) actif');
   return out;
 }
+/* les variables d'un script : [[nom, d'où elle vient], …] */
+GA.scriptVars = function (ws, self, noDefaults) { return namesInWorkspace(ws, self, noDefaults); };
 function defsInWorkspace(ws) {
   var out = [];
   if (ws) ws.getBlocksByType('py_def', false).forEach(function (b) { out.push([b.getFieldValue('NAME'), 'ta fonction (' + b.getFieldValue('ARGS') + ')']); });
