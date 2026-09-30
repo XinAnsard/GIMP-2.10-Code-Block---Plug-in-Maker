@@ -482,4 +482,30 @@ Object.assign(GA.EN, {
 /* ---- variables de script, valeurs prédites, sessions ---- */
 "Ou installer à la main": "Or install it by hand"
 });
+Object.assign(GA.EN, {
+/* ---- variables de script, valeurs prédites, sessions ---- */
+"Listes :": "Lists:",
+"➕ Créer une liste": "➕ Make a list",
+"Listes de ton script :": "Lists of your script:",
+"Nom de la nouvelle liste :": "Name of the new list:",
+"Créer la liste (vide)": "Create the list (empty)",
+"Ajouter à la fin": "Add at the end",
+"Ajouter tous les éléments d'une autre liste": "Add all the items of another list",
+"Insérer à la position": "Insert at position",
+"Remplacer l'élément n°": "Replace item #",
+"Supprimer l'élément n°": "Delete item #",
+"Supprimer cet élément": "Delete this item",
+"Supprimer tous les éléments": "Delete all the items",
+"Trier / retourner la liste": "Sort / reverse the list",
+"Pour chaque élément de la liste": "For each item of the list",
+"Pour chaque élément, avec son numéro": "For each item, with its number",
+"L'élément n° (le premier est 0)": "Item # (the first is 0)",
+"Le dernier élément": "The last item",
+"Nombre d'éléments": "Number of items",
+"La liste contient… ?": "Does the list contain…?",
+"Position de l'élément": "Position of the item",
+"Une partie de la liste": "Part of the list",
+"Les éléments collés en un texte": "The items joined into one text",
+"Une copie triée / à l'envers": "A sorted / reversed copy"
+});
 })(typeof window !== 'undefined' ? window : globalThis);

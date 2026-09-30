@@ -6,6 +6,12 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [Unreleased]
 
 ### Added
+- **Lists are back in 📦 Variables & lists for Python scripts**, Scratch style: « ➕ Make a list »,
+  the lists of the script (anything filled with `[…]`, `list()`, `sorted()`, `.split()`, `image.layers`…
+  or used with `.append()`/`.extend()`), and ready blocks on the first one: add at the end, add
+  another list, insert, replace/delete item #, delete this item, delete all, sort/reverse, for each
+  item (with its number), item #, last item, length, contains, position, part, joined text,
+  sorted/reversed copy. « Rename everywhere » now also renames `liste.append(…)`.
 - **🧩 Install in GIMP** (export dialog, File menu, `Ctrl+Shift+G`): the plug-in goes straight
   into `%APPDATA%\GIMP\2.10\plug-ins`. The page drops `<name>.gimp-install.py` in Downloads and the
   Windows launcher (`Lancer GIMP Code Block.bat`, new `tools/gimp-install.ps1`) moves it into GIMP at

@@ -926,6 +926,7 @@ function init() {
   ws.registerToolboxCategoryCallback('GA_VARS', function (w) { return GA.varsFlyout(w); });
   ws.registerToolboxCategoryCallback('GA_PY', function (w) { return GA.pyFlyout(w); });
   GA.afterSuggest = function (b) { if (b && !b.disposed) { scheduleRefresh(); if (b.id === selectedId) renderHelp(); } };
+  ws.registerButtonCallback('GA_CREATE_LIST', function (btn) { var w = btn.getTargetWorkspace(); if (GA.createScriptVar) GA.createScriptVar(w, null, true); });
   ws.registerButtonCallback('GA_CREATE_VAR', function (btn) { var w = btn.getTargetWorkspace(); if (GA.isFileMode(w) && GA.createScriptVar) GA.createScriptVar(w); else Blockly.Variables.createVariableButtonHandler(w, null, ''); });
   ws.addChangeListener(function (e) {
     if (e.type === Blockly.Events.SELECTED) {

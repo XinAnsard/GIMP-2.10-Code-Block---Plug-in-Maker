@@ -234,10 +234,11 @@ GA.pyInit = function (Blockly, G) {
       if (this.bom_) s.bom = 1;
       if (this.eol_) s.eol = this.eol_;
       if (this.end_ !== undefined) s.end = this.end_;
-      if (this.vars_ && this.vars_.length) s.vars = this.vars_.slice();   // variables créées à la main (pas encore utilisées)
+      if (this.vars_ && this.vars_.length) s.vars = this.vars_.slice();
+      if (this.lists_ && this.lists_.length) s.lists = this.lists_.slice();   // variables créées à la main (pas encore utilisées)
       return Object.keys(s).length ? s : null;
     },
-    loadExtraState: function (s) { s = s || {}; this.py3_ = !!s.py3; this.bom_ = !!s.bom; this.eol_ = s.eol || null; this.end_ = s.end; this.vars_ = (s.vars || []).slice(); }
+    loadExtraState: function (s) { s = s || {}; this.py3_ = !!s.py3; this.bom_ = !!s.bom; this.eol_ = s.eol || null; this.end_ = s.end; this.vars_ = (s.vars || []).slice(); this.lists_ = (s.lists || []).slice(); }
   };
 
   /* ----- instructions simples ----- */

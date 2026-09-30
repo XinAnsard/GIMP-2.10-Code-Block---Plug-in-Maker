@@ -40,7 +40,7 @@ GA.renameInCode = function (code, from, to) {
   return out;
 };
 
-var CODE_FIELDS = { py_leaf: ['CODE'], py_stmt: ['CODE'], py_decorator: ['CODE'], py_def: ['ARGS'], py_assign: ['T'], py_augassign: ['T'], py_for: ['T'] };
+var CODE_FIELDS = { py_leaf: ['CODE'], py_stmt: ['CODE'], py_decorator: ['CODE'], py_def: ['ARGS'], py_call: ['FUNC'], py_callst: ['FUNC'], py_assign: ['T'], py_augassign: ['T'], py_for: ['T'] };
 function mainWs(b) { var ws = b && b.workspace; return ws && (ws.targetWorkspace || ws); }
 /* renomme la variable dans tout le script (une seule étape d'annulation) */
 GA.renameScriptVar = function (ws, from, to) {
@@ -57,6 +57,7 @@ GA.renameScriptVar = function (ws, from, to) {
     });
     var hat = GA.getFileHat && GA.getFileHat(ws);
     if (hat && hat.vars_) hat.vars_ = hat.vars_.map(function (v) { return v === from ? to : v; });
+    if (hat && hat.lists_) hat.lists_ = hat.lists_.map(function (v) { return v === from ? to : v; });
   } finally { Blockly.Events.setGroup(false); }
   return count;
 };
@@ -75,12 +76,13 @@ GA.askRenameVar = function (ws, from) {
   });
 };
 /* « Créer une variable » dans un script : on la garde dans le bloc 📄 pour qu'elle apparaisse tout de suite */
-GA.createScriptVar = function (ws, cb) {
-  askName(T('Nom de la nouvelle variable :'), '', function (n) {
+GA.createScriptVar = function (ws, cb, asList) {
+  askName(T(asList ? 'Nom de la nouvelle liste :' : 'Nom de la nouvelle variable :'), '', function (n) {
     var hat = GA.getFileHat(ws);
     if (hat) {
       var before = JSON.stringify(hat.saveExtraState() || {});
       hat.vars_ = (hat.vars_ || []).filter(function (x) { return x !== n; }).concat([n]);
+      if (asList) hat.lists_ = (hat.lists_ || []).filter(function (x) { return x !== n; }).concat([n]);
       var BC = Blockly.Events.BlockChange || Blockly.Events.get(Blockly.Events.BLOCK_CHANGE);
       Blockly.Events.fire(new BC(hat, 'mutation', null, before, JSON.stringify(hat.saveExtraState() || {})));
     }
