@@ -623,6 +623,7 @@ GA.setup = function (Blockly, DATA) {
       out.push({ kind: 'label', text: GA.T('Pour leur donner une valeur :'), 'web-class': 'gaSep' });
       out.push({ kind: 'block', type: 'py_assign', fields: { T: n0 }, inputs: { V: { block: { type: 'py_leaf', fields: { CODE: '0' } } } } });
       out.push({ kind: 'block', type: 'py_augassign', fields: { T: n0, OP: '+=' }, inputs: { V: { block: { type: 'py_leaf', fields: { CODE: '1' } } } } });
+      out = out.concat(GA.pyListFlyout(main, sv));
       if (!vars.length) return out;
       out.push({ kind: 'label', text: GA.T('Variables des blocs simples :'), 'web-class': 'gaSep' });
     }
@@ -635,7 +636,7 @@ GA.setup = function (Blockly, DATA) {
     } else {
       out.push({ kind: 'label', text: '(crée une variable pour voir ses blocs)', 'web-class': 'gaHint' });
     }
-    out.push({ kind: 'label', text: 'Listes :', 'web-class': 'gaSep' });
+    out.push({ kind: 'label', text: GA.T('Listes :'), 'web-class': 'gaSep' });
     SPECS.forEach(function (s) {
       if (s.cat === 'vars' && s.list) {
         var e = GA.toolboxEntry(s);
@@ -646,6 +647,69 @@ GA.setup = function (Blockly, DATA) {
     return out;
   };
   /* Python : d'abord les variables du script (pastilles orange, comme dans Scratch), puis les blocs */
+  /* listes d'un script : ce qui reçoit [ … ], list(), sorted()…, ou sur quoi on fait .append() / .extend()… */
+  var LIST_VALUE = /^\[|^(list|sorted|reversed|range|filter|map|zip|enumerate)\(|\.(split|splitlines|keys|values|items)\(|\.(layers|channels|vectors|children)$|image_list\(\)/;
+  function codeText(b) { try { var r = GA.G.blockToCode(b); return String(Array.isArray(r) ? r[0] : r).replace(/[\u0000-\u0007]/g, ''); } catch (e) { return ''; } }
+  GA.pyListNames = function (main) {
+    var seen = {}, out = [];
+    function add(n) { if (/^[A-Za-z_]\w*$/.test(n || '') && !seen[n] && !GA.isPyConst(n)) { seen[n] = 1; out.push(n); } }
+    var hat = GA.getFileHat && GA.getFileHat(main);
+    ((hat && hat.lists_) || []).forEach(add);
+    main.getAllBlocks(false).forEach(function (b) {
+      if (b.isInFlyout) return;
+      if (b.type === 'py_assign') {
+        var t = String(b.getFieldValue('T') || '').trim(), v = b.getInputTargetBlock('V');
+        var c = v ? codeText(v).trim() : '';
+        if (/^[A-Za-z_]\w*$/.test(t) && !/^lambda\b/.test(c) && LIST_VALUE.test(c)) add(t);
+      } else if (b.type === 'py_call' || b.type === 'py_callst') {
+        var m = /^([A-Za-z_]\w*)\.(append|extend|insert|remove|pop|sort|reverse|index|count)$/.exec(String(b.getFieldValue('FUNC') || ''));
+        if (m && m[1] !== 'self' && m[1] !== 'pdb' && m[1] !== 'gimp') add(m[1]);
+      }
+    });
+    return out.sort(function (a, b) { return a.toLowerCase().localeCompare(b.toLowerCase()); });
+  };
+  /* les blocs de liste de Scratch, en Python, branchés sur la première liste du script */
+  GA.pyListFlyout = function (main, sv) {
+    var lists = GA.pyListNames(main), L = lists[0] || 'ma_liste';
+    var items = (sv || []).filter(function (n) { return lists.indexOf(n) < 0; });
+    var X = items.indexOf('layer') >= 0 ? 'layer' : (items.indexOf('item') >= 0 ? 'item' : 'element');
+    var out = [{ kind: 'label', text: GA.T('Listes :'), 'web-class': 'gaSep' },
+      { kind: 'button', text: GA.T('➕ Créer une liste'), callbackkey: 'GA_CREATE_LIST' }];
+    if (lists.length) {
+      out.push({ kind: 'label', text: GA.T('Listes de ton script :'), 'web-class': 'gaHint' });
+      lists.slice(0, 40).forEach(function (n) { out.push({ kind: 'block', type: 'py_var', fields: { NAME: n } }); });
+    }
+    var ST = [
+      ['Créer la liste (vide)', L + ' = []'],
+      ['Ajouter à la fin', L + '.append(' + X + ')'],
+      ['Ajouter tous les éléments d\'une autre liste', L + '.extend(autre_liste)'],
+      ['Insérer à la position', L + '.insert(0, ' + X + ')'],
+      ['Remplacer l\'élément n°', L + '[0] = ' + X],
+      ['Supprimer l\'élément n°', 'del ' + L + '[0]'],
+      ['Supprimer cet élément', L + '.remove(' + X + ')'],
+      ['Supprimer tous les éléments', 'del ' + L + '[:]'],
+      ['Trier / retourner la liste', L + '.sort()\n' + L + '.reverse()'],
+      ['Pour chaque élément de la liste', 'for ' + X + ' in ' + L + ':\n    pass'],
+      ['Pour chaque élément, avec son numéro', 'for i, ' + X + ' in enumerate(' + L + '):\n    pass']
+    ];
+    var VAL = [
+      ['L\'élément n° (le premier est 0)', L + '[0]'], ['Le dernier élément', L + '[-1]'], ['Nombre d\'éléments', 'len(' + L + ')'],
+      ['La liste contient… ?', X + ' in ' + L], ['Position de l\'élément', L + '.index(' + X + ')'], ['Une partie de la liste', L + '[0:2]'],
+      ['Les éléments collés en un texte', '", ".join(' + L + ')'], ['Une copie triée / à l\'envers', 'sorted(' + L + ')'], ['', 'list(reversed(' + L + '))']
+    ];
+    ST.forEach(function (x) {
+      var st = GA.pySnippet(x[1]); if (!st) return;
+      out.push({ kind: 'label', text: GA.T(x[0]), 'web-class': 'gaHint' });
+      st.kind = 'block'; out.push(st);
+    });
+    VAL.forEach(function (x) {
+      var st = GA.pySnippet('_ = ' + x[1]), v = st && st.inputs && st.inputs.V && st.inputs.V.block;
+      if (!v) return;
+      if (x[0]) out.push({ kind: 'label', text: GA.T(x[0]), 'web-class': 'gaHint' });
+      v.kind = 'block'; out.push(v);
+    });
+    return out;
+  };
   /* noms des variables d'un script, triés, sans les constantes de GIMP */
   GA.pyVarNames = function (main) {
     var seen = {}, names = [];
