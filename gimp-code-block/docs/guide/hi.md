@@ -1,413 +1,413 @@
-# User guide — GIMP Code Block
+# उपयोग गाइड — GIMP Code Block
 
-## 🗺️ The workshop screen
+## 🗺️ वर्कशॉप की स्क्रीन
 
-- On the **left**, the block categories. Click a category to see its blocks, then drag a block into the building area.
-- In the **centre**, the building area. Wheel: scroll; Ctrl + wheel: zoom; drag on empty space: move around.
-- On the **right**, the panel: 💡 Help (about the selected block), 🐍 Code (the Python produced), ✅ Check, 🤖 AI and 🎓 Course.
-- At the **top**, the menus, the block search (/ key) and the ⬇ Download button.
+- **बाईं** ओर ब्लॉकों की श्रेणियाँ। किसी श्रेणी पर क्लिक करके उसके ब्लॉक देखें, फिर एक ब्लॉक निर्माण क्षेत्र में खींचें।
+- **बीच** में निर्माण क्षेत्र। व्हील: स्क्रॉल; Ctrl + व्हील: ज़ूम; खाली जगह पर खींचें: घूमें।
+- **दाईं** ओर पैनल: 💡 सहायता (चुने हुए ब्लॉक के बारे में), 🐍 कोड (बना हुआ Python), ✅ जाँच, 🤖 AI और 🎓 कोर्स।
+- **ऊपर** मेनू, ब्लॉक खोज (/ कुंजी) और ⬇ डाउनलोड बटन।
 
-## 🧩 The shapes of the blocks
+## 🧩 ब्लॉकों के आकार
 
-- **Notched block**: an action. It stacks under another one.
-- **Rounded block**: a value (number, text, layer, variable). It slots into a hole.
-- **Pointed (hexagonal) block**: a true/false condition, for "if" and "while".
-- **C block**: it holds other blocks (loops, conditions, shortcuts).
+- **खाँचे वाला ब्लॉक**: एक क्रिया। यह दूसरे के नीचे लगता है।
+- **गोल ब्लॉक**: एक मान (संख्या, टेक्स्ट, लेयर, वेरिएबल)। यह किसी खाँचे में फ़िट होता है।
+- **नुकीला (षट्कोणीय) ब्लॉक**: "अगर" और "जब तक" के लिए सही/गलत शर्त।
+- **C ब्लॉक**: इसके अंदर दूसरे ब्लॉक होते हैं (लूप, शर्तें, शॉर्टकट)।
 
-A greyed-out block is disabled: it is not in the code. Right-click a block: duplicate, comment, disable, collapse, help.
+धूसर ब्लॉक बंद है: वह कोड में नहीं है। किसी ब्लॉक पर राइट-क्लिक: डुप्लिकेट, कमेंट, बंद करें, समेटें, सहायता।
 
-## ▶ The start block
+## ▶ शुरुआती ब्लॉक
 
-The yellow **▶ When I run** block describes your plug-in: its name in the menu, the menu where it appears, whether it needs an open image, and its settings ("first, ask").
+पीला **▶ जब मैं चलाऊँ** ब्लॉक आपके प्लग-इन का वर्णन करता है: मेनू में उसका नाम, वह किस मेनू में दिखेगा, क्या उसे खुली इमेज चाहिए, और उसकी सेटिंग्स ("पहले पूछें")।
 
-Settings become the window GIMP shows before running the plug-in. Use their value with the 🎛️ blocks of the ▶ Start category.
+सेटिंग्स वह विंडो बनती हैं जो GIMP प्लग-इन चलाने से पहले दिखाता है। उनके मान को ▶ शुरुआत श्रेणी के 🎛️ ब्लॉकों से इस्तेमाल करें।
 
-**Settings ▸ My plug-in** sets the rest: author, grouped undo, error handling, imported modules.
+**सेटिंग्स ▸ मेरा प्लग-इन** बाकी सब तय करता है: लेखक, समूहित undo, गलतियों को संभालना, इम्पोर्ट किए गए मॉड्यूल।
 
-## ⬇ Download and install
+## ⬇ डाउनलोड और इंस्टॉल करें
 
-Click **⬇ Download**: you get a `.py` file. Put it in GIMP's plug-ins folder and restart GIMP.
+**⬇ डाउनलोड** पर क्लिक करें: आपको एक `.py` फ़ाइल मिलती है। उसे GIMP के plug-ins फ़ोल्डर में रखें और GIMP दोबारा शुरू करें।
 - **Windows**: `C:\Users\<you>\AppData\Roaming\GIMP\2.10\plug-ins`
-- **Linux**: `~/.config/GIMP/2.10/plug-ins`, then `chmod +x file.py`
+- **Linux**: `~/.config/GIMP/2.10/plug-ins`, फिर `chmod +x file.py`
 - **macOS**: `~/Library/Application Support/GIMP/2.10/plug-ins`
 
-The exact folder is in **Edit ▸ Preferences ▸ Folders ▸ Plug-ins**. Plug-ins made here work in **GIMP 2.10** (not in GIMP 3, which has a different API).
+सटीक फ़ोल्डर **Edit ▸ Preferences ▸ Folders ▸ Plug-ins** में है। यहाँ बने प्लग-इन **GIMP 2.10** में चलते हैं (GIMP 3 में नहीं, उसका API अलग है)।
 
-## 🐍 Import a Python script
+## 🐍 Python स्क्रिप्ट इम्पोर्ट करें
 
-**File ▸ Import a Python script**, or drop the `.py` file on the page. Each line becomes a Python block.
+**फ़ाइल ▸ Python स्क्रिप्ट इम्पोर्ट करें**, या `.py` फ़ाइल पेज पर छोड़ें। हर पंक्ति एक Python ब्लॉक बन जाती है।
 
-Guarantee: as long as you change nothing, the download gives back **the same file, byte for byte** (comments, spaces and tabs included). If you change a block, only its lines are rewritten.
+गारंटी: जब तक आप कुछ नहीं बदलते, डाउनलोड **वही फ़ाइल, बाइट-दर-बाइट** लौटाता है (कमेंट, स्पेस और टैब समेत)। कोई ब्लॉक बदलें तो सिर्फ़ उसकी पंक्तियाँ फिर से लिखी जाती हैं।
 
-A script with a syntax error still imports: the faulty part becomes a 🧱 "raw code" block to fix.
+सिंटैक्स एरर वाली स्क्रिप्ट भी इम्पोर्ट हो जाती है: गलत हिस्सा एक 🧱 "कच्चा कोड" ब्लॉक बन जाता है जिसे ठीक करना है।
 
-## 🟠 Python blocks and their pills
+## 🟠 Python ब्लॉक और उनकी गोलियाँ
 
-- **orange**: variable; **violet**: GIMP constant; **yellow**: GIMP function; **dark green**: other function; green blocks: calculations and comparisons; white slots: values written as is.
+- **नारंगी**: वेरिएबल; **बैंगनी**: GIMP कॉन्स्टेंट; **पीला**: GIMP फ़ंक्शन; **गहरा हरा**: दूसरा फ़ंक्शन; हरे ब्लॉक: गणनाएँ और तुलनाएँ; सफ़ेद खाँचे: जैसे लिखे वैसे मान।
 
-Click a pill and type: a list of suggestions opens (arrows ↑↓ then Enter, or click). For a GIMP function, the missing slots fill themselves.
+किसी गोली पर क्लिक करके लिखें: सुझावों की सूची खुलती है (तीर ↑↓ फिर Enter, या क्लिक)। GIMP फ़ंक्शन के लिए खाली खाँचे अपने आप भर जाते हैं।
 
-Right-click a function call: add or remove an argument. Right-click "if": add "else if" or "else".
+किसी फ़ंक्शन कॉल पर राइट-क्लिक: आर्ग्युमेंट जोड़ें या हटाएँ। "अगर" पर राइट-क्लिक: "वरना अगर" या "वरना" जोड़ें।
 
-The 🐍 Python category lists your script's variables and ready-made **GIMP shortcuts** (grouped undo, loop over images, over layers…).
+🐍 Python श्रेणी आपकी स्क्रिप्ट के वेरिएबल और तैयार **GIMP शॉर्टकट** दिखाती है (समूहित undo, इमेजों पर लूप, लेयरों पर लूप…)।
 
-## ⚙️ The 857 GIMP functions (PDB)
+## ⚙️ GIMP के 857 फ़ंक्शन (PDB)
 
-Two ways to use them: the "⚙️ GIMP function" block (🧰 Advanced) in a simple-blocks plug-in, or the "call …" block in Python blocks.
+इन्हें इस्तेमाल करने के दो तरीके: आसान ब्लॉकों वाले प्लग-इन में "⚙️ GIMP फ़ंक्शन" ब्लॉक (🧰 उन्नत), या Python ब्लॉकों में "कॉल करें …" ब्लॉक।
 
-Search: type a word in English or French (blur, layer, selection, text…). The most used functions come first; "old" marks a deprecated function that has a replacement.
+खोज: अंग्रेज़ी या फ़्रेंच में एक शब्द लिखें (blur, layer, selection, text…)। सबसे ज़्यादा इस्तेमाल होने वाले फ़ंक्शन पहले आते हैं; "पुराना" ऐसा पुराना फ़ंक्शन दिखाता है जिसका कोई विकल्प है।
 
-The `run_mode` is never provided: pygimp adds it. Arrays often have a counter just before them (e.g. `num_points` then `points`).
+`run_mode` कभी नहीं देना होता: pygimp उसे जोड़ता है। सूचियों से ठीक पहले अक्सर एक गिनती होती है (जैसे `num_points` फिर `points`)।
 
-## ⚡ GIMP shortcuts
+## ⚡ GIMP शॉर्टकट
 
-Blocks that replace what every script writes by hand:
-- "as a single undo step": everything counts as one Ctrl+Z, even if an error happens;
-- "then restore…" the colours and tools, the selection or the active layer;
-- "for each open image", "for each layer of all images", "for each file of the folder";
-- "new layer the size of the image", "copy the layer into another image".
+ऐसे ब्लॉक जो वह काम करते हैं जो हर स्क्रिप्ट हाथ से लिखती है:
+- "एक ही undo चरण में": गलती होने पर भी सब कुछ एक Ctrl+Z गिना जाता है;
+- "फिर लौटाएँ…" रंग और टूल, चयन या सक्रिय लेयर;
+- "हर खुली इमेज के लिए", "सभी इमेजों की हर लेयर के लिए", "फ़ोल्डर की हर फ़ाइल के लिए";
+- "इमेज के आकार की नई लेयर", "लेयर को दूसरी इमेज में कॉपी करें"।
 
-## ✅ Check and errors
+## ✅ जाँच और गलतियाँ
 
-The **✅ Check** tab rereads your plug-in after every change: 🛑 error (it would not work), ⚠️ worth a look, ℹ️ information. Click a line to go to the block.
+**✅ जाँच** टैब हर बदलाव के बाद आपका प्लग-इन फिर से पढ़ता है: 🛑 गलती (यह नहीं चलेगा), ⚠️ देखने लायक, ℹ️ जानकारी। ब्लॉक पर जाने के लिए किसी पंक्ति पर क्लिक करें।
 
-In GIMP: **Windows ▸ Dockable Dialogs ▸ Error Console** shows Python errors. Plug-ins made here also show the full error in a message.
+GIMP में: **Windows ▸ Dockable Dialogs ▸ Error Console** Python की गलतियाँ दिखाता है। यहाँ बने प्लग-इन पूरी गलती एक संदेश में भी दिखाते हैं।
 
-**Filters ▸ Python-Fu ▸ Console**: to try a line of Python directly in GIMP.
+**Filters ▸ Python-Fu ▸ Console**: Python की कोई पंक्ति सीधे GIMP में आज़माने के लिए।
 
-## 🤖 The AI assistant
+## 🤖 AI सहायक
 
-**AI ▸ Choose the AI**: any compatible service (OpenAI, Anthropic, Gemini, Mistral…), a local AI (Ollama, LM Studio) or copy-and-paste mode, with no connection.
+**AI ▸ AI चुनें**: कोई भी संगत सेवा (OpenAI, Anthropic, Gemini, Mistral…), लोकल AI (Ollama, LM Studio) या बिना कनेक्शन कॉपी-पेस्ट मोड।
 
-Ask for a function, a whole plug-in, a fix or an explanation. The answer is checked and repaired automatically before it becomes blocks.
+कोई फ़ंक्शन, पूरा प्लग-इन, सुधार या व्याख्या माँगें। जवाब ब्लॉक बनने से पहले अपने आप जाँचा और सुधारा जाता है।
 
-## 💾 Save your work
+## 💾 अपना काम सेव करें
 
-The workshop automatically keeps your work in this browser.
+वर्कशॉप आपका काम इस ब्राउज़र में अपने आप सेव करता है।
 
-To keep it elsewhere or share it: **File ▸ Save the project** (`.json` file). The downloaded `.py` also contains the blocks' fingerprint: re-import it and you get your blocks back exactly.
+कहीं और रखने या साझा करने के लिए: **फ़ाइल ▸ प्रोजेक्ट सेव करें** (`.json` फ़ाइल)। डाउनलोड की गई `.py` में ब्लॉकों की छाप भी होती है: उसे फिर से इम्पोर्ट करें और अपने ब्लॉक हूबहू वापस पाएँ।
 
-## ❓ Common problems
+## ❓ आम समस्याएँ
 
-- **The plug-in does not show up**: wrong folder, GIMP not restarted, file not executable (Linux), or Python-Fu missing (Linux: `gimp-python` package).
-- **The menu is greyed out**: the plug-in needs an open image (checkbox of the ▶ block).
-- **"argument count" / "wrong type"**: look at the ✅ Check tab, it tells the expected number of arguments.
-- **Strange accents**: use the workshop's text blocks, they handle UTF-8 for you.
+- **प्लग-इन नहीं दिखता**: गलत फ़ोल्डर, GIMP दोबारा शुरू नहीं किया, फ़ाइल executable नहीं (Linux), या Python-Fu नहीं है (Linux: `gimp-python` पैकेज)।
+- **मेनू धूसर है**: प्लग-इन को खुली इमेज चाहिए (▶ ब्लॉक का चेकबॉक्स)।
+- **"argument count" / "wrong type"**: ✅ जाँच टैब देखें, वह आर्ग्युमेंट की अपेक्षित संख्या बताता है।
+- **अजीब अक्षर**: वर्कशॉप के टेक्स्ट ब्लॉक इस्तेमाल करें, वे आपके लिए UTF-8 संभालते हैं।
 
 ---
 
-# Course: from complete beginner to pro
+# कोर्स: बिल्कुल शुरुआती से प्रो तक
 
-Each lesson explains one idea, then gives you a mission. The workshop checks by itself when you have succeeded.
+हर पाठ एक विचार समझाता है, फिर आपको एक मिशन देता है। आप सफल हुए या नहीं, यह वर्कशॉप खुद जाँचता है।
 
-## 🌱 Level 1 — First steps
+## 🌱 स्तर 1 — पहले कदम
 
-*Never programmed before? Perfect, we start here.*
+*कभी प्रोग्रामिंग नहीं की? बढ़िया, हम यहीं से शुरू करते हैं।*
 
-### 1. Your first plug-in
+### 1. आपका पहला प्लग-इन
 
-🎯 **Make GIMP say "Hello".**
+🎯 **GIMP से "नमस्ते" कहलवाएँ।**
 
-A **plug-in** is a small program that adds a command to GIMP's menus. Here you build it by snapping blocks together, like a puzzle: the workshop writes the real Python code for you.
+**प्लग-इन** एक छोटा प्रोग्राम है जो GIMP के मेनू में एक कमांड जोड़ता है। यहाँ आप इसे पहेली की तरह ब्लॉक जोड़कर बनाते हैं: वर्कशॉप आपके लिए असली Python कोड लिखता है।
 
-Every plug-in starts with the yellow block **▶ When I run**. The blocks placed under "then do" run **from top to bottom**, one by one.
+हर प्लग-इन पीले ब्लॉक **▶ जब मैं चलाऊँ** से शुरू होता है। "फिर करें" के नीचे रखे ब्लॉक **ऊपर से नीचे**, एक-एक करके चलते हैं।
 
-**Your mission**
+**आपका मिशन**
 
-1. Click the block below to add it: it attaches itself under "then do".
-2. Click the white slot of the message and type your text.
-3. Look at the 🐍 Code tab: the line `pdb.gimp_message(...)` has appeared.
+1. नीचे वाले ब्लॉक पर क्लिक करके उसे जोड़ें: वह अपने आप "फिर करें" के नीचे लग जाता है।
+2. संदेश के सफ़ेद खाँचे में क्लिक करें और अपना टेक्स्ट लिखें।
+3. 🐍 कोड टैब देखें: पंक्ति `pdb.gimp_message(...)` आ गई है।
 
-### 2. Install your plug-in in GIMP
+### 2. अपना प्लग-इन GIMP में इंस्टॉल करें
 
-🎯 **See your plug-in in GIMP's menus and run it.**
+🎯 **अपने प्लग-इन को GIMP के मेनू में देखें और चलाएँ।**
 
-GIMP loads plug-ins at startup, from a special folder called **plug-ins**.
+GIMP शुरू होते समय प्लग-इन एक खास फ़ोल्डर **plug-ins** से लोड करता है।
 - **Windows**: `C:\Users\<you>\AppData\Roaming\GIMP\2.10\plug-ins`
-- **Linux**: `~/.config/GIMP/2.10/plug-ins` (then make the file executable: `chmod +x file.py`)
+- **Linux**: `~/.config/GIMP/2.10/plug-ins` (फिर फ़ाइल को executable बनाएँ: `chmod +x file.py`)
 - **macOS**: `~/Library/Application Support/GIMP/2.10/plug-ins`
 
-The exact path is written in GIMP: **Edit ▸ Preferences ▸ Folders ▸ Plug-ins**.
+सटीक पाथ GIMP में लिखा है: **Edit ▸ Preferences ▸ Folders ▸ Plug-ins**।
 
-**Your mission**
+**आपका मिशन**
 
-1. In the ▶ block, give your plug-in a name and choose its menu.
-2. Click **⬇ Download** at the top right.
-3. Put the `.py` file in the plug-ins folder, then **restart GIMP**.
-4. Open an image and look for your plug-in in the menu you chose. Click it: your message appears!
-5. When it works, click "I did it".
+1. ▶ ब्लॉक में अपने प्लग-इन को नाम दें और उसका मेनू चुनें।
+2. ऊपर दाईं ओर **⬇ डाउनलोड** पर क्लिक करें।
+3. `.py` फ़ाइल को plug-ins फ़ोल्डर में रखें, फिर **GIMP दोबारा शुरू करें**।
+4. कोई इमेज खोलें और चुने हुए मेनू में अपना प्लग-इन खोजें। क्लिक करें: आपका संदेश दिखेगा!
+5. जब यह काम करे, "मैंने कर लिया" पर क्लिक करें।
 
-> 💡 The plug-in does not show up? Check that the file really is in the plug-ins folder (not in an extra sub-folder), that it ends with .py, and that GIMP was restarted. On Linux you also need the gimp-python package.
+> 💡 प्लग-इन नहीं दिख रहा? जाँचें कि फ़ाइल सच में plug-ins फ़ोल्डर में है (किसी अतिरिक्त सब-फ़ोल्डर में नहीं), .py पर खत्म होती है, और GIMP दोबारा शुरू किया गया। Linux पर gimp-python पैकेज भी चाहिए।
 
-### 3. Act on the image: a new layer
+### 3. इमेज पर काम: एक नई लेयर
 
-🎯 **Create a layer filled with white in the image.**
+🎯 **इमेज में सफ़ेद से भरी एक लेयर बनाएँ।**
 
-A **layer** is a transparent sheet laid on the image. The purple blocks (📑 Layers) create and change them.
+**लेयर** इमेज पर रखी एक पारदर्शी शीट है। बैंगनी ब्लॉक (📑 लेयर) उन्हें बनाते और बदलते हैं।
 
-The "new layer" block of the ⚡ Shortcuts category does at once what programmers write in 3 lines: create the layer, add it to the image, fill it.
+⚡ शॉर्टकट श्रेणी का "नई लेयर" ब्लॉक एक बार में वह करता है जो प्रोग्रामर 3 पंक्तियों में लिखते हैं: लेयर बनाना, उसे इमेज में जोड़ना, उसे भरना।
 
-Notice the blue ovals "🖼️ current image": they are **values**. They stand for the image you ran the plug-in on.
+नीले अंडाकार "🖼️ मौजूदा इमेज" पर ध्यान दें: ये **मान** हैं। ये उस इमेज को दर्शाते हैं जिस पर आपने प्लग-इन चलाया।
 
-**Your mission**
+**आपका मिशन**
 
-1. Add the block below.
-2. Change its name ("My layer") and choose "white" in the list.
-3. Download, replace the old file in GIMP, restart and try.
+1. नीचे वाला ब्लॉक जोड़ें।
+2. उसका नाम बदलें ("मेरी लेयर") और सूची में "सफ़ेद" चुनें।
+3. डाउनलोड करें, GIMP में पुरानी फ़ाइल बदलें, दोबारा शुरू करें और आज़माएँ।
 
-### 4. Ask the user a question
+### 4. उपयोगकर्ता से एक सवाल पूछें
 
-🎯 **Ask for a number at launch and use it.**
+🎯 **शुरू में एक संख्या पूछें और उसका इस्तेमाल करें।**
 
-When a plug-in has **settings**, GIMP opens a small window before running it: the user chooses a number, a text, a colour…
+जब प्लग-इन में **सेटिंग्स** होती हैं, तो GIMP उसे चलाने से पहले एक छोटी विंडो खोलता है: उपयोगकर्ता कोई संख्या, टेक्स्ट, रंग… चुनता है।
 
-Settings go in the "first, ask" part of the ▶ block. Then the "🎛️ setting value" block (▶ Start category) gives what the user chose.
+सेटिंग्स ▶ ब्लॉक के "पहले पूछें" हिस्से में जाती हैं। फिर "🎛️ सेटिंग का मान" ब्लॉक (▶ शुरुआत श्रेणी) वह देता है जो उपयोगकर्ता ने चुना।
 
-**Your mission**
+**आपका मिशन**
 
-1. Open the **▶ Start & settings** category and drag a "🔢 whole number" setting into "first, ask". Give it a name, for example `opacity`.
-2. Add the "opacity of …" block below.
-3. In its percentage slot, drop the 🎛️ block of the setting (it appears in the ▶ Start category once the setting exists).
+1. **▶ शुरुआत और सेटिंग्स** श्रेणी खोलें और एक "🔢 पूर्ण संख्या" सेटिंग "पहले पूछें" में खींचें। उसे नाम दें, जैसे `opacity`।
+2. नीचे वाला "… की अपारदर्शिता" ब्लॉक जोड़ें।
+3. उसके प्रतिशत वाले खाँचे में सेटिंग का 🎛️ ब्लॉक छोड़ें (सेटिंग बनते ही वह ▶ शुरुआत श्रेणी में दिखता है)।
 
-## 🌿 Level 2 — Programming basics
+## 🌿 स्तर 2 — प्रोग्रामिंग की बुनियाद
 
-*Variables, loops, conditions: the 3 ideas behind every program.*
+*वेरिएबल, लूप, शर्तें: हर प्रोग्राम के पीछे के 3 विचार।*
 
-### 5. Variables: boxes that remember
+### 5. वेरिएबल: याद रखने वाले डिब्बे
 
-🎯 **Store a value in a variable, then use it again.**
+🎯 **किसी वेरिएबल में मान रखें, फिर उसे दोबारा इस्तेमाल करें।**
 
-A **variable** is a box with a name. You store a value in it (a number, a text, a layer…) to use it again later.
+**वेरिएबल** एक नाम वाला डिब्बा है। आप उसमें कोई मान रखते हैं (संख्या, टेक्स्ट, लेयर…) ताकि बाद में फिर इस्तेमाल कर सकें।
 
-"set `x` to 5" puts 5 in the box `x`. After that, every `x` block is worth 5. If you put something else in `x`, the old value is replaced.
+"`x` को 5 पर सेट करें" डिब्बे `x` में 5 रखता है। इसके बाद हर `x` ब्लॉक का मान 5 होता है। अगर आप `x` में कुछ और रखें, तो पुराना मान बदल जाता है।
 
-Blocks that create something (layer, text, image) often have an arrow **→ in**: the result is stored in a variable, so you can change it afterwards.
+कुछ बनाने वाले ब्लॉकों (लेयर, टेक्स्ट, इमेज) में अक्सर एक तीर **→ में** होता है: परिणाम एक वेरिएबल में रखा जाता है, ताकि आप उसे बाद में बदल सकें।
 
-**Your mission**
+**आपका मिशन**
 
-1. Open **📦 Variables & lists** and click "➕ Create a variable". Call it `name`.
-2. Add "set … to …" and put a text in it, for example "Hello".
-3. Add "💬 show the message" and drop your variable's block in it.
+1. **📦 वेरिएबल और सूचियाँ** खोलें और "➕ वेरिएबल बनाएँ" पर क्लिक करें। उसका नाम `name` रखें।
+2. "… को … पर सेट करें" जोड़ें और उसमें कोई टेक्स्ट डालें, जैसे "नमस्ते"।
+3. "💬 संदेश दिखाएँ" जोड़ें और उसमें अपने वेरिएबल का ब्लॉक छोड़ें।
 
-### 6. Repeat: loops
+### 6. दोहराना: लूप
 
-🎯 **Create 5 layers at once.**
+🎯 **एक बार में 5 लेयर बनाएँ।**
 
-A computer never gets bored: a **loop** runs the same blocks as many times as you want.
+कंप्यूटर कभी नहीं थकता: एक **लूप** वही ब्लॉक जितनी बार चाहें उतनी बार चलाता है।
 
-"repeat 10 times" is the simplest. "count with `i` from 1 to 10" does the same, but the variable `i` is 1, then 2, then 3…: handy for numbering.
+"10 बार दोहराएँ" सबसे आसान है। "`i` से 1 से 10 तक गिनें" भी वही करता है, लेकिन वेरिएबल `i` का मान 1, फिर 2, फिर 3… होता है: नंबर लगाने के लिए उपयोगी।
 
-**C**-shaped blocks hold other blocks: everything inside is repeated.
+**C** आकार के ब्लॉकों में दूसरे ब्लॉक होते हैं: अंदर का सब कुछ दोहराया जाता है।
 
-**Your mission**
+**आपका मिशन**
 
-1. Add the "count with …" block below and set the end to 5.
-2. Drag a "new layer" block **inside** the C.
-3. Bonus: in the layer name, use "join … and …" (🧮 Maths & text) to write "Layer" + `i`.
+1. नीचे वाला "गिनें …" ब्लॉक जोड़ें और अंत में 5 रखें।
+2. एक "नई लेयर" ब्लॉक को C के **अंदर** खींचें।
+3. बोनस: लेयर के नाम में "… और … जोड़ें" (🧮 गणना और टेक्स्ट) का इस्तेमाल करके "लेयर" + `i` लिखें।
 
-### 7. Choose: conditions
+### 7. चुनना: शर्तें
 
-🎯 **Do something only if the image is wider than it is tall.**
+🎯 **कुछ तभी करें जब इमेज की चौड़ाई ऊँचाई से ज़्यादा हो।**
 
-"**if** … **then** …" runs the blocks inside only if the condition is true.
+"**अगर** … **तो** …" अंदर के ब्लॉक तभी चलाता है जब शर्त सही हो।
 
-A condition is a **hexagonal** block (pointed on both sides): a comparison like "… > …", "… contains …", "… and …".
+शर्त एक **षट्कोणीय** ब्लॉक है (दोनों तरफ़ नुकीला): जैसे "… > …", "… में … है", "… और …" वाली तुलना।
 
-With "if … then … else …", you choose between two paths.
+"अगर … तो … वरना …" से आप दो रास्तों में से एक चुनते हैं।
 
-**Your mission**
+**आपका मिशन**
 
-1. Add "if … then".
-2. In its pointed slot, drop a "… > …" comparison.
-3. On the left put "width of current image"; on the right, "height of current image".
-4. Inside the C, put a message "Landscape image!".
+1. "अगर … तो" जोड़ें।
+2. उसके नुकीले खाँचे में "… > …" तुलना छोड़ें।
+3. बाईं ओर "मौजूदा इमेज की चौड़ाई" रखें; दाईं ओर "मौजूदा इमेज की ऊँचाई"।
+4. C के अंदर "लैंडस्केप इमेज!" संदेश रखें।
 
-### 8. Go through all the layers
+### 8. सभी लेयरों से होकर गुज़रें
 
-🎯 **Do the same thing to every layer of the image.**
+🎯 **इमेज की हर लेयर के साथ एक ही काम करें।**
 
-"for each layer `layer` of current image" is a special loop: on each round, the variable `layer` holds **one** layer of the image, then the next one…
+"मौजूदा इमेज की हर लेयर `layer` के लिए" एक खास लूप है: हर चक्कर में वेरिएबल `layer` में इमेज की **एक** लेयर होती है, फिर अगली…
 
-This is how you rename, hide or change 200 layers in one click. With the "also look inside groups" box, layers stored in folders are visited too.
+इसी तरह 200 लेयरों का नाम बदलना, उन्हें छिपाना या बदलना एक क्लिक में होता है। "समूहों में भी खोजें" बॉक्स से फ़ोल्डरों में रखी लेयरें भी देखी जाती हैं।
 
-**Your mission**
+**आपका मिशन**
 
-1. Add "for each layer".
-2. Inside, put "opacity of …" and drop the `layer` variable in its first slot.
-3. Choose 50%: all your layers become half transparent.
+1. "हर लेयर के लिए" जोड़ें।
+2. अंदर "… की अपारदर्शिता" रखें और वेरिएबल `layer` को उसके पहले खाँचे में छोड़ें।
+3. 50% चुनें: आपकी सारी लेयरें आधी पारदर्शी हो जाती हैं।
 
-## 🌳 Level 3 — Real GIMP work
+## 🌳 स्तर 3 — GIMP में असली काम
 
-*Selections, text, several images, whole folders.*
+*चयन, टेक्स्ट, कई इमेज, पूरे फ़ोल्डर।*
 
-### 9. Select and paint
+### 9. चुनें और रंगें
 
-🎯 **Fill a rectangle with colour.**
+🎯 **एक आयत को रंग से भरें।**
 
-The **selection** (the dotted lines) limits actions to an area. In GIMP, almost all filters and fills only touch the selection.
+**चयन** (बिंदीदार रेखा) क्रियाओं को एक क्षेत्र तक सीमित करता है। GIMP में लगभग सभी फ़िल्टर और भराई सिर्फ़ चयन पर असर करते हैं।
 
-Positions are counted in pixels from the **top-left corner**: x to the right, y downwards.
+स्थिति पिक्सेल में **ऊपरी बाएँ कोने** से गिनी जाती है: x दाईं ओर, y नीचे की ओर।
 
-Remember to select nothing at the end, to hand things back cleanly to the user.
+अंत में कुछ न चुनें, ताकि उपयोगकर्ता को सब साफ़-सुथरा वापस मिले।
 
-**Your mission**
+**आपका मिशन**
 
-1. Add "foreground colour" and pick a colour.
-2. Add "select a rectangle" (x 0, y 0, 200 × 100).
-3. Add "fill the selection of … with foreground colour".
-4. Finish with "select none".
+1. "अग्रभूमि रंग" जोड़ें और एक रंग चुनें।
+2. "आयत चुनें" जोड़ें (x 0, y 0, 200 × 100)।
+3. "… का चयन अग्रभूमि रंग से भरें" जोड़ें।
+4. अंत में "कुछ न चुनें" रखें।
 
-### 10. Write text
+### 10. टेक्स्ट लिखें
 
-🎯 **Add a text layer on the image.**
+🎯 **इमेज पर एक टेक्स्ट लेयर जोड़ें।**
 
-The "write …" block creates a **text layer**: font, size, colour and position are set in the block.
+"लिखें …" ब्लॉक एक **टेक्स्ट लेयर** बनाता है: फ़ॉन्ट, आकार, रंग और स्थिति ब्लॉक में तय होते हैं।
 
-The text layer is stored in a variable (→ in `text`): you can then move it, change its opacity, etc.
+टेक्स्ट लेयर एक वेरिएबल में रखी जाती है (→ में `text`): फिर आप उसे खिसका सकते हैं, उसकी अपारदर्शिता बदल सकते हैं, आदि।
 
-**Your mission**
+**आपका मिशन**
 
-1. Add the "write" block.
-2. Type your text, a size of 60 px, a colour.
-3. Bonus: use a "short text" setting so the user chooses the text.
+1. "लिखें" ब्लॉक जोड़ें।
+2. अपना टेक्स्ट, 60 px आकार और एक रंग डालें।
+3. बोनस: "छोटा टेक्स्ट" सेटिंग इस्तेमाल करें ताकि टेक्स्ट उपयोगकर्ता चुने।
 
-### 11. Work on all open images
+### 11. सभी खुली इमेजों पर काम करें
 
-🎯 **Apply an action to each open image, with a clean undo.**
+🎯 **हर खुली इमेज पर एक क्रिया लागू करें, साफ़ undo के साथ।**
 
-A plug-in does not have to work only on the current image. "for each open image" goes through **all** the images open in GIMP.
+प्लग-इन को सिर्फ़ मौजूदा इमेज पर काम करना ज़रूरी नहीं। "हर खुली इमेज के लिए" GIMP में खुली **सभी** इमेजों से होकर गुज़रता है।
 
-Each action normally counts as one undo step. The ⚡ shortcut groups everything the plug-in does to an image into **a single Ctrl+Z**.
+आम तौर पर हर क्रिया एक undo चरण होती है। ⚡ शॉर्टकट प्लग-इन द्वारा किसी इमेज पर किया गया सब कुछ **एक ही Ctrl+Z** में समेट देता है।
 
-In the loop, use the `img` variable instead of "current image".
+लूप के अंदर "मौजूदा इमेज" की जगह वेरिएबल `img` इस्तेमाल करें।
 
-**Your mission**
+**आपका मिशन**
 
-1. Add "for each open image (one undo step per image)".
-2. Inside, put "flatten …" and drop `img` in its slot.
-3. Open 3 images in GIMP and run your plug-in.
+1. "हर खुली इमेज के लिए (हर इमेज का एक undo)" जोड़ें।
+2. अंदर "समतल करें …" रखें और उसके खाँचे में `img` छोड़ें।
+3. GIMP में 3 इमेज खोलें और अपना प्लग-इन चलाएँ।
 
-### 12. Process a whole folder (batch)
+### 12. पूरा फ़ोल्डर प्रोसेस करें (बैच)
 
-🎯 **Open each image of a folder, change it and export it as PNG.**
+🎯 **किसी फ़ोल्डर की हर इमेज खोलें, बदलें और PNG में एक्सपोर्ट करें।**
 
-**Batch processing** is the real superpower of scripts: 500 files processed while you have a coffee.
+**बैच प्रोसेसिंग** स्क्रिप्टों की असली महाशक्ति है: आप कॉफ़ी पिएँ और इतने में 500 फ़ाइलें प्रोसेस हो जाएँ।
 
-The "for each image file of the folder" shortcut opens each file without a window, runs your blocks, then frees the memory.
+"फ़ोल्डर की हर इमेज फ़ाइल के लिए" शॉर्टकट हर फ़ाइल को बिना विंडो के खोलता है, आपके ब्लॉक चलाता है, फिर मेमोरी खाली करता है।
 
-Tip: add a "📁 folder to choose" setting so the user picks the folder in GIMP.
+सुझाव: "📁 चुनने के लिए फ़ोल्डर" सेटिंग जोड़ें ताकि उपयोगकर्ता GIMP में फ़ोल्डर चुने।
 
-**Your mission**
+**आपका मिशन**
 
-1. Add the batch block below, with the extension `.jpg`.
-2. Inside, put "export … as PNG to …" with `img`.
-3. For the path, join the file name and ".png" (🧮 Maths & text).
+1. नीचे वाला बैच ब्लॉक एक्सटेंशन `.jpg` के साथ जोड़ें।
+2. अंदर `img` के साथ "… को PNG में … पर एक्सपोर्ट करें" रखें।
+3. पाथ के लिए फ़ाइल का नाम और ".png" जोड़ें (🧮 गणना और टेक्स्ट)।
 
-## 🚀 Level 4 — Towards code (pro)
+## 🚀 स्तर 4 — कोड की ओर (प्रो)
 
-*Read and write Python, use the 857 GIMP functions, debug.*
+*Python पढ़ें और लिखें, GIMP के 857 फ़ंक्शन इस्तेमाल करें, डीबग करें।*
 
-### 13. Read the Python you built
+### 13. आपका बनाया Python पढ़ें
 
-🎯 **Understand the link between a block and its lines of code.**
+🎯 **ब्लॉक और उसकी कोड पंक्तियों का संबंध समझें।**
 
-Each block matches one or more lines of **Python 2.7**, the language of GIMP 2.10 plug-ins.
+हर ब्लॉक **Python 2.7** की एक या ज़्यादा पंक्तियों से मेल खाता है, जो GIMP 2.10 प्लग-इनों की भाषा है।
 
-In the 🐍 Code tab, **click a block**: its lines light up. **Click a line**: its block gets selected. It is the best way to learn to read code.
+🐍 कोड टैब में **किसी ब्लॉक पर क्लिक करें**: उसकी पंक्तियाँ चमकती हैं। **किसी पंक्ति पर क्लिक करें**: उसका ब्लॉक चुना जाता है। कोड पढ़ना सीखने का यही सबसे अच्छा तरीका है।
 
-Remember: in Python, what is **shifted to the right** (the indentation) is "inside" — exactly like blocks inside a C.
-- `pdb.gimp_...(...)`: a call to a GIMP function
-- `x = ...`: a value is stored in the variable `x`
-- `for ... in ...:`: a loop; `if ...:`: a condition
+याद रखें: Python में जो **दाईं ओर खिसका** होता है (इंडेंटेशन), वह "अंदर" होता है — बिल्कुल C के अंदर के ब्लॉकों की तरह।
+- `pdb.gimp_...(...)`: किसी GIMP फ़ंक्शन को कॉल
+- `x = ...`: वेरिएबल `x` में एक मान रखा जाता है
+- `for ... in ...:`: एक लूप; `if ...:`: एक शर्त
 
-**Your mission**
+**आपका मिशन**
 
-1. Open the 🐍 Code tab.
-2. Click three different blocks and watch the lines that light up.
+1. 🐍 कोड टैब खोलें।
+2. तीन अलग ब्लॉकों पर क्लिक करें और चमकने वाली पंक्तियाँ देखें।
 
-### 14. Switch to Python blocks
+### 14. Python ब्लॉकों पर जाएँ
 
-🎯 **Turn your plug-in into Python blocks, one line = one block.**
+🎯 **अपने प्लग-इन को Python ब्लॉकों में बदलें, एक पंक्ति = एक ब्लॉक।**
 
-Simple blocks are comfortable, but **Python** blocks show you all the code, line by line, and let you change everything.
+आसान ब्लॉक आरामदेह हैं, लेकिन **Python** ब्लॉक आपको पूरा कोड पंक्ति-दर-पंक्ति दिखाते हैं और सब कुछ बदलने देते हैं।
 
-In Python blocks, colours help you:
-- **orange** pill: a variable (`image`, `layer`, `x`)
-- **violet** pill: a GIMP constant (`FILL_WHITE`, `NORMAL_MODE`)
-- **yellow** pill: a GIMP function (`pdb.…`)
-- green blocks: calculations and comparisons (`+`, `==`, `and`…)
+Python ब्लॉकों में रंग आपकी मदद करते हैं:
+- **नारंगी** गोली: एक वेरिएबल (`image`, `layer`, `x`)
+- **बैंगनी** गोली: एक GIMP कॉन्स्टेंट (`FILL_WHITE`, `NORMAL_MODE`)
+- **पीली** गोली: एक GIMP फ़ंक्शन (`pdb.…`)
+- हरे ब्लॉक: गणनाएँ और तुलनाएँ (`+`, `==`, `and`…)
 
-Click a pill and type a few letters: a list of suggestions opens.
+किसी गोली पर क्लिक करें और कुछ अक्षर लिखें: सुझावों की सूची खुलती है।
 
-**Your mission**
+**आपका मिशन**
 
-1. Click the button below (or File ▸ See this plug-in as Python blocks).
-2. Explore: click an orange pill and look at the suggested variables.
+1. नीचे वाले बटन पर क्लिक करें (या फ़ाइल ▸ इस प्लग-इन को Python ब्लॉकों में देखें)।
+2. खोजें: किसी नारंगी गोली पर क्लिक करें और सुझाए गए वेरिएबल देखें।
 
-### 15. The 857 GIMP functions
+### 15. GIMP के 857 फ़ंक्शन
 
-🎯 **Call a PDB function with the right arguments.**
+🎯 **PDB के किसी फ़ंक्शन को सही आर्ग्युमेंट के साथ कॉल करें।**
 
-The **PDB** (Procedure DataBase) is the list of everything GIMP can do: 857 functions. Everything you do with the mouse in GIMP has its function.
+**PDB** (Procedure DataBase) उस सब की सूची है जो GIMP कर सकता है: 857 फ़ंक्शन। GIMP में माउस से जो भी करते हैं, उसका अपना फ़ंक्शन है।
 
-In a "call …" block, click the function name and type a word, in English or French: **blur**, **layer**, **text**… The list shows each function with its arguments and an explanation. Choose one: the slots fill themselves.
+"कॉल करें …" ब्लॉक में फ़ंक्शन के नाम पर क्लिक करें और अंग्रेज़ी या फ़्रेंच में एक शब्द लिखें: **blur**, **layer**, **text**… सूची हर फ़ंक्शन को उसके आर्ग्युमेंट और व्याख्या के साथ दिखाती है। एक चुनें: खाँचे अपने आप भर जाते हैं।
 
-The block's 🔍 opens the full list, sorted by group.
+ब्लॉक का 🔍 पूरी सूची खोलता है, समूहों में बँटी हुई।
 
-Golden rule: the `run_mode` is **never** passed — pygimp adds it itself.
+सुनहरा नियम: `run_mode` **कभी** नहीं दिया जाता — pygimp उसे खुद जोड़ता है।
 
-**Your mission**
+**आपका मिशन**
 
-1. Add a "call …" block (🐍 Python category).
-2. Click its name, type "blur" and choose `plug_in_gauss`.
-3. Replace the 0.0 values with 5.0 for a 5-pixel blur.
+1. एक "कॉल करें …" ब्लॉक जोड़ें (🐍 Python श्रेणी)।
+2. उसके नाम पर क्लिक करें, "blur" लिखें और `plug_in_gauss` चुनें।
+3. 5 पिक्सेल के धुंधलेपन के लिए 0.0 को 5.0 से बदलें।
 
-### 16. Debug like a pro
+### 16. प्रो की तरह डीबग करें
 
-🎯 **Find and understand an error.**
+🎯 **कोई गलती ढूँढें और समझें।**
 
-Everybody makes mistakes, even pros. The difference: they know **where to look**.
-- The **✅ Check** tab finds many errors **before** GIMP does: empty slot, wrong number of arguments, unknown function… Click a problem to see the block.
-- In GIMP, errors are shown in **Windows ▸ Dockable Dialogs ▸ Error Console**.
-- To see what a variable holds while the plug-in runs, show it: `pdb.gimp_message(str(x))`.
-- **Filters ▸ Python-Fu ▸ Console** lets you try a line of Python directly in GIMP.
+गलतियाँ सबसे होती हैं, प्रो से भी। फ़र्क यह है: उन्हें पता होता है कि **कहाँ देखना है**।
+- **✅ जाँच** टैब GIMP से **पहले** ही कई गलतियाँ पकड़ लेता है: खाली खाँचा, गलत संख्या में आर्ग्युमेंट, अनजान फ़ंक्शन… ब्लॉक देखने के लिए किसी समस्या पर क्लिक करें।
+- GIMP में गलतियाँ **Windows ▸ Dockable Dialogs ▸ Error Console** में दिखती हैं।
+- प्लग-इन चलते समय किसी वेरिएबल का मान देखने के लिए उसे दिखाएँ: `pdb.gimp_message(str(x))`।
+- **Filters ▸ Python-Fu ▸ Console** से आप Python की कोई पंक्ति सीधे GIMP में आज़मा सकते हैं।
 
-Read errors **from the bottom up**: the last line says what is wrong, the one above says where.
+गलतियाँ **नीचे से ऊपर** पढ़ें: आखिरी पंक्ति बताती है कि क्या गलत है, उसके ऊपर वाली बताती है कि कहाँ।
 
-**Your mission**
+**आपका मिशन**
 
-1. Open the ✅ Check tab.
-2. Add a "call …" to `pdb.gimp_message` and put a variable in it, for example `str(image.width)`.
+1. ✅ जाँच टैब खोलें।
+2. `pdb.gimp_message` के लिए एक "कॉल करें …" जोड़ें और उसमें एक वेरिएबल डालें, जैसे `str(image.width)`।
 
-### 17. Write your own functions
+### 17. अपने खुद के फ़ंक्शन लिखें
 
-🎯 **Put a piece of code in a function and call it.**
+🎯 **कोड के एक हिस्से को फ़ंक्शन में रखें और उसे कॉल करें।**
 
-When you repeat the same lines in several places, put them in a **function**: "define `my_function(layer)`". Then a single "call `my_function(...)`" block does it all.
+जब आप कई जगह वही पंक्तियाँ दोहराते हैं, तो उन्हें एक **फ़ंक्शन** में रखें: "परिभाषित करें `my_function(layer)`"। फिर एक ही "कॉल करें `my_function(...)`" ब्लॉक सब कर देता है।
 
-**Parameters** (in brackets) are variables filled at the moment of the call. "return …" sends back a result.
+**पैरामीटर** (कोष्ठक में) ऐसे वेरिएबल हैं जो कॉल के समय भरे जाते हैं। "लौटाएँ …" एक परिणाम वापस भेजता है।
 
-A good function name says what it does: `make_grey`, `number_layers`… Your functions also appear in the suggestions.
+अच्छा फ़ंक्शन नाम बताता है कि वह क्या करता है: `make_grey`, `number_layers`… आपके फ़ंक्शन सुझावों में भी दिखते हैं।
 
-**Your mission**
+**आपका मिशन**
 
-1. Add "define …" with the name `griser` and the parameter `calque`.
-2. Inside, call `pdb.gimp_drawable_desaturate(calque, DESATURATE_LUMINANCE)`.
-3. Somewhere else, call `griser(drawable)`.
+1. `griser` नाम और `calque` पैरामीटर के साथ "परिभाषित करें …" जोड़ें।
+2. अंदर `pdb.gimp_drawable_desaturate(calque, DESATURATE_LUMINANCE)` को कॉल करें।
+3. कहीं और `griser(drawable)` को कॉल करें।
 
-### 18. Import, change, share
+### 18. इम्पोर्ट करें, बदलें, साझा करें
 
-🎯 **Open a real existing script and change it without breaking it.**
+🎯 **कोई असली मौजूदा स्क्रिप्ट खोलें और उसे बिना तोड़े बदलें।**
 
-Found a plug-in on the Internet? **File ▸ Import a Python script**: each line becomes a block, and the download gives back **exactly the same file** as long as you change nothing. If you change a block, only its lines change.
+इंटरनेट पर कोई प्लग-इन मिला? **फ़ाइल ▸ Python स्क्रिप्ट इम्पोर्ट करें**: हर पंक्ति एक ब्लॉक बन जाती है, और जब तक आप कुछ नहीं बदलते, डाउनलोड **ठीक वही फ़ाइल** लौटाता है। कोई ब्लॉक बदलें तो सिर्फ़ उसकी पंक्तियाँ बदलती हैं।
 
-The **AI assistant** (🤖 tab) can write a function, explain a script or fix an error. Its answers are checked (Python 2.7, real GIMP functions, right number of arguments) before they become blocks.
+**AI सहायक** (🤖 टैब) फ़ंक्शन लिख सकता है, स्क्रिप्ट समझा सकता है या गलती ठीक कर सकता है। उसके जवाब ब्लॉक बनने से पहले जाँचे जाते हैं (Python 2.7, असली GIMP फ़ंक्शन, सही संख्या में आर्ग्युमेंट)।
 
-You can now read, write and fix GIMP plug-ins. Next: open other people's scripts, read them block by block, and build your own. **Well done!**
+अब आप GIMP प्लग-इन पढ़, लिख और ठीक कर सकते हैं। आगे: दूसरों की स्क्रिप्ट खोलें, उन्हें ब्लॉक-दर-ब्लॉक पढ़ें और अपनी बनाएँ। **शाबाश!**
 
-**Your mission**
+**आपका मिशन**
 
-1. Import a `.py` script (or an example: File ▸ Examples, then convert it).
-2. Change a value and look in the 🐍 Code tab at which lines changed.
-3. When you are done, click "I did it".
+1. एक `.py` स्क्रिप्ट इम्पोर्ट करें (या कोई उदाहरण: फ़ाइल ▸ उदाहरण, फिर उसे बदलें)।
+2. कोई मान बदलें और 🐍 कोड टैब में देखें कि कौन सी पंक्तियाँ बदलीं।
+3. हो जाने पर "मैंने कर लिया" पर क्लिक करें।
 

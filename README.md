@@ -41,8 +41,12 @@ browser and download a plug-in ready to drop into GIMP's `plug-ins` folder.
   fold/unfold, drag outline for huge stacks, keyboard shortcuts.
 - **Customisable look** — 4 presets from minimal to fully custom: theme, block shape,
   palettes (including per-category colours), fonts, sizes, background, zoom.
-- **Bilingual** — full French and English UI, including every block, help text and check
-  message.
+- **8 languages** — French, English, Spanish, German, Brazilian Portuguese, Russian, Hindi
+  and Arabic (right to left): every menu, block, help text, check message, the course and the
+  guide. Adding a language: [docs/TRANSLATING.md](gimp-code-block/docs/TRANSLATING.md).
+- **Never alone** — a built-in 🎓 course takes complete beginners to real Python in 18
+  lessons with automatically checked missions, and a 📘 user guide covers everything else
+  ([docs/guide/](gimp-code-block/docs/guide/)).
 
 ## Quick start
 

@@ -1,413 +1,413 @@
-# User guide — GIMP Code Block
+# دليل الاستخدام — GIMP Code Block
 
-## 🗺️ The workshop screen
+## 🗺️ شاشة الورشة
 
-- On the **left**, the block categories. Click a category to see its blocks, then drag a block into the building area.
-- In the **centre**, the building area. Wheel: scroll; Ctrl + wheel: zoom; drag on empty space: move around.
-- On the **right**, the panel: 💡 Help (about the selected block), 🐍 Code (the Python produced), ✅ Check, 🤖 AI and 🎓 Course.
-- At the **top**, the menus, the block search (/ key) and the ⬇ Download button.
+- على **الجانب**، فئات الكتل. انقر على فئة لرؤية كتلها، ثم اسحب كتلة إلى منطقة البناء.
+- في **الوسط**، منطقة البناء. العجلة: التمرير؛ Ctrl + العجلة: التكبير؛ السحب في مكان فارغ: التنقل.
+- على **الجانب الآخر**، اللوحة: 💡 مساعدة (عن الكتلة المحددة)، 🐍 الكود (كود Python الناتج)، ✅ الفحص، 🤖 الذكاء الاصطناعي و🎓 الدورة.
+- في **الأعلى**، القوائم، والبحث عن الكتل (مفتاح /) وزر ⬇ تنزيل.
 
-## 🧩 The shapes of the blocks
+## 🧩 أشكال الكتل
 
-- **Notched block**: an action. It stacks under another one.
-- **Rounded block**: a value (number, text, layer, variable). It slots into a hole.
-- **Pointed (hexagonal) block**: a true/false condition, for "if" and "while".
-- **C block**: it holds other blocks (loops, conditions, shortcuts).
+- **كتلة ذات تجويف**: إجراء. تُكدَّس تحت كتلة أخرى.
+- **كتلة مستديرة**: قيمة (رقم، نص، طبقة، متغير). تدخل في فتحة.
+- **كتلة مدببة (سداسية)**: شرط صحيح/خطأ لـ «إذا» و«طالما».
+- **كتلة C**: تحتوي كتلاً أخرى (حلقات، شروط، اختصارات).
 
-A greyed-out block is disabled: it is not in the code. Right-click a block: duplicate, comment, disable, collapse, help.
+الكتلة الرمادية معطّلة: ليست في الكود. انقر بزر الفأرة الأيمن على كتلة: تكرار، تعليق، تعطيل، طي، مساعدة.
 
-## ▶ The start block
+## ▶ كتلة البداية
 
-The yellow **▶ When I run** block describes your plug-in: its name in the menu, the menu where it appears, whether it needs an open image, and its settings ("first, ask").
+تصف الكتلة الصفراء **▶ عند التشغيل** إضافتك: اسمها في القائمة، والقائمة التي تظهر فيها، وهل تحتاج صورة مفتوحة، وإعداداتها («أولاً، اسأل»).
 
-Settings become the window GIMP shows before running the plug-in. Use their value with the 🎛️ blocks of the ▶ Start category.
+تصبح الإعدادات النافذة التي يعرضها GIMP قبل تشغيل الإضافة. استخدم قيمها مع كتل 🎛️ في فئة ▶ البداية.
 
-**Settings ▸ My plug-in** sets the rest: author, grouped undo, error handling, imported modules.
+**إعدادات ▸ إضافتي** تضبط الباقي: المؤلف، التراجع المجمّع، معالجة الأخطاء، الوحدات المستوردة.
 
-## ⬇ Download and install
+## ⬇ التنزيل والتثبيت
 
-Click **⬇ Download**: you get a `.py` file. Put it in GIMP's plug-ins folder and restart GIMP.
+انقر على **⬇ تنزيل**: تحصل على ملف `.py`. ضعه في مجلد الإضافات plug-ins الخاص بـ GIMP وأعد تشغيل GIMP.
 - **Windows**: `C:\Users\<you>\AppData\Roaming\GIMP\2.10\plug-ins`
-- **Linux**: `~/.config/GIMP/2.10/plug-ins`, then `chmod +x file.py`
+- **Linux**: `~/.config/GIMP/2.10/plug-ins`، ثم `chmod +x file.py`
 - **macOS**: `~/Library/Application Support/GIMP/2.10/plug-ins`
 
-The exact folder is in **Edit ▸ Preferences ▸ Folders ▸ Plug-ins**. Plug-ins made here work in **GIMP 2.10** (not in GIMP 3, which has a different API).
+المجلد الدقيق موجود في **Edit ▸ Preferences ▸ Folders ▸ Plug-ins**. الإضافات المصنوعة هنا تعمل في **GIMP 2.10** (وليس في GIMP 3 الذي له واجهة API مختلفة).
 
-## 🐍 Import a Python script
+## 🐍 استيراد سكربت Python
 
-**File ▸ Import a Python script**, or drop the `.py` file on the page. Each line becomes a Python block.
+**ملف ▸ استيراد سكربت Python**، أو أفلت ملف `.py` على الصفحة. يصبح كل سطر كتلة Python.
 
-Guarantee: as long as you change nothing, the download gives back **the same file, byte for byte** (comments, spaces and tabs included). If you change a block, only its lines are rewritten.
+الضمان: طالما لم تغيّر شيئاً، يعيد التنزيل **الملف نفسه بايتاً ببايت** (بما في ذلك التعليقات والمسافات وعلامات الجدولة). إذا غيّرت كتلة، تُعاد كتابة أسطرها فقط.
 
-A script with a syntax error still imports: the faulty part becomes a 🧱 "raw code" block to fix.
+السكربت الذي فيه خطأ صياغة يُستورد رغم ذلك: يصبح الجزء المعيب كتلة 🧱 «كود خام» يجب إصلاحها.
 
-## 🟠 Python blocks and their pills
+## 🟠 كتل Python وحبّاتها
 
-- **orange**: variable; **violet**: GIMP constant; **yellow**: GIMP function; **dark green**: other function; green blocks: calculations and comparisons; white slots: values written as is.
+- **برتقالي**: متغير؛ **بنفسجي**: ثابت GIMP؛ **أصفر**: دالة GIMP؛ **أخضر داكن**: دالة أخرى؛ كتل خضراء: حسابات ومقارنات؛ فتحات بيضاء: قيم مكتوبة كما هي.
 
-Click a pill and type: a list of suggestions opens (arrows ↑↓ then Enter, or click). For a GIMP function, the missing slots fill themselves.
+انقر على حبة واكتب: تُفتح قائمة اقتراحات (الأسهم ↑↓ ثم Enter، أو النقر). في دالة GIMP تمتلئ الفتحات الناقصة وحدها.
 
-Right-click a function call: add or remove an argument. Right-click "if": add "else if" or "else".
+انقر بزر الفأرة الأيمن على استدعاء دالة: أضف معاملاً أو احذفه. انقر بزر الفأرة الأيمن على «إذا»: أضف «وإلا إذا» أو «وإلا».
 
-The 🐍 Python category lists your script's variables and ready-made **GIMP shortcuts** (grouped undo, loop over images, over layers…).
+تعرض فئة 🐍 Python متغيرات سكربتك و**اختصارات GIMP** جاهزة (تراجع مجمّع، حلقة على الصور، على الطبقات…).
 
-## ⚙️ The 857 GIMP functions (PDB)
+## ⚙️ دوال GIMP الـ 857 (PDB)
 
-Two ways to use them: the "⚙️ GIMP function" block (🧰 Advanced) in a simple-blocks plug-in, or the "call …" block in Python blocks.
+طريقتان لاستخدامها: كتلة «⚙️ دالة GIMP» (🧰 متقدم) في إضافة من الكتل البسيطة، أو كتلة «استدعِ …» في كتل Python.
 
-Search: type a word in English or French (blur, layer, selection, text…). The most used functions come first; "old" marks a deprecated function that has a replacement.
+البحث: اكتب كلمة بالإنجليزية أو الفرنسية (blur، layer، selection، text…). الدوال الأكثر استخداماً تأتي أولاً؛ و«قديمة» تشير إلى دالة مهجورة لها بديل.
 
-The `run_mode` is never provided: pygimp adds it. Arrays often have a counter just before them (e.g. `num_points` then `points`).
+لا يُعطى `run_mode` أبداً: يضيفه pygimp. غالباً ما يسبق المصفوفات عدّاد مباشرة (مثلاً `num_points` ثم `points`).
 
-## ⚡ GIMP shortcuts
+## ⚡ اختصارات GIMP
 
-Blocks that replace what every script writes by hand:
-- "as a single undo step": everything counts as one Ctrl+Z, even if an error happens;
-- "then restore…" the colours and tools, the selection or the active layer;
-- "for each open image", "for each layer of all images", "for each file of the folder";
-- "new layer the size of the image", "copy the layer into another image".
+كتل تحل محل ما يكتبه كل سكربت يدوياً:
+- «في خطوة تراجع واحدة»: كل شيء يُحسب ضغطة Ctrl+Z واحدة، حتى عند حدوث خطأ؛
+- «ثم أرجِع…» الألوان والأدوات، أو التحديد، أو الطبقة النشطة؛
+- «لكل صورة مفتوحة»، «لكل طبقة من كل الصور»، «لكل ملف في المجلد»؛
+- «طبقة جديدة بحجم الصورة»، «انسخ الطبقة إلى صورة أخرى».
 
-## ✅ Check and errors
+## ✅ الفحص والأخطاء
 
-The **✅ Check** tab rereads your plug-in after every change: 🛑 error (it would not work), ⚠️ worth a look, ℹ️ information. Click a line to go to the block.
+يعيد تبويب **✅ الفحص** قراءة إضافتك بعد كل تغيير: 🛑 خطأ (لن تعمل)، ⚠️ تستحق النظر، ℹ️ معلومة. انقر على سطر للانتقال إلى الكتلة.
 
-In GIMP: **Windows ▸ Dockable Dialogs ▸ Error Console** shows Python errors. Plug-ins made here also show the full error in a message.
+في GIMP: **Windows ▸ Dockable Dialogs ▸ Error Console** تعرض أخطاء Python. والإضافات المصنوعة هنا تعرض الخطأ الكامل في رسالة أيضاً.
 
-**Filters ▸ Python-Fu ▸ Console**: to try a line of Python directly in GIMP.
+**Filters ▸ Python-Fu ▸ Console**: لتجربة سطر Python مباشرة في GIMP.
 
-## 🤖 The AI assistant
+## 🤖 مساعد الذكاء الاصطناعي
 
-**AI ▸ Choose the AI**: any compatible service (OpenAI, Anthropic, Gemini, Mistral…), a local AI (Ollama, LM Studio) or copy-and-paste mode, with no connection.
+**الذكاء الاصطناعي ▸ اختيار الذكاء الاصطناعي**: أي خدمة متوافقة (OpenAI، Anthropic، Gemini، Mistral…)، أو ذكاء اصطناعي محلي (Ollama، LM Studio) أو وضع النسخ واللصق بلا اتصال.
 
-Ask for a function, a whole plug-in, a fix or an explanation. The answer is checked and repaired automatically before it becomes blocks.
+اطلب دالة، أو إضافة كاملة، أو إصلاحاً، أو شرحاً. يُفحص الرد ويُصلح تلقائياً قبل أن يصبح كتلاً.
 
-## 💾 Save your work
+## 💾 حفظ عملك
 
-The workshop automatically keeps your work in this browser.
+تحفظ الورشة عملك تلقائياً في هذا المتصفح.
 
-To keep it elsewhere or share it: **File ▸ Save the project** (`.json` file). The downloaded `.py` also contains the blocks' fingerprint: re-import it and you get your blocks back exactly.
+لحفظه في مكان آخر أو مشاركته: **ملف ▸ حفظ المشروع** (ملف `.json`). يحتوي ملف `.py` المُنزَّل أيضاً على بصمة الكتل: أعد استيراده فتستعيد كتلك كما هي تماماً.
 
-## ❓ Common problems
+## ❓ مشكلات شائعة
 
-- **The plug-in does not show up**: wrong folder, GIMP not restarted, file not executable (Linux), or Python-Fu missing (Linux: `gimp-python` package).
-- **The menu is greyed out**: the plug-in needs an open image (checkbox of the ▶ block).
-- **"argument count" / "wrong type"**: look at the ✅ Check tab, it tells the expected number of arguments.
-- **Strange accents**: use the workshop's text blocks, they handle UTF-8 for you.
+- **لا تظهر الإضافة**: مجلد خاطئ، أو لم تُعِد تشغيل GIMP، أو الملف غير قابل للتنفيذ (Linux)، أو Python-Fu غير موجود (Linux: حزمة `gimp-python`).
+- **القائمة رمادية**: تحتاج الإضافة إلى صورة مفتوحة (مربع كتلة ▶).
+- **«argument count» / «wrong type»**: انظر إلى تبويب ✅ الفحص، فهو يذكر عدد المعاملات المتوقع.
+- **حروف غريبة**: استخدم كتل النص في الورشة، فهي تتولى UTF-8 عنك.
 
 ---
 
-# Course: from complete beginner to pro
+# الدورة: من مبتدئ تماماً إلى محترف
 
-Each lesson explains one idea, then gives you a mission. The workshop checks by itself when you have succeeded.
+كل درس يشرح فكرة ثم يعطيك مهمة. تتحقق الورشة وحدها عندما تنجح.
 
-## 🌱 Level 1 — First steps
+## 🌱 المستوى 1 — الخطوات الأولى
 
-*Never programmed before? Perfect, we start here.*
+*لم تبرمج من قبل؟ ممتاز، نبدأ من هنا.*
 
-### 1. Your first plug-in
+### 1. إضافتك الأولى
 
-🎯 **Make GIMP say "Hello".**
+🎯 **اجعل GIMP يقول «مرحباً».**
 
-A **plug-in** is a small program that adds a command to GIMP's menus. Here you build it by snapping blocks together, like a puzzle: the workshop writes the real Python code for you.
+**الإضافة** برنامج صغير يضيف أمراً إلى قوائم GIMP. هنا تبنيها بتركيب الكتل مثل أحجية: الورشة تكتب كود Python الحقيقي بدلاً منك.
 
-Every plug-in starts with the yellow block **▶ When I run**. The blocks placed under "then do" run **from top to bottom**, one by one.
+كل إضافة تبدأ بالكتلة الصفراء **▶ عند التشغيل**. الكتل الموضوعة تحت «ثم نفّذ» تعمل **من الأعلى إلى الأسفل** واحدة تلو الأخرى.
 
-**Your mission**
+**مهمتك**
 
-1. Click the block below to add it: it attaches itself under "then do".
-2. Click the white slot of the message and type your text.
-3. Look at the 🐍 Code tab: the line `pdb.gimp_message(...)` has appeared.
+1. انقر على الكتلة أدناه لإضافتها: تلتصق وحدها تحت «ثم نفّذ».
+2. انقر على الفتحة البيضاء للرسالة واكتب نصك.
+3. انظر إلى تبويب 🐍 الكود: ظهر السطر `pdb.gimp_message(...)`.
 
-### 2. Install your plug-in in GIMP
+### 2. ثبّت إضافتك في GIMP
 
-🎯 **See your plug-in in GIMP's menus and run it.**
+🎯 **رؤية إضافتك في قوائم GIMP وتشغيلها.**
 
-GIMP loads plug-ins at startup, from a special folder called **plug-ins**.
+يحمّل GIMP الإضافات عند بدء التشغيل من مجلد خاص اسمه **plug-ins**.
 - **Windows**: `C:\Users\<you>\AppData\Roaming\GIMP\2.10\plug-ins`
-- **Linux**: `~/.config/GIMP/2.10/plug-ins` (then make the file executable: `chmod +x file.py`)
+- **Linux**: `~/.config/GIMP/2.10/plug-ins` (ثم اجعل الملف قابلاً للتنفيذ: `chmod +x file.py`)
 - **macOS**: `~/Library/Application Support/GIMP/2.10/plug-ins`
 
-The exact path is written in GIMP: **Edit ▸ Preferences ▸ Folders ▸ Plug-ins**.
+المسار الدقيق مكتوب في GIMP: **Edit ▸ Preferences ▸ Folders ▸ Plug-ins**.
 
-**Your mission**
+**مهمتك**
 
-1. In the ▶ block, give your plug-in a name and choose its menu.
-2. Click **⬇ Download** at the top right.
-3. Put the `.py` file in the plug-ins folder, then **restart GIMP**.
-4. Open an image and look for your plug-in in the menu you chose. Click it: your message appears!
-5. When it works, click "I did it".
+1. في كتلة ▶، أعطِ إضافتك اسماً واختر قائمتها.
+2. انقر على **⬇ تنزيل** في الأعلى.
+3. ضع ملف `.py` في مجلد الإضافات، ثم **أعد تشغيل GIMP**.
+4. افتح صورة وابحث عن إضافتك في القائمة التي اخترتها. انقر عليها: تظهر رسالتك!
+5. عندما تعمل، انقر على «نجحت».
 
-> 💡 The plug-in does not show up? Check that the file really is in the plug-ins folder (not in an extra sub-folder), that it ends with .py, and that GIMP was restarted. On Linux you also need the gimp-python package.
+> 💡 لا تظهر الإضافة؟ تأكد أن الملف موجود فعلاً في مجلد الإضافات (وليس في مجلد فرعي زائد)، وأنه ينتهي بـ .py، وأنك أعدت تشغيل GIMP. على Linux تحتاج أيضاً إلى حزمة gimp-python.
 
-### 3. Act on the image: a new layer
+### 3. العمل على الصورة: طبقة جديدة
 
-🎯 **Create a layer filled with white in the image.**
+🎯 **إنشاء طبقة مملوءة بالأبيض في الصورة.**
 
-A **layer** is a transparent sheet laid on the image. The purple blocks (📑 Layers) create and change them.
+**الطبقة** ورقة شفافة موضوعة فوق الصورة. الكتل البنفسجية (📑 الطبقات) تُنشئها وتغيّرها.
 
-The "new layer" block of the ⚡ Shortcuts category does at once what programmers write in 3 lines: create the layer, add it to the image, fill it.
+كتلة «طبقة جديدة» من فئة ⚡ الاختصارات تفعل دفعة واحدة ما يكتبه المبرمجون في 3 أسطر: إنشاء الطبقة، وإضافتها إلى الصورة، وملؤها.
 
-Notice the blue ovals "🖼️ current image": they are **values**. They stand for the image you ran the plug-in on.
+لاحظ الأشكال البيضاوية الزرقاء «🖼️ الصورة الحالية»: إنها **قيم**. تمثّل الصورة التي شغّلت عليها الإضافة.
 
-**Your mission**
+**مهمتك**
 
-1. Add the block below.
-2. Change its name ("My layer") and choose "white" in the list.
-3. Download, replace the old file in GIMP, restart and try.
+1. أضف الكتلة أدناه.
+2. غيّر اسمها («طبقتي») واختر «أبيض» من القائمة.
+3. نزّل، واستبدل الملف القديم في GIMP، وأعد التشغيل وجرّب.
 
-### 4. Ask the user a question
+### 4. طرح سؤال على المستخدم
 
-🎯 **Ask for a number at launch and use it.**
+🎯 **طلب رقم عند التشغيل واستخدامه.**
 
-When a plug-in has **settings**, GIMP opens a small window before running it: the user chooses a number, a text, a colour…
+عندما يكون للإضافة **إعدادات**، يفتح GIMP نافذة صغيرة قبل تشغيلها: يختار المستخدم رقماً أو نصاً أو لوناً…
 
-Settings go in the "first, ask" part of the ▶ block. Then the "🎛️ setting value" block (▶ Start category) gives what the user chose.
+توضع الإعدادات في جزء «أولاً، اسأل» من كتلة ▶. ثم تعطي كتلة «🎛️ قيمة الإعداد» (فئة ▶ البداية) ما اختاره المستخدم.
 
-**Your mission**
+**مهمتك**
 
-1. Open the **▶ Start & settings** category and drag a "🔢 whole number" setting into "first, ask". Give it a name, for example `opacity`.
-2. Add the "opacity of …" block below.
-3. In its percentage slot, drop the 🎛️ block of the setting (it appears in the ▶ Start category once the setting exists).
+1. افتح فئة **▶ البداية والإعدادات** واسحب إعداد «🔢 عدد صحيح» إلى «أولاً، اسأل». أعطه اسماً، مثلاً `opacity`.
+2. أضف كتلة «عتامة …» أدناه.
+3. في فتحة النسبة المئوية فيها، أفلت كتلة 🎛️ الخاصة بالإعداد (تظهر في فئة ▶ البداية بعد إنشاء الإعداد).
 
-## 🌿 Level 2 — Programming basics
+## 🌿 المستوى 2 — أساسيات البرمجة
 
-*Variables, loops, conditions: the 3 ideas behind every program.*
+*المتغيرات والحلقات والشروط: الأفكار الثلاث وراء كل برنامج.*
 
-### 5. Variables: boxes that remember
+### 5. المتغيرات: صناديق تتذكر
 
-🎯 **Store a value in a variable, then use it again.**
+🎯 **حفظ قيمة في متغير ثم استخدامها من جديد.**
 
-A **variable** is a box with a name. You store a value in it (a number, a text, a layer…) to use it again later.
+**المتغير** صندوق له اسم. تضع فيه قيمة (رقماً أو نصاً أو طبقة…) لتستخدمها لاحقاً.
 
-"set `x` to 5" puts 5 in the box `x`. After that, every `x` block is worth 5. If you put something else in `x`, the old value is replaced.
+«اجعل `x` يساوي 5» يضع 5 في الصندوق `x`. بعدها تساوي كل كتلة `x` القيمة 5. إذا وضعت شيئاً آخر في `x`، تُستبدل القيمة القديمة.
 
-Blocks that create something (layer, text, image) often have an arrow **→ in**: the result is stored in a variable, so you can change it afterwards.
+الكتل التي تُنشئ شيئاً (طبقة، نص، صورة) لها غالباً سهم **→ في**: تُحفظ النتيجة في متغير حتى تستطيع تغييرها بعد ذلك.
 
-**Your mission**
+**مهمتك**
 
-1. Open **📦 Variables & lists** and click "➕ Create a variable". Call it `name`.
-2. Add "set … to …" and put a text in it, for example "Hello".
-3. Add "💬 show the message" and drop your variable's block in it.
+1. افتح **📦 المتغيرات والقوائم** وانقر على «➕ إنشاء متغير». سمّه `name`.
+2. أضف «اجعل … يساوي …» وضع فيه نصاً، مثلاً «مرحباً».
+3. أضف «💬 اعرض الرسالة» وأفلت فيها كتلة متغيرك.
 
-### 6. Repeat: loops
+### 6. التكرار: الحلقات
 
-🎯 **Create 5 layers at once.**
+🎯 **إنشاء 5 طبقات دفعة واحدة.**
 
-A computer never gets bored: a **loop** runs the same blocks as many times as you want.
+الحاسوب لا يملّ أبداً: **الحلقة** تنفّذ الكتل نفسها بعدد المرات الذي تريده.
 
-"repeat 10 times" is the simplest. "count with `i` from 1 to 10" does the same, but the variable `i` is 1, then 2, then 3…: handy for numbering.
+«كرّر 10 مرات» هي الأبسط. «عُدّ بـ `i` من 1 إلى 10» تفعل الشيء نفسه، لكن المتغير `i` يساوي 1 ثم 2 ثم 3…: مفيد للترقيم.
 
-**C**-shaped blocks hold other blocks: everything inside is repeated.
+الكتل على شكل **C** تحتوي كتلاً أخرى: كل ما بداخلها يتكرر.
 
-**Your mission**
+**مهمتك**
 
-1. Add the "count with …" block below and set the end to 5.
-2. Drag a "new layer" block **inside** the C.
-3. Bonus: in the layer name, use "join … and …" (🧮 Maths & text) to write "Layer" + `i`.
+1. أضف كتلة «عُدّ بـ …» أدناه واجعل النهاية 5.
+2. اسحب كتلة «طبقة جديدة» إلى **داخل** الـ C.
+3. إضافي: في اسم الطبقة، استخدم «اضمم … و …» (🧮 الحساب والنص) لكتابة «طبقة» + `i`.
 
-### 7. Choose: conditions
+### 7. الاختيار: الشروط
 
-🎯 **Do something only if the image is wider than it is tall.**
+🎯 **فعل شيء فقط إذا كان عرض الصورة أكبر من ارتفاعها.**
 
-"**if** … **then** …" runs the blocks inside only if the condition is true.
+«**إذا** … **فإن** …» لا تنفّذ الكتل بداخلها إلا إذا كان الشرط صحيحاً.
 
-A condition is a **hexagonal** block (pointed on both sides): a comparison like "… > …", "… contains …", "… and …".
+الشرط كتلة **سداسية** (مدببة من الجانبين): مقارنة مثل «… > …» أو «… يحتوي على …» أو «… و …».
 
-With "if … then … else …", you choose between two paths.
+مع «إذا … فإن … وإلا …» تختار بين طريقين.
 
-**Your mission**
+**مهمتك**
 
-1. Add "if … then".
-2. In its pointed slot, drop a "… > …" comparison.
-3. On the left put "width of current image"; on the right, "height of current image".
-4. Inside the C, put a message "Landscape image!".
+1. أضف «إذا … فإن».
+2. في فتحتها المدببة، أفلت مقارنة «… > …».
+3. ضع على جانب «عرض الصورة الحالية» وعلى الجانب الآخر «ارتفاع الصورة الحالية».
+4. داخل الـ C، ضع رسالة «صورة أفقية!».
 
-### 8. Go through all the layers
+### 8. المرور على كل الطبقات
 
-🎯 **Do the same thing to every layer of the image.**
+🎯 **فعل الشيء نفسه مع كل طبقة من الصورة.**
 
-"for each layer `layer` of current image" is a special loop: on each round, the variable `layer` holds **one** layer of the image, then the next one…
+«لكل طبقة `layer` من الصورة الحالية» حلقة خاصة: في كل دورة يحتوي المتغير `layer` على **طبقة واحدة** من الصورة، ثم التي تليها…
 
-This is how you rename, hide or change 200 layers in one click. With the "also look inside groups" box, layers stored in folders are visited too.
+هكذا تُعاد تسمية 200 طبقة أو تُخفى أو تُغيّر بنقرة واحدة. مع مربع «ابحث أيضاً داخل المجموعات» تُزار أيضاً الطبقات الموضوعة في مجلدات.
 
-**Your mission**
+**مهمتك**
 
-1. Add "for each layer".
-2. Inside, put "opacity of …" and drop the `layer` variable in its first slot.
-3. Choose 50%: all your layers become half transparent.
+1. أضف «لكل طبقة».
+2. ضع بداخلها «عتامة …» وأفلت المتغير `layer` في أول فتحة فيها.
+3. اختر 50%: تصبح كل طبقاتك نصف شفافة.
 
-## 🌳 Level 3 — Real GIMP work
+## 🌳 المستوى 3 — عمل حقيقي في GIMP
 
-*Selections, text, several images, whole folders.*
+*تحديدات، نص، عدة صور، مجلدات كاملة.*
 
-### 9. Select and paint
+### 9. التحديد والتلوين
 
-🎯 **Fill a rectangle with colour.**
+🎯 **ملء مستطيل بلون.**
 
-The **selection** (the dotted lines) limits actions to an area. In GIMP, almost all filters and fills only touch the selection.
+**التحديد** (الخط المتقطع) يحصر الإجراءات في منطقة. في GIMP، تكاد كل المرشحات وعمليات الملء لا تؤثر إلا على التحديد.
 
-Positions are counted in pixels from the **top-left corner**: x to the right, y downwards.
+تُحسب المواضع بالبكسل من **الزاوية العلوية اليسرى**: x نحو اليمين و y نحو الأسفل.
 
-Remember to select nothing at the end, to hand things back cleanly to the user.
+تذكّر إلغاء التحديد في النهاية لتعيد كل شيء نظيفاً إلى المستخدم.
 
-**Your mission**
+**مهمتك**
 
-1. Add "foreground colour" and pick a colour.
-2. Add "select a rectangle" (x 0, y 0, 200 × 100).
-3. Add "fill the selection of … with foreground colour".
-4. Finish with "select none".
+1. أضف «لون المقدمة» واختر لوناً.
+2. أضف «حدّد مستطيلاً» (x 0، y 0، 200 × 100).
+3. أضف «املأ تحديد … بلون المقدمة».
+4. اختم بـ «إلغاء التحديد».
 
-### 10. Write text
+### 10. كتابة النص
 
-🎯 **Add a text layer on the image.**
+🎯 **إضافة طبقة نص على الصورة.**
 
-The "write …" block creates a **text layer**: font, size, colour and position are set in the block.
+كتلة «اكتب …» تُنشئ **طبقة نص**: يُضبط الخط والحجم واللون والموضع داخل الكتلة.
 
-The text layer is stored in a variable (→ in `text`): you can then move it, change its opacity, etc.
+تُحفظ طبقة النص في متغير (→ في `text`): يمكنك بعدها تحريكها وتغيير عتامتها وغير ذلك.
 
-**Your mission**
+**مهمتك**
 
-1. Add the "write" block.
-2. Type your text, a size of 60 px, a colour.
-3. Bonus: use a "short text" setting so the user chooses the text.
+1. أضف كتلة «اكتب».
+2. اكتب نصك، بحجم 60 px ولون ما.
+3. إضافي: استخدم إعداد «نص قصير» ليختار المستخدم النص.
 
-### 11. Work on all open images
+### 11. العمل على كل الصور المفتوحة
 
-🎯 **Apply an action to each open image, with a clean undo.**
+🎯 **تطبيق إجراء على كل صورة مفتوحة، مع تراجع نظيف.**
 
-A plug-in does not have to work only on the current image. "for each open image" goes through **all** the images open in GIMP.
+ليست الإضافة مضطرة للعمل على الصورة الحالية فقط. «لكل صورة مفتوحة» تمرّ على **كل** الصور المفتوحة في GIMP.
 
-Each action normally counts as one undo step. The ⚡ shortcut groups everything the plug-in does to an image into **a single Ctrl+Z**.
+عادةً يُحسب كل إجراء خطوة تراجع. اختصار ⚡ يجمع كل ما تفعله الإضافة في صورة ضمن **ضغطة Ctrl+Z واحدة**.
 
-In the loop, use the `img` variable instead of "current image".
+داخل الحلقة، استخدم المتغير `img` بدلاً من «الصورة الحالية».
 
-**Your mission**
+**مهمتك**
 
-1. Add "for each open image (one undo step per image)".
-2. Inside, put "flatten …" and drop `img` in its slot.
-3. Open 3 images in GIMP and run your plug-in.
+1. أضف «لكل صورة مفتوحة (تراجع واحد لكل صورة)».
+2. ضع بداخلها «سطّح …» وأفلت `img` في فتحتها.
+3. افتح 3 صور في GIMP وشغّل إضافتك.
 
-### 12. Process a whole folder (batch)
+### 12. معالجة مجلد كامل (دفعة واحدة)
 
-🎯 **Open each image of a folder, change it and export it as PNG.**
+🎯 **فتح كل صورة في مجلد وتغييرها وتصديرها بصيغة PNG.**
 
-**Batch processing** is the real superpower of scripts: 500 files processed while you have a coffee.
+**المعالجة الدفعية** هي القوة الخارقة الحقيقية للسكربتات: 500 ملف تُعالج بينما تشرب قهوتك.
 
-The "for each image file of the folder" shortcut opens each file without a window, runs your blocks, then frees the memory.
+اختصار «لكل ملف صورة في المجلد» يفتح كل ملف بلا نافذة، وينفّذ كتلك، ثم يحرّر الذاكرة.
 
-Tip: add a "📁 folder to choose" setting so the user picks the folder in GIMP.
+نصيحة: أضف إعداد «📁 مجلد للاختيار» ليختار المستخدم المجلد في GIMP.
 
-**Your mission**
+**مهمتك**
 
-1. Add the batch block below, with the extension `.jpg`.
-2. Inside, put "export … as PNG to …" with `img`.
-3. For the path, join the file name and ".png" (🧮 Maths & text).
+1. أضف كتلة المعالجة الدفعية أدناه، مع الامتداد `.jpg`.
+2. ضع بداخلها «صدّر … بصيغة PNG إلى …» مع `img`.
+3. للمسار، اضمم اسم الملف و«.png» (🧮 الحساب والنص).
 
-## 🚀 Level 4 — Towards code (pro)
+## 🚀 المستوى 4 — نحو الكود (احترافي)
 
-*Read and write Python, use the 857 GIMP functions, debug.*
+*قراءة Python وكتابتها، استخدام دوال GIMP الـ 857، تتبّع الأخطاء.*
 
-### 13. Read the Python you built
+### 13. قراءة كود Python الذي بنيته
 
-🎯 **Understand the link between a block and its lines of code.**
+🎯 **فهم العلاقة بين الكتلة وأسطر الكود الخاصة بها.**
 
-Each block matches one or more lines of **Python 2.7**, the language of GIMP 2.10 plug-ins.
+كل كتلة تقابل سطراً أو أكثر من **Python 2.7**، لغة إضافات GIMP 2.10.
 
-In the 🐍 Code tab, **click a block**: its lines light up. **Click a line**: its block gets selected. It is the best way to learn to read code.
+في تبويب 🐍 الكود، **انقر على كتلة**: تضيء أسطرها. **انقر على سطر**: تُحدَّد كتلته. هذه أفضل طريقة لتعلّم قراءة الكود.
 
-Remember: in Python, what is **shifted to the right** (the indentation) is "inside" — exactly like blocks inside a C.
-- `pdb.gimp_...(...)`: a call to a GIMP function
-- `x = ...`: a value is stored in the variable `x`
-- `for ... in ...:`: a loop; `if ...:`: a condition
+تذكّر: في Python، ما هو **مُزاح إلى اليمين** (الإزاحة) يكون «في الداخل» — تماماً مثل الكتل داخل C.
+- `pdb.gimp_...(...)`: استدعاء دالة من GIMP
+- `x = ...`: تُحفظ قيمة في المتغير `x`
+- `for ... in ...:`: حلقة؛ `if ...:`: شرط
 
-**Your mission**
+**مهمتك**
 
-1. Open the 🐍 Code tab.
-2. Click three different blocks and watch the lines that light up.
+1. افتح تبويب 🐍 الكود.
+2. انقر على ثلاث كتل مختلفة وراقب الأسطر التي تضيء.
 
-### 14. Switch to Python blocks
+### 14. الانتقال إلى كتل Python
 
-🎯 **Turn your plug-in into Python blocks, one line = one block.**
+🎯 **تحويل إضافتك إلى كتل Python، سطر واحد = كتلة واحدة.**
 
-Simple blocks are comfortable, but **Python** blocks show you all the code, line by line, and let you change everything.
+الكتل البسيطة مريحة، لكن كتل **Python** تُريك الكود كله سطراً بسطر وتتيح لك تغيير كل شيء.
 
-In Python blocks, colours help you:
-- **orange** pill: a variable (`image`, `layer`, `x`)
-- **violet** pill: a GIMP constant (`FILL_WHITE`, `NORMAL_MODE`)
-- **yellow** pill: a GIMP function (`pdb.…`)
-- green blocks: calculations and comparisons (`+`, `==`, `and`…)
+في كتل Python، تساعدك الألوان:
+- حبة **برتقالية**: متغير (`image`، `layer`، `x`)
+- حبة **بنفسجية**: ثابت من GIMP (`FILL_WHITE`، `NORMAL_MODE`)
+- حبة **صفراء**: دالة من GIMP (`pdb.…`)
+- كتل خضراء: الحسابات والمقارنات (`+`، `==`، `and`…)
 
-Click a pill and type a few letters: a list of suggestions opens.
+انقر على حبة واكتب بضعة أحرف: تُفتح قائمة اقتراحات.
 
-**Your mission**
+**مهمتك**
 
-1. Click the button below (or File ▸ See this plug-in as Python blocks).
-2. Explore: click an orange pill and look at the suggested variables.
+1. انقر على الزر أدناه (أو ملف ▸ عرض هذه الإضافة ككتل Python).
+2. استكشف: انقر على حبة برتقالية وانظر إلى المتغيرات المقترحة.
 
-### 15. The 857 GIMP functions
+### 15. دوال GIMP الـ 857
 
-🎯 **Call a PDB function with the right arguments.**
+🎯 **استدعاء دالة من PDB بالمعاملات الصحيحة.**
 
-The **PDB** (Procedure DataBase) is the list of everything GIMP can do: 857 functions. Everything you do with the mouse in GIMP has its function.
+**PDB** (Procedure DataBase) هي قائمة كل ما يستطيع GIMP فعله: 857 دالة. لكل ما تفعله بالفأرة في GIMP دالته.
 
-In a "call …" block, click the function name and type a word, in English or French: **blur**, **layer**, **text**… The list shows each function with its arguments and an explanation. Choose one: the slots fill themselves.
+في كتلة «استدعِ …»، انقر على اسم الدالة واكتب كلمة بالإنجليزية أو الفرنسية: **blur**، **layer**، **text**… تعرض القائمة كل دالة مع معاملاتها وشرح لها. اختر واحدة: تمتلئ الفتحات وحدها.
 
-The block's 🔍 opens the full list, sorted by group.
+تفتح 🔍 الكتلة القائمة الكاملة مرتبة حسب المجموعات.
 
-Golden rule: the `run_mode` is **never** passed — pygimp adds it itself.
+القاعدة الذهبية: لا يُمرَّر `run_mode` **أبداً** — يضيفه pygimp بنفسه.
 
-**Your mission**
+**مهمتك**
 
-1. Add a "call …" block (🐍 Python category).
-2. Click its name, type "blur" and choose `plug_in_gauss`.
-3. Replace the 0.0 values with 5.0 for a 5-pixel blur.
+1. أضف كتلة «استدعِ …» (فئة 🐍 Python).
+2. انقر على اسمها، واكتب «blur» واختر `plug_in_gauss`.
+3. استبدل القيم 0.0 بـ 5.0 لتمويه بمقدار 5 بكسل.
 
-### 16. Debug like a pro
+### 16. تتبّع الأخطاء كالمحترفين
 
-🎯 **Find and understand an error.**
+🎯 **إيجاد خطأ وفهمه.**
 
-Everybody makes mistakes, even pros. The difference: they know **where to look**.
-- The **✅ Check** tab finds many errors **before** GIMP does: empty slot, wrong number of arguments, unknown function… Click a problem to see the block.
-- In GIMP, errors are shown in **Windows ▸ Dockable Dialogs ▸ Error Console**.
-- To see what a variable holds while the plug-in runs, show it: `pdb.gimp_message(str(x))`.
-- **Filters ▸ Python-Fu ▸ Console** lets you try a line of Python directly in GIMP.
+الجميع يخطئ، حتى المحترفون. الفرق: أنهم يعرفون **أين ينظرون**.
+- تبويب **✅ الفحص** يجد أخطاء كثيرة **قبل** GIMP: فتحة فارغة، عدد معاملات خاطئ، دالة غير معروفة… انقر على مشكلة لرؤية الكتلة.
+- في GIMP تظهر الأخطاء في **Windows ▸ Dockable Dialogs ▸ Error Console**.
+- لرؤية قيمة متغير أثناء تشغيل الإضافة، اعرضها: `pdb.gimp_message(str(x))`.
+- تتيح **Filters ▸ Python-Fu ▸ Console** تجربة سطر Python مباشرة في GIMP.
 
-Read errors **from the bottom up**: the last line says what is wrong, the one above says where.
+اقرأ الأخطاء **من الأسفل إلى الأعلى**: السطر الأخير يقول ما الخطأ، والذي فوقه يقول أين.
 
-**Your mission**
+**مهمتك**
 
-1. Open the ✅ Check tab.
-2. Add a "call …" to `pdb.gimp_message` and put a variable in it, for example `str(image.width)`.
+1. افتح تبويب ✅ الفحص.
+2. أضف «استدعِ …» لـ `pdb.gimp_message` وضع فيها متغيراً، مثلاً `str(image.width)`.
 
-### 17. Write your own functions
+### 17. اكتب دوالك الخاصة
 
-🎯 **Put a piece of code in a function and call it.**
+🎯 **وضع جزء من الكود في دالة واستدعاؤها.**
 
-When you repeat the same lines in several places, put them in a **function**: "define `my_function(layer)`". Then a single "call `my_function(...)`" block does it all.
+عندما تكرر الأسطر نفسها في عدة أماكن، ضعها في **دالة**: «عرّف `my_function(layer)`». بعدها تكفي كتلة واحدة «استدعِ `my_function(...)`» لفعل كل شيء.
 
-**Parameters** (in brackets) are variables filled at the moment of the call. "return …" sends back a result.
+**المعاملات** (بين القوسين) متغيرات تُملأ لحظة الاستدعاء. «أرجع …» تعيد نتيجة.
 
-A good function name says what it does: `make_grey`, `number_layers`… Your functions also appear in the suggestions.
+الاسم الجيد للدالة يقول ما تفعله: `make_grey`، `number_layers`… تظهر دوالك أيضاً في الاقتراحات.
 
-**Your mission**
+**مهمتك**
 
-1. Add "define …" with the name `griser` and the parameter `calque`.
-2. Inside, call `pdb.gimp_drawable_desaturate(calque, DESATURATE_LUMINANCE)`.
-3. Somewhere else, call `griser(drawable)`.
+1. أضف «عرّف …» بالاسم `griser` والمعامل `calque`.
+2. بداخلها، استدعِ `pdb.gimp_drawable_desaturate(calque, DESATURATE_LUMINANCE)`.
+3. في مكان آخر، استدعِ `griser(drawable)`.
 
-### 18. Import, change, share
+### 18. الاستيراد والتغيير والمشاركة
 
-🎯 **Open a real existing script and change it without breaking it.**
+🎯 **فتح سكربت حقيقي موجود وتغييره دون كسره.**
 
-Found a plug-in on the Internet? **File ▸ Import a Python script**: each line becomes a block, and the download gives back **exactly the same file** as long as you change nothing. If you change a block, only its lines change.
+وجدت إضافة على الإنترنت؟ **ملف ▸ استيراد سكربت Python**: يصبح كل سطر كتلة، ويعيد التنزيل **الملف نفسه تماماً** طالما لم تغيّر شيئاً. إذا غيّرت كتلة، تتغير أسطرها فقط.
 
-The **AI assistant** (🤖 tab) can write a function, explain a script or fix an error. Its answers are checked (Python 2.7, real GIMP functions, right number of arguments) before they become blocks.
+يستطيع **مساعد الذكاء الاصطناعي** (تبويب 🤖) كتابة دالة أو شرح سكربت أو إصلاح خطأ. تُفحص إجاباته (Python 2.7، دوال GIMP حقيقية، عدد معاملات صحيح) قبل أن تصبح كتلاً.
 
-You can now read, write and fix GIMP plug-ins. Next: open other people's scripts, read them block by block, and build your own. **Well done!**
+أصبحت الآن قادراً على قراءة إضافات GIMP وكتابتها وإصلاحها. الخطوة التالية: افتح سكربتات الآخرين، واقرأها كتلة كتلة، وابنِ سكربتاتك. **أحسنت!**
 
-**Your mission**
+**مهمتك**
 
-1. Import a `.py` script (or an example: File ▸ Examples, then convert it).
-2. Change a value and look in the 🐍 Code tab at which lines changed.
-3. When you are done, click "I did it".
+1. استورد سكربت `.py` (أو مثالاً: ملف ▸ أمثلة، ثم حوّله).
+2. غيّر قيمة وانظر في تبويب 🐍 الكود أي الأسطر تغيّرت.
+3. عندما تنتهي، انقر على «نجحت».
 

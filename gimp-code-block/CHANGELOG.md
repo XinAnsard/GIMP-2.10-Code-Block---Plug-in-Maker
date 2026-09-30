@@ -6,6 +6,17 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [Unreleased]
 
 ### Added
+- **🎓 Course, from complete beginner to pro**: 18 lessons in 4 levels (first plug-in,
+  installing it, layers, settings → variables, loops, conditions, layer loops → selections,
+  text, all open images, batch folders → reading the Python, Python blocks, the PDB, debugging,
+  your own functions, importing real scripts). Each lesson has a mission that the workshop
+  checks automatically, one-click blocks, hints, and remembers your progress.
+- **📘 User guide** in the app (12 sections, from the screen layout to common problems), also
+  generated as Markdown in `docs/guide/<lang>.md`.
+- **8 languages**: French, English, Spanish, German, Brazilian Portuguese, Russian, Hindi and
+  Arabic (right to left), for the whole interface, every block, the course and the guide;
+  the AI assistant answers in the chosen language. Language packs live in `src/lang/`; see
+  `docs/TRANSLATING.md`.
 - **Variables as round orange pills**, like Scratch: every variable read in an imported script
   (`image`, `layer`, `x`…) is now its own round block instead of plain text. GIMP constants
   (`FILL_WHITE`, `NORMAL_MODE`…) are violet pills. The 🐍 Python category lists the variables of

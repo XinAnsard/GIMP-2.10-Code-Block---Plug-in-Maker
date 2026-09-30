@@ -1,413 +1,413 @@
-# User guide — GIMP Code Block
+# Руководство — GIMP Code Block
 
-## 🗺️ The workshop screen
+## 🗺️ Экран мастерской
 
-- On the **left**, the block categories. Click a category to see its blocks, then drag a block into the building area.
-- In the **centre**, the building area. Wheel: scroll; Ctrl + wheel: zoom; drag on empty space: move around.
-- On the **right**, the panel: 💡 Help (about the selected block), 🐍 Code (the Python produced), ✅ Check, 🤖 AI and 🎓 Course.
-- At the **top**, the menus, the block search (/ key) and the ⬇ Download button.
+- **Слева** — категории блоков. Нажмите на категорию, чтобы увидеть её блоки, затем перетащите блок в рабочую область.
+- В **центре** — рабочая область. Колёсико: прокрутка; Ctrl + колёсико: масштаб; перетаскивание по пустому месту: перемещение.
+- **Справа** — панель: 💡 Справка (о выделенном блоке), 🐍 Код (полученный Python), ✅ Проверка, 🤖 ИИ и 🎓 Курс.
+- **Вверху** — меню, поиск блоков (клавиша /) и кнопка ⬇ Скачать.
 
-## 🧩 The shapes of the blocks
+## 🧩 Формы блоков
 
-- **Notched block**: an action. It stacks under another one.
-- **Rounded block**: a value (number, text, layer, variable). It slots into a hole.
-- **Pointed (hexagonal) block**: a true/false condition, for "if" and "while".
-- **C block**: it holds other blocks (loops, conditions, shortcuts).
+- **Блок с выемкой**: действие. Ставится под другим блоком.
+- **Скруглённый блок**: значение (число, текст, слой, переменная). Вставляется в отверстие.
+- **Заострённый (шестиугольный) блок**: условие «истина/ложь» для «если» и «пока».
+- **Блок в форме C**: содержит другие блоки (циклы, условия, быстрые блоки).
 
-A greyed-out block is disabled: it is not in the code. Right-click a block: duplicate, comment, disable, collapse, help.
+Серый блок отключён: его нет в коде. Правый щелчок по блоку: дублировать, прокомментировать, отключить, свернуть, справка.
 
-## ▶ The start block
+## ▶ Начальный блок
 
-The yellow **▶ When I run** block describes your plug-in: its name in the menu, the menu where it appears, whether it needs an open image, and its settings ("first, ask").
+Жёлтый блок **▶ Когда я запускаю** описывает плагин: его название в меню, меню, где он появится, нужно ли открытое изображение, и его настройки («сначала спросить»).
 
-Settings become the window GIMP shows before running the plug-in. Use their value with the 🎛️ blocks of the ▶ Start category.
+Настройки превращаются в окно, которое GIMP показывает перед запуском плагина. Используйте их значения с блоками 🎛️ из категории ▶ Запуск.
 
-**Settings ▸ My plug-in** sets the rest: author, grouped undo, error handling, imported modules.
+**Настройки ▸ Мой плагин** задаёт остальное: автор, групповая отмена, обработка ошибок, импортируемые модули.
 
-## ⬇ Download and install
+## ⬇ Скачать и установить
 
-Click **⬇ Download**: you get a `.py` file. Put it in GIMP's plug-ins folder and restart GIMP.
+Нажмите **⬇ Скачать**: вы получите файл `.py`. Положите его в папку плагинов GIMP и перезапустите GIMP.
 - **Windows**: `C:\Users\<you>\AppData\Roaming\GIMP\2.10\plug-ins`
-- **Linux**: `~/.config/GIMP/2.10/plug-ins`, then `chmod +x file.py`
+- **Linux**: `~/.config/GIMP/2.10/plug-ins`, затем `chmod +x file.py`
 - **macOS**: `~/Library/Application Support/GIMP/2.10/plug-ins`
 
-The exact folder is in **Edit ▸ Preferences ▸ Folders ▸ Plug-ins**. Plug-ins made here work in **GIMP 2.10** (not in GIMP 3, which has a different API).
+Точная папка указана в **Правка ▸ Параметры ▸ Папки ▸ Модули**. Созданные здесь плагины работают в **GIMP 2.10** (не в GIMP 3, у которого другой API).
 
-## 🐍 Import a Python script
+## 🐍 Импортировать скрипт Python
 
-**File ▸ Import a Python script**, or drop the `.py` file on the page. Each line becomes a Python block.
+**Файл ▸ Импортировать скрипт Python** или перетащите файл `.py` на страницу. Каждая строка становится блоком Python.
 
-Guarantee: as long as you change nothing, the download gives back **the same file, byte for byte** (comments, spaces and tabs included). If you change a block, only its lines are rewritten.
+Гарантия: пока вы ничего не меняете, при скачивании вы получите **тот же файл, байт в байт** (включая комментарии, пробелы и табуляции). Если изменить блок, перепишутся только его строки.
 
-A script with a syntax error still imports: the faulty part becomes a 🧱 "raw code" block to fix.
+Скрипт с синтаксической ошибкой всё равно импортируется: ошибочная часть станет блоком 🧱 «исходный код», который нужно исправить.
 
-## 🟠 Python blocks and their pills
+## 🟠 Блоки Python и их пилюли
 
-- **orange**: variable; **violet**: GIMP constant; **yellow**: GIMP function; **dark green**: other function; green blocks: calculations and comparisons; white slots: values written as is.
+- **оранжевый**: переменная; **фиолетовый**: константа GIMP; **жёлтый**: функция GIMP; **тёмно-зелёный**: другая функция; зелёные блоки: вычисления и сравнения; белые поля: значения как есть.
 
-Click a pill and type: a list of suggestions opens (arrows ↑↓ then Enter, or click). For a GIMP function, the missing slots fill themselves.
+Нажмите на пилюлю и печатайте: откроется список подсказок (стрелки ↑↓, затем Enter, или щелчок). Для функции GIMP недостающие поля заполняются сами.
 
-Right-click a function call: add or remove an argument. Right-click "if": add "else if" or "else".
+Правый щелчок по вызову функции: добавить или убрать аргумент. Правый щелчок по «если»: добавить «иначе если» или «иначе».
 
-The 🐍 Python category lists your script's variables and ready-made **GIMP shortcuts** (grouped undo, loop over images, over layers…).
+Категория 🐍 Python показывает переменные вашего скрипта и готовые **быстрые блоки GIMP** (групповая отмена, цикл по изображениям, по слоям…).
 
-## ⚙️ The 857 GIMP functions (PDB)
+## ⚙️ 857 функций GIMP (PDB)
 
-Two ways to use them: the "⚙️ GIMP function" block (🧰 Advanced) in a simple-blocks plug-in, or the "call …" block in Python blocks.
+Два способа их использовать: блок «⚙️ функция GIMP» (🧰 Дополнительно) в плагине из простых блоков или блок «вызвать …» в блоках Python.
 
-Search: type a word in English or French (blur, layer, selection, text…). The most used functions come first; "old" marks a deprecated function that has a replacement.
+Поиск: введите слово по-английски или по-французски (blur, layer, selection, text…). Самые используемые функции идут первыми; «устарела» отмечает функцию, у которой есть замена.
 
-The `run_mode` is never provided: pygimp adds it. Arrays often have a counter just before them (e.g. `num_points` then `points`).
+`run_mode` никогда не указывается: pygimp добавляет его сам. Перед массивами часто стоит счётчик (например, `num_points`, затем `points`).
 
-## ⚡ GIMP shortcuts
+## ⚡ Быстрые блоки GIMP
 
-Blocks that replace what every script writes by hand:
-- "as a single undo step": everything counts as one Ctrl+Z, even if an error happens;
-- "then restore…" the colours and tools, the selection or the active layer;
-- "for each open image", "for each layer of all images", "for each file of the folder";
-- "new layer the size of the image", "copy the layer into another image".
+Блоки, которые заменяют то, что каждый скрипт пишет вручную:
+- «за один шаг отмены»: всё считается одним Ctrl+Z, даже при ошибке;
+- «затем вернуть…» цвета и инструменты, выделение или активный слой;
+- «для каждого открытого изображения», «для каждого слоя всех изображений», «для каждого файла папки»;
+- «новый слой размером с изображение», «скопировать слой в другое изображение».
 
-## ✅ Check and errors
+## ✅ Проверка и ошибки
 
-The **✅ Check** tab rereads your plug-in after every change: 🛑 error (it would not work), ⚠️ worth a look, ℹ️ information. Click a line to go to the block.
+Вкладка **✅ Проверка** перечитывает плагин после каждого изменения: 🛑 ошибка (не заработает), ⚠️ стоит посмотреть, ℹ️ информация. Нажмите на строку, чтобы перейти к блоку.
 
-In GIMP: **Windows ▸ Dockable Dialogs ▸ Error Console** shows Python errors. Plug-ins made here also show the full error in a message.
+В GIMP: **Окна ▸ Панели ▸ Консоль ошибок** показывает ошибки Python. Созданные здесь плагины к тому же показывают полную ошибку в сообщении.
 
-**Filters ▸ Python-Fu ▸ Console**: to try a line of Python directly in GIMP.
+**Фильтры ▸ Python-Fu ▸ Консоль**: чтобы попробовать строку Python прямо в GIMP.
 
-## 🤖 The AI assistant
+## 🤖 ИИ-помощник
 
-**AI ▸ Choose the AI**: any compatible service (OpenAI, Anthropic, Gemini, Mistral…), a local AI (Ollama, LM Studio) or copy-and-paste mode, with no connection.
+**ИИ ▸ Выбрать ИИ**: любой совместимый сервис (OpenAI, Anthropic, Gemini, Mistral…), локальный ИИ (Ollama, LM Studio) или режим «копировать и вставить» без соединения.
 
-Ask for a function, a whole plug-in, a fix or an explanation. The answer is checked and repaired automatically before it becomes blocks.
+Попросите функцию, целый плагин, исправление или объяснение. Ответ автоматически проверяется и исправляется, прежде чем стать блоками.
 
-## 💾 Save your work
+## 💾 Сохранение работы
 
-The workshop automatically keeps your work in this browser.
+Мастерская автоматически сохраняет вашу работу в этом браузере.
 
-To keep it elsewhere or share it: **File ▸ Save the project** (`.json` file). The downloaded `.py` also contains the blocks' fingerprint: re-import it and you get your blocks back exactly.
+Чтобы хранить её в другом месте или поделиться: **Файл ▸ Сохранить проект** (файл `.json`). Скачанный `.py` тоже содержит отпечаток блоков: импортируйте его снова — и получите блоки в точности.
 
-## ❓ Common problems
+## ❓ Частые проблемы
 
-- **The plug-in does not show up**: wrong folder, GIMP not restarted, file not executable (Linux), or Python-Fu missing (Linux: `gimp-python` package).
-- **The menu is greyed out**: the plug-in needs an open image (checkbox of the ▶ block).
-- **"argument count" / "wrong type"**: look at the ✅ Check tab, it tells the expected number of arguments.
-- **Strange accents**: use the workshop's text blocks, they handle UTF-8 for you.
+- **Плагин не появляется**: не та папка, GIMP не перезапущен, файл не исполняемый (Linux) или нет Python-Fu (Linux: пакет `gimp-python`).
+- **Пункт меню серый**: плагину нужно открытое изображение (флажок блока ▶).
+- **«argument count» / «wrong type»**: посмотрите вкладку ✅ Проверка — там указано нужное число аргументов.
+- **Странные символы вместо букв**: используйте текстовые блоки мастерской, они сами заботятся об UTF-8.
 
 ---
 
-# Course: from complete beginner to pro
+# Курс: от полного новичка до профи
 
-Each lesson explains one idea, then gives you a mission. The workshop checks by itself when you have succeeded.
+Каждый урок объясняет одну идею и даёт задание. Мастерская сама проверяет, когда у вас получилось.
 
-## 🌱 Level 1 — First steps
+## 🌱 Уровень 1 — Первые шаги
 
-*Never programmed before? Perfect, we start here.*
+*Никогда не программировали? Отлично, начнём отсюда.*
 
-### 1. Your first plug-in
+### 1. Ваш первый плагин
 
-🎯 **Make GIMP say "Hello".**
+🎯 **Заставить GIMP сказать «Привет».**
 
-A **plug-in** is a small program that adds a command to GIMP's menus. Here you build it by snapping blocks together, like a puzzle: the workshop writes the real Python code for you.
+**Плагин** — это небольшая программа, которая добавляет команду в меню GIMP. Здесь вы собираете его из блоков, как пазл: мастерская пишет настоящий код Python за вас.
 
-Every plug-in starts with the yellow block **▶ When I run**. The blocks placed under "then do" run **from top to bottom**, one by one.
+Любой плагин начинается с жёлтого блока **▶ Когда я запускаю**. Блоки под «затем сделать» выполняются **сверху вниз**, один за другим.
 
-**Your mission**
+**Ваше задание**
 
-1. Click the block below to add it: it attaches itself under "then do".
-2. Click the white slot of the message and type your text.
-3. Look at the 🐍 Code tab: the line `pdb.gimp_message(...)` has appeared.
+1. Нажмите на блок ниже, чтобы добавить его: он сам встанет под «затем сделать».
+2. Нажмите на белое поле сообщения и введите текст.
+3. Посмотрите на вкладку 🐍 Код: появилась строка `pdb.gimp_message(...)`.
 
-### 2. Install your plug-in in GIMP
+### 2. Установите плагин в GIMP
 
-🎯 **See your plug-in in GIMP's menus and run it.**
+🎯 **Увидеть плагин в меню GIMP и запустить его.**
 
-GIMP loads plug-ins at startup, from a special folder called **plug-ins**.
+GIMP загружает плагины при запуске из особой папки **plug-ins**.
 - **Windows**: `C:\Users\<you>\AppData\Roaming\GIMP\2.10\plug-ins`
-- **Linux**: `~/.config/GIMP/2.10/plug-ins` (then make the file executable: `chmod +x file.py`)
+- **Linux**: `~/.config/GIMP/2.10/plug-ins` (затем сделайте файл исполняемым: `chmod +x file.py`)
 - **macOS**: `~/Library/Application Support/GIMP/2.10/plug-ins`
 
-The exact path is written in GIMP: **Edit ▸ Preferences ▸ Folders ▸ Plug-ins**.
+Точный путь указан в GIMP: **Правка ▸ Параметры ▸ Папки ▸ Модули**.
 
-**Your mission**
+**Ваше задание**
 
-1. In the ▶ block, give your plug-in a name and choose its menu.
-2. Click **⬇ Download** at the top right.
-3. Put the `.py` file in the plug-ins folder, then **restart GIMP**.
-4. Open an image and look for your plug-in in the menu you chose. Click it: your message appears!
-5. When it works, click "I did it".
+1. В блоке ▶ дайте плагину имя и выберите его меню.
+2. Нажмите **⬇ Скачать** вверху справа.
+3. Положите файл `.py` в папку плагинов и **перезапустите GIMP**.
+4. Откройте изображение и найдите плагин в выбранном меню. Нажмите — появится ваше сообщение!
+5. Когда всё заработает, нажмите «Готово, получилось».
 
-> 💡 The plug-in does not show up? Check that the file really is in the plug-ins folder (not in an extra sub-folder), that it ends with .py, and that GIMP was restarted. On Linux you also need the gimp-python package.
+> 💡 Плагин не появился? Проверьте, что файл лежит именно в папке плагинов (а не в лишней подпапке), что он заканчивается на .py и что GIMP перезапущен. В Linux нужен ещё пакет gimp-python.
 
-### 3. Act on the image: a new layer
+### 3. Изменить изображение: новый слой
 
-🎯 **Create a layer filled with white in the image.**
+🎯 **Создать в изображении слой, залитый белым.**
 
-A **layer** is a transparent sheet laid on the image. The purple blocks (📑 Layers) create and change them.
+**Слой** — это прозрачный лист поверх изображения. Фиолетовые блоки (📑 Слои) создают и меняют слои.
 
-The "new layer" block of the ⚡ Shortcuts category does at once what programmers write in 3 lines: create the layer, add it to the image, fill it.
+Блок «новый слой» из категории ⚡ Быстрые блоки делает за раз то, что программисты пишут в 3 строки: создать слой, добавить его в изображение, залить.
 
-Notice the blue ovals "🖼️ current image": they are **values**. They stand for the image you ran the plug-in on.
+Обратите внимание на синие овалы «🖼️ текущее изображение»: это **значения**. Они обозначают изображение, на котором вы запустили плагин.
 
-**Your mission**
+**Ваше задание**
 
-1. Add the block below.
-2. Change its name ("My layer") and choose "white" in the list.
-3. Download, replace the old file in GIMP, restart and try.
+1. Добавьте блок ниже.
+2. Измените его имя («Мой слой») и выберите «белый» в списке.
+3. Скачайте, замените старый файл в GIMP, перезапустите и попробуйте.
 
-### 4. Ask the user a question
+### 4. Задать вопрос пользователю
 
-🎯 **Ask for a number at launch and use it.**
+🎯 **Спросить число при запуске и использовать его.**
 
-When a plug-in has **settings**, GIMP opens a small window before running it: the user chooses a number, a text, a colour…
+Если у плагина есть **настройки**, GIMP перед запуском открывает небольшое окно: пользователь выбирает число, текст, цвет…
 
-Settings go in the "first, ask" part of the ▶ block. Then the "🎛️ setting value" block (▶ Start category) gives what the user chose.
+Настройки помещаются в часть «сначала спросить» блока ▶. Затем блок «🎛️ значение настройки» (категория ▶ Запуск) даёт то, что выбрал пользователь.
 
-**Your mission**
+**Ваше задание**
 
-1. Open the **▶ Start & settings** category and drag a "🔢 whole number" setting into "first, ask". Give it a name, for example `opacity`.
-2. Add the "opacity of …" block below.
-3. In its percentage slot, drop the 🎛️ block of the setting (it appears in the ▶ Start category once the setting exists).
+1. Откройте категорию **▶ Запуск и настройки** и перетащите настройку «🔢 целое число» в «сначала спросить». Дайте ей имя, например `opacity`.
+2. Добавьте блок «непрозрачность …» ниже.
+3. В его поле процентов положите блок 🎛️ настройки (он появится в категории ▶ Запуск, как только настройка будет создана).
 
-## 🌿 Level 2 — Programming basics
+## 🌿 Уровень 2 — Основы программирования
 
-*Variables, loops, conditions: the 3 ideas behind every program.*
+*Переменные, циклы, условия: 3 идеи, на которых держится любая программа.*
 
-### 5. Variables: boxes that remember
+### 5. Переменные: коробки, которые помнят
 
-🎯 **Store a value in a variable, then use it again.**
+🎯 **Сохранить значение в переменной и использовать снова.**
 
-A **variable** is a box with a name. You store a value in it (a number, a text, a layer…) to use it again later.
+**Переменная** — это коробка с именем. В неё кладут значение (число, текст, слой…), чтобы потом использовать его снова.
 
-"set `x` to 5" puts 5 in the box `x`. After that, every `x` block is worth 5. If you put something else in `x`, the old value is replaced.
+«задать `x` значение 5» кладёт 5 в коробку `x`. После этого каждый блок `x` равен 5. Если положить в `x` что-то другое, старое значение заменится.
 
-Blocks that create something (layer, text, image) often have an arrow **→ in**: the result is stored in a variable, so you can change it afterwards.
+У блоков, которые что-то создают (слой, текст, изображение), часто есть стрелка **→ в**: результат сохраняется в переменной, чтобы потом его можно было менять.
 
-**Your mission**
+**Ваше задание**
 
-1. Open **📦 Variables & lists** and click "➕ Create a variable". Call it `name`.
-2. Add "set … to …" and put a text in it, for example "Hello".
-3. Add "💬 show the message" and drop your variable's block in it.
+1. Откройте **📦 Переменные и списки** и нажмите «➕ Создать переменную». Назовите её `name`.
+2. Добавьте «задать … значение …» и впишите текст, например «Привет».
+3. Добавьте «💬 показать сообщение» и положите в него блок вашей переменной.
 
-### 6. Repeat: loops
+### 6. Повторять: циклы
 
-🎯 **Create 5 layers at once.**
+🎯 **Создать 5 слоёв за раз.**
 
-A computer never gets bored: a **loop** runs the same blocks as many times as you want.
+Компьютер никогда не устаёт: **цикл** выполняет одни и те же блоки столько раз, сколько нужно.
 
-"repeat 10 times" is the simplest. "count with `i` from 1 to 10" does the same, but the variable `i` is 1, then 2, then 3…: handy for numbering.
+«повторить 10 раз» — самый простой. «считать с `i` от 1 до 10» делает то же самое, но переменная `i` равна 1, потом 2, потом 3…: удобно для нумерации.
 
-**C**-shaped blocks hold other blocks: everything inside is repeated.
+Блоки в форме **C** содержат другие блоки: всё внутри повторяется.
 
-**Your mission**
+**Ваше задание**
 
-1. Add the "count with …" block below and set the end to 5.
-2. Drag a "new layer" block **inside** the C.
-3. Bonus: in the layer name, use "join … and …" (🧮 Maths & text) to write "Layer" + `i`.
+1. Добавьте блок «считать с …» ниже и поставьте 5 в конце.
+2. Перетащите блок «новый слой» **внутрь** C.
+3. Бонус: в имени слоя используйте «соединить … и …» (🧮 Вычисления и текст), чтобы написать «Слой» + `i`.
 
-### 7. Choose: conditions
+### 7. Выбирать: условия
 
-🎯 **Do something only if the image is wider than it is tall.**
+🎯 **Сделать что-то, только если изображение шире, чем выше.**
 
-"**if** … **then** …" runs the blocks inside only if the condition is true.
+«**если** … **то** …» выполняет блоки внутри, только если условие истинно.
 
-A condition is a **hexagonal** block (pointed on both sides): a comparison like "… > …", "… contains …", "… and …".
+Условие — это **шестиугольный** блок (острый с обеих сторон): сравнение вроде «… > …», «… содержит …», «… и …».
 
-With "if … then … else …", you choose between two paths.
+С «если … то … иначе …» вы выбираете между двумя путями.
 
-**Your mission**
+**Ваше задание**
 
-1. Add "if … then".
-2. In its pointed slot, drop a "… > …" comparison.
-3. On the left put "width of current image"; on the right, "height of current image".
-4. Inside the C, put a message "Landscape image!".
+1. Добавьте «если … то».
+2. В его острое поле положите сравнение «… > …».
+3. Слева поставьте «ширина текущее изображение», справа — «высота текущее изображение».
+4. Внутрь C поставьте сообщение «Альбомное изображение!».
 
-### 8. Go through all the layers
+### 8. Обойти все слои
 
-🎯 **Do the same thing to every layer of the image.**
+🎯 **Сделать одно и то же с каждым слоем изображения.**
 
-"for each layer `layer` of current image" is a special loop: on each round, the variable `layer` holds **one** layer of the image, then the next one…
+«для каждого слоя `layer` в текущее изображение» — особый цикл: на каждом шаге переменная `layer` содержит **один** слой изображения, потом следующий…
 
-This is how you rename, hide or change 200 layers in one click. With the "also look inside groups" box, layers stored in folders are visited too.
+Так переименовывают, скрывают или меняют 200 слоёв одним щелчком. С флажком «искать и в группах» обходятся и слои в папках.
 
-**Your mission**
+**Ваше задание**
 
-1. Add "for each layer".
-2. Inside, put "opacity of …" and drop the `layer` variable in its first slot.
-3. Choose 50%: all your layers become half transparent.
+1. Добавьте «для каждого слоя».
+2. Внутрь поставьте «непрозрачность …» и положите переменную `layer` в его первое поле.
+3. Выберите 50 %: все слои станут полупрозрачными.
 
-## 🌳 Level 3 — Real GIMP work
+## 🌳 Уровень 3 — Настоящая работа в GIMP
 
-*Selections, text, several images, whole folders.*
+*Выделения, текст, несколько изображений, целые папки.*
 
-### 9. Select and paint
+### 9. Выделять и рисовать
 
-🎯 **Fill a rectangle with colour.**
+🎯 **Залить прямоугольник цветом.**
 
-The **selection** (the dotted lines) limits actions to an area. In GIMP, almost all filters and fills only touch the selection.
+**Выделение** (пунктир) ограничивает действия областью. В GIMP почти все фильтры и заливки затрагивают только выделение.
 
-Positions are counted in pixels from the **top-left corner**: x to the right, y downwards.
+Координаты считаются в пикселях от **левого верхнего угла**: x — вправо, y — вниз.
 
-Remember to select nothing at the end, to hand things back cleanly to the user.
+Не забудьте в конце снять выделение, чтобы аккуратно вернуть всё пользователю.
 
-**Your mission**
+**Ваше задание**
 
-1. Add "foreground colour" and pick a colour.
-2. Add "select a rectangle" (x 0, y 0, 200 × 100).
-3. Add "fill the selection of … with foreground colour".
-4. Finish with "select none".
+1. Добавьте «цвет переднего плана» и выберите цвет.
+2. Добавьте «выделить прямоугольник» (x 0, y 0, 200 × 100).
+3. Добавьте «залить выделение … цветом переднего плана».
+4. Закончите блоком «снять выделение».
 
-### 10. Write text
+### 10. Писать текст
 
-🎯 **Add a text layer on the image.**
+🎯 **Добавить на изображение текстовый слой.**
 
-The "write …" block creates a **text layer**: font, size, colour and position are set in the block.
+Блок «написать …» создаёт **текстовый слой**: шрифт, размер, цвет и положение задаются в блоке.
 
-The text layer is stored in a variable (→ in `text`): you can then move it, change its opacity, etc.
+Текстовый слой сохраняется в переменной (→ в `text`): потом его можно передвинуть, изменить непрозрачность и т. д.
 
-**Your mission**
+**Ваше задание**
 
-1. Add the "write" block.
-2. Type your text, a size of 60 px, a colour.
-3. Bonus: use a "short text" setting so the user chooses the text.
+1. Добавьте блок «написать».
+2. Введите текст, размер 60 px и цвет.
+3. Бонус: используйте настройку «короткий текст», чтобы текст выбирал пользователь.
 
-### 11. Work on all open images
+### 11. Работать со всеми открытыми изображениями
 
-🎯 **Apply an action to each open image, with a clean undo.**
+🎯 **Применить действие к каждому открытому изображению, с аккуратной отменой.**
 
-A plug-in does not have to work only on the current image. "for each open image" goes through **all** the images open in GIMP.
+Плагин не обязан работать только с текущим изображением. «для каждого открытого изображения» проходит по **всем** изображениям, открытым в GIMP.
 
-Each action normally counts as one undo step. The ⚡ shortcut groups everything the plug-in does to an image into **a single Ctrl+Z**.
+Обычно каждое действие — отдельный шаг отмены. Быстрый блок ⚡ объединяет всё, что плагин делает с изображением, в **одно Ctrl+Z**.
 
-In the loop, use the `img` variable instead of "current image".
+Внутри цикла используйте переменную `img` вместо «текущее изображение».
 
-**Your mission**
+**Ваше задание**
 
-1. Add "for each open image (one undo step per image)".
-2. Inside, put "flatten …" and drop `img` in its slot.
-3. Open 3 images in GIMP and run your plug-in.
+1. Добавьте «для каждого открытого изображения (одна отмена на изображение)».
+2. Внутрь поставьте «свести …» и положите `img` в его поле.
+3. Откройте в GIMP 3 изображения и запустите плагин.
 
-### 12. Process a whole folder (batch)
+### 12. Обработать целую папку (пакетно)
 
-🎯 **Open each image of a folder, change it and export it as PNG.**
+🎯 **Открыть каждое изображение папки, изменить его и экспортировать в PNG.**
 
-**Batch processing** is the real superpower of scripts: 500 files processed while you have a coffee.
+**Пакетная обработка** — настоящая суперсила скриптов: 500 файлов обработано, пока вы пьёте кофе.
 
-The "for each image file of the folder" shortcut opens each file without a window, runs your blocks, then frees the memory.
+Быстрый блок «для каждого файла изображения в папке» открывает каждый файл без окна, выполняет ваши блоки и освобождает память.
 
-Tip: add a "📁 folder to choose" setting so the user picks the folder in GIMP.
+Совет: добавьте настройку «📁 папка для выбора», чтобы пользователь выбирал папку в GIMP.
 
-**Your mission**
+**Ваше задание**
 
-1. Add the batch block below, with the extension `.jpg`.
-2. Inside, put "export … as PNG to …" with `img`.
-3. For the path, join the file name and ".png" (🧮 Maths & text).
+1. Добавьте пакетный блок ниже с расширением `.jpg`.
+2. Внутрь поставьте «экспортировать … в PNG в …» с `img`.
+3. Для пути соедините имя файла и «.png» (🧮 Вычисления и текст).
 
-## 🚀 Level 4 — Towards code (pro)
+## 🚀 Уровень 4 — К коду (профи)
 
-*Read and write Python, use the 857 GIMP functions, debug.*
+*Читать и писать на Python, использовать 857 функций GIMP, искать ошибки.*
 
-### 13. Read the Python you built
+### 13. Читать собранный вами Python
 
-🎯 **Understand the link between a block and its lines of code.**
+🎯 **Понять связь между блоком и его строками кода.**
 
-Each block matches one or more lines of **Python 2.7**, the language of GIMP 2.10 plug-ins.
+Каждый блок соответствует одной или нескольким строкам **Python 2.7** — языка плагинов GIMP 2.10.
 
-In the 🐍 Code tab, **click a block**: its lines light up. **Click a line**: its block gets selected. It is the best way to learn to read code.
+Во вкладке 🐍 Код **нажмите на блок** — подсветятся его строки. **Нажмите на строку** — выделится её блок. Это лучший способ научиться читать код.
 
-Remember: in Python, what is **shifted to the right** (the indentation) is "inside" — exactly like blocks inside a C.
-- `pdb.gimp_...(...)`: a call to a GIMP function
-- `x = ...`: a value is stored in the variable `x`
-- `for ... in ...:`: a loop; `if ...:`: a condition
+Запомните: в Python то, что **сдвинуто вправо** (отступ), находится «внутри» — точно как блоки внутри C.
+- `pdb.gimp_...(...)`: вызов функции GIMP
+- `x = ...`: значение сохраняется в переменной `x`
+- `for ... in ...:`: цикл; `if ...:`: условие
 
-**Your mission**
+**Ваше задание**
 
-1. Open the 🐍 Code tab.
-2. Click three different blocks and watch the lines that light up.
+1. Откройте вкладку 🐍 Код.
+2. Нажмите на три разных блока и посмотрите, какие строки подсвечиваются.
 
-### 14. Switch to Python blocks
+### 14. Перейти к блокам Python
 
-🎯 **Turn your plug-in into Python blocks, one line = one block.**
+🎯 **Превратить плагин в блоки Python: одна строка = один блок.**
 
-Simple blocks are comfortable, but **Python** blocks show you all the code, line by line, and let you change everything.
+Простые блоки удобны, но блоки **Python** показывают весь код, строку за строкой, и позволяют менять всё.
 
-In Python blocks, colours help you:
-- **orange** pill: a variable (`image`, `layer`, `x`)
-- **violet** pill: a GIMP constant (`FILL_WHITE`, `NORMAL_MODE`)
-- **yellow** pill: a GIMP function (`pdb.…`)
-- green blocks: calculations and comparisons (`+`, `==`, `and`…)
+В блоках Python вам помогают цвета:
+- **оранжевая** пилюля: переменная (`image`, `layer`, `x`)
+- **фиолетовая** пилюля: константа GIMP (`FILL_WHITE`, `NORMAL_MODE`)
+- **жёлтая** пилюля: функция GIMP (`pdb.…`)
+- зелёные блоки: вычисления и сравнения (`+`, `==`, `and`…)
 
-Click a pill and type a few letters: a list of suggestions opens.
+Нажмите на пилюлю и введите несколько букв: откроется список подсказок.
 
-**Your mission**
+**Ваше задание**
 
-1. Click the button below (or File ▸ See this plug-in as Python blocks).
-2. Explore: click an orange pill and look at the suggested variables.
+1. Нажмите кнопку ниже (или Файл ▸ Показать этот плагин блоками Python).
+2. Исследуйте: нажмите на оранжевую пилюлю и посмотрите на предложенные переменные.
 
-### 15. The 857 GIMP functions
+### 15. 857 функций GIMP
 
-🎯 **Call a PDB function with the right arguments.**
+🎯 **Вызвать функцию PDB с правильными аргументами.**
 
-The **PDB** (Procedure DataBase) is the list of everything GIMP can do: 857 functions. Everything you do with the mouse in GIMP has its function.
+**PDB** (Procedure DataBase) — это список всего, что умеет GIMP: 857 функций. У всего, что вы делаете в GIMP мышью, есть своя функция.
 
-In a "call …" block, click the function name and type a word, in English or French: **blur**, **layer**, **text**… The list shows each function with its arguments and an explanation. Choose one: the slots fill themselves.
+В блоке «вызвать …» нажмите на имя функции и введите слово по-английски или по-французски: **blur**, **layer**, **text**… В списке каждая функция показана с аргументами и объяснением. Выберите — поля заполнятся сами.
 
-The block's 🔍 opens the full list, sorted by group.
+🔍 блока открывает полный список, разбитый на группы.
 
-Golden rule: the `run_mode` is **never** passed — pygimp adds it itself.
+Золотое правило: `run_mode` **никогда** не передаётся — pygimp добавляет его сам.
 
-**Your mission**
+**Ваше задание**
 
-1. Add a "call …" block (🐍 Python category).
-2. Click its name, type "blur" and choose `plug_in_gauss`.
-3. Replace the 0.0 values with 5.0 for a 5-pixel blur.
+1. Добавьте блок «вызвать …» (категория 🐍 Python).
+2. Нажмите на его имя, введите «blur» и выберите `plug_in_gauss`.
+3. Замените значения 0.0 на 5.0 для размытия в 5 пикселей.
 
-### 16. Debug like a pro
+### 16. Искать ошибки как профи
 
-🎯 **Find and understand an error.**
+🎯 **Найти и понять ошибку.**
 
-Everybody makes mistakes, even pros. The difference: they know **where to look**.
-- The **✅ Check** tab finds many errors **before** GIMP does: empty slot, wrong number of arguments, unknown function… Click a problem to see the block.
-- In GIMP, errors are shown in **Windows ▸ Dockable Dialogs ▸ Error Console**.
-- To see what a variable holds while the plug-in runs, show it: `pdb.gimp_message(str(x))`.
-- **Filters ▸ Python-Fu ▸ Console** lets you try a line of Python directly in GIMP.
+Ошибаются все, даже профи. Разница в том, что они знают, **куда смотреть**.
+- Вкладка **✅ Проверка** находит многие ошибки **раньше** GIMP: пустое поле, неверное число аргументов, неизвестная функция… Нажмите на проблему, чтобы увидеть блок.
+- В GIMP ошибки показываются в **Окна ▸ Панели ▸ Консоль ошибок**.
+- Чтобы увидеть значение переменной во время работы плагина, выведите его: `pdb.gimp_message(str(x))`.
+- **Фильтры ▸ Python-Fu ▸ Консоль** позволяет попробовать строку Python прямо в GIMP.
 
-Read errors **from the bottom up**: the last line says what is wrong, the one above says where.
+Читайте ошибки **снизу вверх**: последняя строка говорит, что не так, строка над ней — где.
 
-**Your mission**
+**Ваше задание**
 
-1. Open the ✅ Check tab.
-2. Add a "call …" to `pdb.gimp_message` and put a variable in it, for example `str(image.width)`.
+1. Откройте вкладку ✅ Проверка.
+2. Добавьте «вызвать …» для `pdb.gimp_message` и положите в него переменную, например `str(image.width)`.
 
-### 17. Write your own functions
+### 17. Писать свои функции
 
-🎯 **Put a piece of code in a function and call it.**
+🎯 **Поместить кусок кода в функцию и вызвать её.**
 
-When you repeat the same lines in several places, put them in a **function**: "define `my_function(layer)`". Then a single "call `my_function(...)`" block does it all.
+Если вы повторяете одни и те же строки в нескольких местах, поместите их в **функцию**: «определить `my_function(layer)`». Тогда один блок «вызвать `my_function(...)`» сделает всё.
 
-**Parameters** (in brackets) are variables filled at the moment of the call. "return …" sends back a result.
+**Параметры** (в скобках) — это переменные, которые заполняются в момент вызова. «вернуть …» возвращает результат.
 
-A good function name says what it does: `make_grey`, `number_layers`… Your functions also appear in the suggestions.
+Хорошее имя функции говорит, что она делает: `make_grey`, `number_layers`… Ваши функции тоже появляются в подсказках.
 
-**Your mission**
+**Ваше задание**
 
-1. Add "define …" with the name `griser` and the parameter `calque`.
-2. Inside, call `pdb.gimp_drawable_desaturate(calque, DESATURATE_LUMINANCE)`.
-3. Somewhere else, call `griser(drawable)`.
+1. Добавьте «определить …» с именем `griser` и параметром `calque`.
+2. Внутри вызовите `pdb.gimp_drawable_desaturate(calque, DESATURATE_LUMINANCE)`.
+3. В другом месте вызовите `griser(drawable)`.
 
-### 18. Import, change, share
+### 18. Импортировать, менять, делиться
 
-🎯 **Open a real existing script and change it without breaking it.**
+🎯 **Открыть настоящий готовый скрипт и изменить его, ничего не сломав.**
 
-Found a plug-in on the Internet? **File ▸ Import a Python script**: each line becomes a block, and the download gives back **exactly the same file** as long as you change nothing. If you change a block, only its lines change.
+Нашли плагин в интернете? **Файл ▸ Импортировать скрипт Python**: каждая строка становится блоком, а при скачивании вы получите **точно тот же файл**, пока ничего не меняете. Если изменить блок, изменятся только его строки.
 
-The **AI assistant** (🤖 tab) can write a function, explain a script or fix an error. Its answers are checked (Python 2.7, real GIMP functions, right number of arguments) before they become blocks.
+**ИИ-помощник** (вкладка 🤖) может написать функцию, объяснить скрипт или исправить ошибку. Его ответы проверяются (Python 2.7, настоящие функции GIMP, правильное число аргументов), прежде чем стать блоками.
 
-You can now read, write and fix GIMP plug-ins. Next: open other people's scripts, read them block by block, and build your own. **Well done!**
+Теперь вы умеете читать, писать и исправлять плагины GIMP. Дальше: открывайте чужие скрипты, читайте их блок за блоком и создавайте свои. **Браво!**
 
-**Your mission**
+**Ваше задание**
 
-1. Import a `.py` script (or an example: File ▸ Examples, then convert it).
-2. Change a value and look in the 🐍 Code tab at which lines changed.
-3. When you are done, click "I did it".
+1. Импортируйте скрипт `.py` (или пример: Файл ▸ Примеры, затем преобразуйте его).
+2. Измените значение и посмотрите во вкладке 🐍 Код, какие строки изменились.
+3. Когда закончите, нажмите «Готово, получилось».
 
