@@ -47,6 +47,7 @@ SCRIPTS = (
     'suggest.js',
     'hints.js',
     'pyvars.js',
+    'sessions.js',
     'learn.js',
     'ai.js',
     'app.js',

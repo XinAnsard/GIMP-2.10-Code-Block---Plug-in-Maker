@@ -251,6 +251,11 @@ main { flex: 1; display: flex; min-height: 0; }
 .sgDesc { font-size: 12.5px; color: var(--muted); margin-top: 2px; line-height: 1.35; }
 .sgRow:hover { background: var(--accent-soft); } .sgRow.cur { outline: 2px solid var(--accent-soft); }
 .vmFilter { width: 100%; box-sizing: border-box; margin: 0 0 6px; padding: 5px 9px; border: 1.5px solid var(--line); border-radius: 9px; background: var(--panel2); color: var(--ink); font: inherit; }
+.sesNew { display: flex; gap: 8px; margin: 10px 0; } .sesNew input { flex: 1; min-width: 0; padding: 8px 10px; border: 1.5px solid var(--line); border-radius: 10px; background: var(--panel2); color: var(--ink); font: inherit; }
+.sesList { max-height: 50vh; overflow: auto; display: flex; flex-direction: column; gap: 8px; }
+.sesRow { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 12px; border: 1.5px solid var(--line); border-radius: 12px; }
+.sesInfo { display: flex; flex-direction: column; min-width: 0; } .sesInfo span { font-size: 12.5px; color: var(--muted); }
+.sesBtns { display: flex; gap: 6px; flex-wrap: wrap; }
 .vmActs { border-top: 1px solid var(--line); margin-top: 4px; padding-top: 4px; font-weight: 700; }
 .pick .ar { display: block; font: 12px var(--mono); color: var(--muted); margin-top: 2px; word-break: break-word; }
 .status { border-radius: 13px; padding: 12px 14px; font-weight: 800; margin-bottom: 14px; }
@@ -391,6 +396,7 @@ table.keys kbd { font: 700 12px var(--mono); background: var(--panel2); border: 
         <button role="menuitem" id="mImport"><span>🐍 Importer un script Python</span><kbd>Ctrl+O</kbd></button>
         <button role="menuitem" id="mPaste"><span>📋 Coller du code Python</span></button>
         <button role="menuitem" id="mSave"><span>💾 Sauvegarder le projet</span><kbd>Ctrl+S</kbd></button>
+        <button role="menuitem" data-act="sessions"><span>💼 Sessions (projet + interface)…</span></button>
         <hr>
         <button role="menuitem" id="bExamples"><span>✨ Exemples</span></button>
         <button role="menuitem" id="mConvert"><span>🔁 Voir ce plug-in en blocs Python</span></button>
