@@ -291,6 +291,7 @@ function keys(e) {
   if (k === 'F1') { e.preventDefault(); GA.actions.tour(); return; }
   if (c && !e.shiftKey && (k === 'f' || k === 'F')) { e.preventDefault(); GA.find.open(false); return; }
   if (c && (k === 'h' || k === 'H')) { e.preventDefault(); GA.find.open(true); return; }
+  if (c && e.shiftKey && (k === 'g' || k === 'G')) { e.preventDefault(); GA.actions.installGimp(); return; }   // G comme GIMP
   if (c && (k === 'g' || k === 'G')) { e.preventDefault(); GA.actions.functions(); return; }
   if (c && (k === 's' || k === 'S')) { e.preventDefault(); GA.actions.saveProject(); return; }
   if (c && (k === 'o' || k === 'O')) { e.preventDefault(); GA.actions.importFile(); return; }

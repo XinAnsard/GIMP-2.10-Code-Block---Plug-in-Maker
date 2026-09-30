@@ -766,6 +766,21 @@ function fileText(b, code) {
   return c;
 }
 function stripState(st) { return JSON.stringify(st, function (k, v) { return /^(id|x|y|collapsed|height|width|pinned)$/.test(k) ? undefined : v; }); }
+/* « Installer dans GIMP » : le navigateur ne peut pas écrire dans AppData, alors le .py part dans
+   Téléchargements sous le nom <nom>.gimp-install.py ; le lanceur Windows le range aussitôt dans
+   %APPDATA%\GIMP\2.10\plug-ins (en gardant une copie de l'ancienne version). */
+function installGimp(name) {
+  refresh();
+  if (!built) { toast('Le code n\'a pas pu être généré.'); return Promise.resolve(false); }
+  name = name || ((ws && GA.isFileMode(ws) ? baseName() : (GA.pyIdent(baseName(), 'mon_plugin') || 'mon_plugin')) + '.py');
+  var file = name.replace(/\.py$/i, '') + '.gimp-install.py';
+  return exportCode().then(function (code) {
+    return saveFile(file, new Blob([code], { type: 'text/x-python' }));
+  }).then(function (ok) {
+    if (ok) toast(T('Envoyé à GIMP : ') + name);
+    return !!ok;
+  });
+}
 function exportCode() {
   if (!built) return Promise.resolve('');
   var b = built, code = b.code;
@@ -821,9 +836,11 @@ function openExport() {
   var menu = fileMode ? 'indiqué dans son register(...)' : built.menu.replace(/^<Image>\//, '').replace(/\//g, ' ▸ ') + ' ▸ ' + built.label;
   var d = openDialog('<h2>⬇ Télécharger ' + (fileMode ? 'le script' : 'le plug-in') + '</h2><p class="sub">« ' + esc(built.label) + ' » · ' + built.lines.length + ' lignes de Python</p>' + status +
     '<div class="field"><label for="eName">Nom du fichier</label><div class="dlrow"><input type="text" id="eName" style="flex:1 1 200px"><span class="muted" style="font-weight:800">.py</span></div></div>' +
-    '<div class="dlrow"><button class="btn go" id="eZip">⬇ Télécharger (.zip)</button><button class="btn" id="eCopy">📋 Copier le code</button><button class="btn" id="eProj">💾 Sauvegarder le projet</button></div>' +
+    '<div class="gimpBox"><button class="btn go" id="eGimp">🧩 Installer dans GIMP</button><div><b>Directement dans le dossier plug-ins de GIMP.</b><br><span class="muted">Garde ouverte la fenêtre de « Lancer GIMP Code Block.bat » : elle range le fichier tout de suite dans GIMP. Puis redémarre GIMP.</span></div></div>' +
+    '<div id="eGimpMsg"></div>' +
+    '<div class="dlrow"><button class="btn" id="eZip">⬇ Télécharger (.zip)</button><button class="btn" id="eCopy">📋 Copier le code</button><button class="btn" id="eProj">💾 Sauvegarder le projet</button></div>' +
     '<p class="muted" style="font-size:13px;margin-top:8px">Le .py est rangé dans un .zip, avec une notice.' + (opts.keepBlocks !== false ? ' Il contient aussi l\'empreinte de tes blocs : <b>réimporte ce .py (ou ce .zip) pour retrouver tes blocs à l\'identique.</b>' : ' (Empreinte des blocs désactivée dans ⚙️.)') + '</p>' +
-    '<h3>Installer dans GIMP</h3><ol class="steps">' +
+    '<h3>Ou installer à la main</h3><ol class="steps">' +
     '<li>Ouvre le .zip et copie <b id="ePy"></b> dans le dossier des plug-ins :<br><span class="path">C:\\Users\\TON_NOM\\AppData\\Roaming\\GIMP\\2.10\\plug-ins</span><br><span class="muted" style="font-size:13px">GIMP te montre ce dossier : Édition ▸ Préférences ▸ Dossiers ▸ Greffons.</span></li>' +
     '<li>Redémarre GIMP.</li><li>Lance-le depuis le menu ' + (fileMode ? esc(menu) : '<b>' + esc(menu) + '</b>') + '.</li></ol>' +
     '<p class="muted" style="font-size:13px">Sous Linux ou macOS, rends le fichier exécutable : <span class="path">chmod +x fichier.py</span></p>' +
@@ -836,6 +853,13 @@ function openExport() {
   d.querySelector('#eClose').onclick = closeDialog;
   d.querySelector('#eCopy').onclick = function () { copyCode(); };
   d.querySelector('#eProj').onclick = saveProject;
+  d.querySelector('#eGimp').onclick = function () {
+    installGimp(py()).then(function (ok) {
+      if (!ok) return;
+      d.querySelector('#eGimpMsg').innerHTML = '<div class="status ok">✅ <b>' + esc(py()) + '</b> ' + esc(T('est envoyé à GIMP.')) + '</div>' +
+        '<p class="muted" style="font-size:13px">' + esc(T('Rien ne se passe ? Lance « Lancer GIMP Code Block.bat » : il installe au démarrage les plug-ins en attente dans tes Téléchargements (choix 3 du menu).')) + '</p>';
+    });
+  };
   d.querySelector('#eZip').onclick = function () {
     var enc = new TextEncoder(), name = py();
     Promise.all([downloads(), exportCode()]).then(function (r) {
@@ -924,7 +948,7 @@ function init() {
   if (GA.ai) GA.ai.init();
   if (!store.get(KEY_SEEN)) openWelcome();
   window.addEventListener('resize', function () { Blockly.svgResize(ws); });
-  GA.ws = ws; GA.app = { openDialog: openDialog, closeDialog: closeDialog, confirmBox: confirmBox, saveFile: saveFile, openExamples: openExamples, openSettings: openSettings, saveProject: saveProject, openPaste: openPaste, convertToPython: convertToPython, openWelcome: openWelcome, importText: importText, handleFile: handleFile, readZip: readZip, exportCode: exportCode, refresh: refresh, openExport: openExport, openExamples: openExamples, openSettings: openSettings, openPicker: openPicker, showTab: showTab, loadState: loadState, getBuilt: function () { return built; }, getIssues: function () { return issues; }, getOpts: function () { return opts; } };
+  GA.ws = ws; GA.app = { openDialog: openDialog, closeDialog: closeDialog, confirmBox: confirmBox, saveFile: saveFile, openExamples: openExamples, openSettings: openSettings, saveProject: saveProject, openPaste: openPaste, convertToPython: convertToPython, openWelcome: openWelcome, importText: importText, handleFile: handleFile, readZip: readZip, exportCode: exportCode, refresh: refresh, openExport: openExport, openExamples: openExamples, openSettings: openSettings, openPicker: openPicker, installGimp: installGimp, showTab: showTab, loadState: loadState, getBuilt: function () { return built; }, getIssues: function () { return issues; }, getOpts: function () { return opts; } };
   GA.app.flush = save;
   if (GA.sessions) GA.sessions.init();
 }

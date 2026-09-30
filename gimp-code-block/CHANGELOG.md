@@ -6,6 +6,11 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [Unreleased]
 
 ### Added
+- **🧩 Install in GIMP** (export dialog, File menu, `Ctrl+Shift+G`): the plug-in goes straight
+  into `%APPDATA%\GIMP\2.10\plug-ins`. The page drops `<name>.gimp-install.py` in Downloads and the
+  Windows launcher (`Lancer GIMP Code Block.bat`, new `tools/gimp-install.ps1`) moves it into GIMP at
+  once, keeping the previous version in `gimp-code-block-sauvegardes`. Launcher menu choice 3 installs
+  the plug-ins still waiting in Downloads.
 - **Script variables in 📦 Variables & lists**: after an import, every variable of the script
   (parameters, `=` targets, loop variables…) is listed there as a draggable pill, with ready-made
   `x = …` and `x += …` blocks. « Create a variable » also works in a Python script.

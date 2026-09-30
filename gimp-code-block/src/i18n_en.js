@@ -468,4 +468,18 @@ Object.assign(GA.EN, {
 "fonction": "function",
 "menu": "menu"
 });
+Object.assign(GA.EN, {
+/* ---- variables de script, valeurs prédites, sessions ---- */
+"🧩 Installer dans GIMP": "🧩 Install in GIMP",
+"Directement dans le dossier plug-ins de GIMP.": "Straight into GIMP's plug-ins folder.",
+"Garde ouverte la fenêtre de « Lancer GIMP Code Block.bat » : elle range le fichier tout de suite dans GIMP. Puis redémarre GIMP.": "Keep the \"Lancer GIMP Code Block.bat\" window open: it puts the file into GIMP right away. Then restart GIMP.",
+"est envoyé à GIMP.": "has been sent to GIMP.",
+"Rien ne se passe ? Lance « Lancer GIMP Code Block.bat » : il installe au démarrage les plug-ins en attente dans tes Téléchargements (choix 3 du menu).": "Nothing happens? Run \"Lancer GIMP Code Block.bat\": when it starts, it installs the plug-ins waiting in your Downloads (menu choice 3).",
+"Envoyé à GIMP : ": "Sent to GIMP: ",
+"Installer le plug-in dans GIMP": "Install the plug-in in GIMP"
+});
+Object.assign(GA.EN, {
+/* ---- variables de script, valeurs prédites, sessions ---- */
+"Ou installer à la main": "Or install it by hand"
+});
 })(typeof window !== 'undefined' ? window : globalThis);
