@@ -259,6 +259,14 @@ function renderHelp() {
   if (b.type === 'g_pdb_call' || b.type === 'g_pdb_value') {
     h += '<p style="margin-top:14px"><button class="btn primary" id="hPick">🔍 Choisir une autre fonction</button></p>';
   }
+  if ((b.type === 'py_call' || b.type === 'py_callst') && !b.f_) {
+    h += '<p style="margin-top:14px"><button class="btn primary" id="hPick">🔍 Choisir une fonction de GIMP</button></p>' +
+      '<div class="tip">💡 Clique sur le nom de la fonction dans le bloc et tape un mot (flou, calque, texte…) : la liste des fonctions qui correspondent s\'affiche.</div>';
+  }
+  if (b.type === 'py_var') {
+    var vn = b.getFieldValue('NAME'), uses = ws.getAllBlocks(false).filter(function (x) { return x.type === 'py_var' && x.getFieldValue('NAME') === vn; }).length;
+    h += '<div class="tip">🟠 « ' + esc(vn) + ' » est utilisée ' + uses + ' fois dans ce script. Clique sur la pastille pour choisir une autre variable.</div>';
+  }
   el.innerHTML = h;
   var pk = el.querySelector('#hPick');
   if (pk) pk.onclick = function () { openPicker(b); };
@@ -363,22 +371,16 @@ function openPicker(block) {
     '<div class="pickList" id="pl"></div><div class="foot"><button class="btn" id="pc">Annuler</button></div>', 'wide');
   d.querySelector('#pc').onclick = closeDialog;
   function render() {
-    var q = GA.translit(d.querySelector('#pq').value).toLowerCase().replace(/-/g, '_').trim().split(/\s+/).filter(Boolean);
-    var g = d.querySelector('#pg').value;
-    var hits = names.filter(function (n) {
-      var s = GA.SIGS[n];
-      if (g && s[0] !== g) return false;
-      var hay = (n + ' ' + s[1]).toLowerCase();
-      return q.every(function (w) { return hay.indexOf(w) >= 0; });
-    });
-    hits.sort(function (a, b) { return (GA.SIGS[a][2] ? 1 : 0) - (GA.SIGS[b][2] ? 1 : 0) || a.localeCompare(b); });
-    var shown = hits.slice(0, 150);
-    d.querySelector('#pl').innerHTML = (shown.length ? '' : '<p class="muted">Aucune fonction ne correspond.</p>') + shown.map(function (n) {
+    var q = d.querySelector('#pq').value, g = d.querySelector('#pg').value;
+    var res = GA.pdbSearch(q, g, 150), shown = res.list;
+    d.querySelector('#pl').innerHTML = (q.trim() || g ? '' : '<p class="muted">⭐ Les plus utilisées d\'abord. Tape un mot, en français ou en anglais (flou, calque, texte, sélection…).</p>') +
+      (shown.length ? '' : '<p class="muted">Aucune fonction ne correspond.</p>') + shown.map(function (n) {
       var s = GA.SIGS[n];
       var args = s[4].filter(function (a) { return a[1] !== 'count'; }).map(function (a) { return a[0]; }).join(', ');
-      return '<button class="pick" data-p="' + esc(n) + '"><code>' + esc(n) + '</code>' + (s[2] ? '<span class="tag">ancienne</span>' : '') +
+      return '<button class="pick" data-p="' + esc(n) + '"><span class="sgChip sg-pdb" style="background:' + GA.pdbColour(n) + '">⚙️ ' + esc(n) + '</span>' + (s[2] ? '<span class="tag">ancienne</span>' : '') +
+        '<span class="gname">' + esc(groupName(s[0])) + '</span>' +
         '<span class="bl">' + esc(s[1]) + '</span><span class="ar">(' + esc(args) + ')' + (s[5].length ? ' → ' + esc(s[5].map(function (o) { return o[0]; }).join(', ')) : '') + '</span></button>';
-    }).join('') + (hits.length > 150 ? '<p class="muted">… et ' + (hits.length - 150) + ' autres : précise ta recherche.</p>' : '');
+    }).join('') + (res.total > shown.length ? '<p class="muted">… et ' + (res.total - shown.length) + ' autres : précise ta recherche.</p>' : '');
   }
   d.querySelector('#pq').addEventListener('input', render);
   d.querySelector('#pg').addEventListener('change', render);
@@ -389,7 +391,10 @@ function openPicker(block) {
   });
   function choose(py) {
     closeDialog();
-    if (block && !block.disposed && block.workspace === ws) setProc(block, py);
+    if (block && !block.disposed && block.workspace === ws && block.setProc) setProc(block, py);
+    else if (block && !block.disposed && block.workspace === ws && GA.pyApplyProc && (block.type === 'py_call' || block.type === 'py_callst')) {
+      GA.pyApplyProc(block, py); block.select(); scheduleRefresh(); renderHelp();
+    }
     else insertBlock(GA.pdbBlockState(GA.SIGS[py][5].length ? 'g_pdb_value' : 'g_pdb_call', py));
   }
   render();
@@ -887,6 +892,8 @@ function init() {
   if (mq.addEventListener) mq.addEventListener('change', function () { if (!GA.prefs || GA.prefs.theme === 'auto') ws.setTheme(GA.makeTheme(mq.matches)); });
   ws.registerToolboxCategoryCallback('GA_START', function (w) { return GA.startFlyout(w); });
   ws.registerToolboxCategoryCallback('GA_VARS', function (w) { return GA.varsFlyout(w); });
+  ws.registerToolboxCategoryCallback('GA_PY', function (w) { return GA.pyFlyout(w); });
+  GA.afterSuggest = function (b) { if (b && !b.disposed) { scheduleRefresh(); if (b.id === selectedId) renderHelp(); } };
   ws.registerButtonCallback('GA_CREATE_VAR', function (btn) { Blockly.Variables.createVariableButtonHandler(btn.getTargetWorkspace(), null, ''); });
   ws.addChangeListener(function (e) {
     if (e.type === Blockly.Events.SELECTED) {

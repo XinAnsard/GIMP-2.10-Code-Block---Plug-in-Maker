@@ -192,8 +192,30 @@ main { flex: 1; display: flex; min-height: 0; }
 .pickList { max-height: 55vh; overflow: auto; display: flex; flex-direction: column; gap: 6px; }
 .pick { text-align: left; border: 1.5px solid var(--line); background: var(--panel); border-radius: 11px; padding: 9px 11px; }
 .pick:hover { border-color: var(--accent); background: var(--panel2); }
-.pick code { font: 700 13px var(--mono); color: var(--k-fn); }
 .pick .bl { display: block; font-size: 13px; color: var(--muted); }
+.pick .gname { font-size: 11.5px; font-weight: 800; color: var(--muted); margin-left: 8px; }
+/* pastilles dans les blocs : variables (orange, comme Scratch), fonctions, fonctions de GIMP, attributs */
+.gcbPill > rect.blocklyFieldRect { stroke-width: 1.5px; fill-opacity: 1; }
+.gcbPill > text.blocklyText { font-weight: 800 !important; }
+.gcbPill-var > rect.blocklyFieldRect { fill: #FF8C1A !important; stroke: #D96F00 !important; }
+.gcbPill-var > text.blocklyText, .gcbPill-func > text.blocklyText, .gcbPill-attr > text.blocklyText { fill: #fff !important; }
+.gcbPill-func > rect.blocklyFieldRect { fill: #0A5F57 !important; stroke: rgba(0, 0, 0, .25) !important; }
+.gcbPill-func.gcbPill-pdb > rect.blocklyFieldRect { fill: #FFD23F !important; stroke: #C99700 !important; }
+.gcbPill-func.gcbPill-pdb > text.blocklyText { fill: #3B2E00 !important; }
+.gcbPill-attr > rect.blocklyFieldRect { fill: #2F6B3A !important; stroke: rgba(0, 0, 0, .25) !important; }
+.gcbPill-solo > rect.blocklyFieldRect { fill: transparent !important; stroke: none !important; }
+/* liste de suggestions sous une case */
+.sgBox { position: fixed; z-index: 100001; background: var(--panel); color: var(--ink); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow); overflow: auto; padding: 6px; font-family: var(--font); font-size: 13px; }
+.sgHead { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 11.5px; font-weight: 800; color: var(--muted); padding: 2px 6px 6px; position: sticky; top: -6px; background: var(--panel); }
+.sgAll { border: 1.5px solid var(--line); background: var(--panel2); border-radius: 8px; padding: 2px 8px; font-weight: 800; font-size: 11.5px; color: var(--ink); cursor: pointer; white-space: nowrap; }
+.sgAll:hover { border-color: var(--accent); }
+.sgRow { padding: 6px 8px; border-radius: 9px; cursor: pointer; }
+.sgRow.on { background: var(--accent-soft); }
+.sgNone { padding: 8px; color: var(--muted); }
+.sgChip { display: inline-block; padding: 2px 11px; border-radius: 999px; color: #fff; font: 800 12.5px var(--mono); background: #414B60; word-break: break-all; }
+.sg-var { background: #FF8C1A; } .sg-const { background: #8E5CC7; } .sg-fn { background: #0A5F57; } .sg-def { background: #3776AB; } .sg-attr { background: #2F6B3A; }
+.sgSub { font: 11.5px var(--mono); color: var(--muted); margin-left: 6px; word-break: break-word; }
+.sgDesc { font-size: 12.5px; color: var(--muted); margin-top: 2px; line-height: 1.35; }
 .pick .ar { display: block; font: 12px var(--mono); color: var(--muted); margin-top: 2px; word-break: break-word; }
 .status { border-radius: 13px; padding: 12px 14px; font-weight: 800; margin-bottom: 14px; }
 .status.ok { background: var(--ok-soft); } .status.warn { background: var(--warn-soft); } .status.err { background: var(--err-soft); }
@@ -917,7 +939,7 @@ GA.T = function (s) {
   return lead + t + trail;
 };
 /* traduction automatique de tout ce qui apparaît dans la page (hors code et blocs) */
-var SKIP = '#code, .snippet, .aiCode, .copyzone, #blockly, .blocklyWidgetDiv, .blocklyDropDownDiv, .blocklyTooltipDiv, pre, textarea, code, .path, .aiText, .aiMsg.user, script, style';
+var SKIP = '#code, .snippet, .aiCode, .copyzone, #blockly, .blocklyWidgetDiv, .blocklyDropDownDiv, .blocklyTooltipDiv, pre, textarea, code, .path, .aiText, .aiMsg.user, script, style, .sgChip, .sgSub';
 function trNode(n) {
   if (!n) return;
   if (n.nodeType === 3) {
@@ -1309,6 +1331,47 @@ GA.EN_RX = [
   var i = p.indexOf('|');
   if (GA.EN[p.slice(0, i)] === undefined) GA.EN[p.slice(0, i)] = p.slice(i + 1);
 });
+/* ---- pastilles, suggestions, variables ---- */
+Object.assign(GA.EN, {
+'choisir une fonction': 'choose a function', 'Variables de ton script :': 'Variables of your script:', '(importe ou écris un script pour voir ses variables)': '(import or write a script to see its variables)',
+'Variables de ton script': 'Variables of your script', 'Attributs courants': 'Common attributes', 'Fonctions — tape un mot (en français ou en anglais)': 'Functions — type a word (in English or French)',
+'Parcourir tout': 'Browse all', 'Rien ne correspond. Tu peux quand même écrire ce que tu veux.': 'Nothing matches. You can still write whatever you want.', 'ancienne': 'old',
+'🔍 Choisir une fonction de GIMP': '🔍 Choose a GIMP function',
+'💡 Clique sur le nom de la fonction dans le bloc et tape un mot (flou, calque, texte…) : la liste des fonctions qui correspondent s\'affiche.': '💡 Click the function name in the block and type a word (blur, layer, text…): the list of matching functions appears.',
+'⭐ Les plus utilisées d\'abord. Tape un mot, en français ou en anglais (flou, calque, texte, sélection…).': '⭐ Most used first. Type a word, in English or French (blur, layer, text, selection…).',
+'Aucune fonction ne correspond.': 'No function matches.',
+'variable remplie par « = »': 'variable filled by "="', 'variable de boucle': 'loop variable', 'ressource « avec »': '"with" resource', 'variable': 'variable',
+'l\'image sur laquelle le plug-in est lancé': 'the image the plug-in runs on', 'le calque (ou masque) actif': 'the active layer (or mask)',
+'Nombre d\'éléments d\'une liste ou de lettres d\'un texte.': 'Number of items in a list or letters in a text.', 'Une suite de nombres : range(10) → 0…9.': 'A sequence of numbers: range(10) → 0…9.',
+'Transforme en texte.': 'Turns into text.', 'Transforme en nombre entier.': 'Turns into a whole number.', 'Transforme en nombre à virgule.': 'Turns into a decimal number.',
+'La plus petite valeur.': 'The smallest value.', 'La plus grande valeur.': 'The largest value.', 'Valeur sans le signe moins.': 'Value without the minus sign.', 'Arrondit un nombre.': 'Rounds a number.',
+'Ouvre un fichier.': 'Opens a file.', 'Fabrique une liste.': 'Makes a list.', 'Une copie triée.': 'A sorted copy.', 'Chaque élément avec son numéro.': 'Each item with its number.',
+'Assemble plusieurs listes deux à deux.': 'Pairs several lists together.', 'Vérifie le type d\'une valeur.': 'Checks the type of a value.', 'Affiche un message dans GIMP.': 'Shows a message in GIMP.',
+'La liste des images ouvertes.': 'The list of open images.', 'Rafraîchit l\'affichage des images.': 'Refreshes the image displays.', 'Crée un calque (image, nom, largeur, hauteur, type, opacité, mode).': 'Creates a layer (image, name, width, height, type, opacity, mode).',
+'Crée une image (largeur, hauteur, type).': 'Creates an image (width, height, type).', 'Ouvre une fenêtre pour une image.': 'Opens a window for an image.', 'Démarre la barre de progression.': 'Starts the progress bar.',
+'Avance la barre de progression (0.0 à 1.0).': 'Moves the progress bar (0.0 to 1.0).', 'Couleur de premier plan.': 'Foreground colour.', 'Change la couleur de premier plan.': 'Changes the foreground colour.',
+'Couleur d\'arrière-plan.': 'Background colour.', 'Change la couleur d\'arrière-plan.': 'Changes the background colour.', 'Supprime un objet GIMP.': 'Deletes a GIMP object.',
+'Déclare le plug-in à GIMP (nom, menu, réglages…).': 'Declares the plug-in to GIMP (name, menu, settings…).', 'Lance le plug-in.': 'Starts the plug-in.',
+'Assemble des morceaux de chemin de fichier.': 'Joins pieces of a file path.', 'Le fichier existe-t-il ?': 'Does the file exist?', 'Les fichiers d\'un dossier.': 'The files of a folder.',
+'Le nom (calque, image…).': 'The name (layer, image…).', 'La largeur en pixels.': 'The width in pixels.', 'La hauteur en pixels.': 'The height in pixels.', 'Les calques de l\'image.': 'The layers of the image.',
+'Le calque actif.': 'The active layer.', 'Le calque ou masque actif.': 'The active layer or mask.', 'Visible ou caché.': 'Visible or hidden.', 'L\'opacité (0 à 100).': 'The opacity (0 to 100).',
+'La position (x, y) du calque.': 'The position (x, y) of the layer.', 'Le mode de fusion.': 'The blend mode.', 'Le fichier de l\'image.': 'The file of the image.', 'Les calques d\'un groupe.': 'The layers of a group.',
+'Le groupe qui contient le calque.': 'The group that holds the layer.', 'Le masque du calque.': 'The layer mask.', 'Lié ou non.': 'Linked or not.', 'Transparence verrouillée.': 'Alpha locked.',
+'Les chemins de l\'image.': 'The paths of the image.', 'Les canaux.': 'The channels.', 'La sélection.': 'The selection.', 'RGB, niveaux de gris ou indexé.': 'RGB, greyscale or indexed.',
+'Le numéro interne.': 'The internal number.', 'Fait une copie (calque).': 'Makes a copy (layer).', 'Change la taille du calque.': 'Changes the layer size.', 'Déplace le calque.': 'Moves the layer.',
+'Place le calque en (x, y).': 'Puts the layer at (x, y).', 'Ajoute la transparence.': 'Adds transparency.', 'Remplit le calque.': 'Fills the layer.', 'Ajoute à la fin d\'une liste.': 'Adds at the end of a list.',
+'Coupe un texte en morceaux.': 'Splits a text into pieces.', 'Enlève les espaces autour.': 'Removes the spaces around.', 'Remplace dans un texte.': 'Replaces in a text.', 'En minuscules.': 'In lowercase.',
+'En majuscules.': 'In uppercase.', 'Remplit un texte modèle.': 'Fills a template text.', 'Assemble une liste de textes.': 'Joins a list of texts.', 'Commence par… ?': 'Starts with…?', 'Finit par… ?': 'Ends with…?',
+'Nom de variable': 'Variable name', 'Aussi utiles ici :': 'Also useful here:', 'constante de GIMP': 'GIMP constant', '⚡ Raccourcis GIMP :': '⚡ GIMP shortcuts:', 'Tout faire en une seule annulation': 'Do everything as a single undo step',
+'Remettre couleurs et outils à la fin': 'Restore colours and tools at the end', 'Pour chaque image ouverte (une annulation chacune)': 'For each open image (one undo step each)',
+'Pour chaque calque de l\'image': 'For each layer of the image', 'Pour chaque calque de toutes les images': 'For each layer of all images', 'Le calque actif': 'The active layer',
+'Nouveau calque de la taille de l\'image': 'New layer the size of the image', 'Enregistrer la sélection puis la remettre': 'Save the selection, then restore it',
+'Afficher un message': 'Show a message', 'Rafraîchir l\'affichage': 'Refresh the display'
+});
+GA.EN_RX.push(
+[/^paramètre de (.+)$/, 'parameter of $1'], [/^ta fonction \((.*)\)$/, 'your function ($1)'],
+[/^🟠 « (.+) » est utilisée (\d+) fois dans ce script\. Clique sur la pastille pour choisir une autre variable\.$/, '🟠 "$1" is used $2 time(s) in this script. Click the pill to pick another variable.']
+);
 })(typeof window !== 'undefined' ? window : globalThis);
 
 </script>
@@ -1321,9 +1384,9 @@ GA.EN_CATS = {
   start: ['▶ Start & settings', 'The settings window of your plug-in'], control: ['🔁 Control', 'Repeat, choose, loop'], ops: ['🧮 Maths & text', 'Numbers, comparisons, words'],
   vars: ['📦 Variables & lists', 'Boxes that remember values'], image: ['🖼️ Image', 'The whole document'], layer: ['📑 Layers', 'The stacked sheets of the image'],
   sel: ['✂️ Selection', 'The dotted area'], paint: ['🎨 Colours & painting', 'Fill, colour, filter'], text: ['🔤 Text', 'Text layers'], path: ['〰️ Paths', 'Vector paths (Paths tool)'],
-  file: ['📁 Files & folders', 'Open, save, read'], msg: ['💬 Messages', 'Talk to the user'], py: ['🐍 Python', 'Every line of Python as a block (imported scripts)'], adv: ['🧰 Advanced', 'All 857 GIMP 2.10 functions']
+  file: ['📁 Files & folders', 'Open, save, read'], msg: ['💬 Messages', 'Talk to the user'], py: ['🐍 Python', 'Every line of Python as a block (imported scripts)'], fast: ['⚡ GIMP shortcuts', 'What every GIMP script repeats, in a single block'], adv: ['🧰 Advanced', 'All 857 GIMP 2.10 functions']
 };
-GA.EN_SEP = { 'Parcourir': 'Go through', 'Choisir': 'Choose', 'Nombres': 'Numbers', 'Conditions': 'Conditions', 'Texte': 'Text', 'Créer & transformer': 'Create & transform', 'Créer & supprimer': 'Create & delete',
+GA.EN_SEP = { 'Toutes les images ouvertes': 'All open images', 'Travailler sur plusieurs images': 'Working on several images', 'Envelopper des actions': 'Wrap actions', 'En un seul bloc': 'In a single block', 'Parcourir': 'Go through', 'Choisir': 'Choose', 'Nombres': 'Numbers', 'Conditions': 'Conditions', 'Texte': 'Text', 'Créer & transformer': 'Create & transform', 'Créer & supprimer': 'Create & delete',
   'Nom, visibilité, ordre': 'Name, visibility, order', 'Apparence & position': 'Look & position', 'Questions': 'Questions', 'Modifier': 'Modify', 'Remplir & effacer': 'Fill & clear', 'Retouches': 'Adjustments',
   'Dessiner': 'Draw', 'Couleurs à utiliser': 'Colours to use', 'Modifier un calque texte': 'Edit a text layer', 'Lire': 'Read', 'Points': 'Points', 'Ouvrir & enregistrer': 'Open & save', 'Fichiers texte': 'Text files',
   'Chemins de fichiers': 'File paths', 'Barre de progression': 'Progress bar', 'Affichage': 'Display', 'Code Python libre': 'Free Python code', 'Numéros (ID) renvoyés par GIMP': 'Numbers (IDs) returned by GIMP', 'Valeurs': 'Values' };
@@ -1582,6 +1645,23 @@ GA.EN_BLOCKS = {
   py_class: b('class …', 'Defines a class (an object model).'),
   py_exprstmt: b('▸ value alone', 'A value used alone as an instruction (for example the explanation text of a function).'),
   py_raw: b('🧱 raw code', 'Code kept character for character because it contains a syntax error (already present in the original file). Fix it, then re-import the script to turn it into blocks.'),
+  img_all: b('🖼️ all open images', 'The list of all images open in GIMP, in opening order. Use it with "for each item of the list" or "number of items".'),
+  img_count: b('number of open images', 'How many images are open in GIMP.'),
+  img_by_name: b('open image named %NAME', 'Finds an open image by its name (the tab name, e.g. page_01.png). Check with "… exists": if no image has this name, the result is empty.'),
+  img_of_layer: b('image of the layer %L', 'The image that holds this layer. Handy in a loop over several images.'),
+  img_first: b('most recently opened image', 'The image opened last (empty if no image is open).'),
+  c_each_image_undo: b('for each open image %VAR %BR one undo step per image %UNDO %BR refresh the display at the end %FLUSH %DO', 'Goes through all open images. Each image keeps a single undo step (Ctrl+Z undoes everything the plug-in did to it), even if an error happens.'),
+  c_each_layer_all: b('for each layer %VAR of all open images %BR %REC also look inside groups %DO', 'Goes through all the layers of all open images. Use "image of the layer" to know which image you are in.'),
+  c_each_file_open: b('for each image file of the folder %DIR %BR ending with %EXT: open it in %VAR %BR then close it %CLOSE %DO', 'Batch processing: opens each file of the folder (without a window), runs the blocks, then frees the image. Save it in the blocks if you want to keep the result.'),
+  c_undo_group: b('as a single undo step in %IMG %DO', 'Everything inside counts as a single Ctrl+Z. The undo step is closed even if an error happens.'),
+  c_context: b('then restore the colours, brush and tool settings %DO', 'You can change the colour, brush, font… inside: at the end, the user gets theirs back.'),
+  c_keep_selection: b('then restore the selection of %IMG %DO', 'You can change the selection inside: at the end, the original selection comes back.'),
+  c_keep_active: b('then restore the active layer of %IMG %DO', 'You can activate other layers inside: at the end, the layer that was active becomes active again.'),
+  c_fast: b('without undo history (faster) in %IMG %DO', 'For heavy work (hundreds of layers): GIMP does not record the steps, which is much faster. Ctrl+Z will not be able to undo these actions.'),
+  fast_layer_new: b('new layer %NAME in %IMG %BR image size, filled with %FILL, on top → in %VAR', 'Creates a layer the size of the image, adds it on top and fills it: the 3 lines you write every time.'),
+  fast_layer_copy_to: b('copy the layer %L into the image %IMG %BR on top → in %VAR', 'Copies a layer from one image to another (or the same one) in one step.'),
+  fast_flush: b('refresh the display of all images', 'Updates the image windows right away (useful in a long loop).'),
+  py_var: b('variable', 'A variable: a name that keeps a value (image, layer, number, text…). Click it to choose among the variables of your script.'),
   py_leaf: b('Python value', 'A value written in Python: number, text in quotes, variable name, list…'),
   py_call: b('result of …(…)', 'The result of a function. Right-click to add or remove arguments.'),
   py_binop: b('… + …', 'A calculation between two values (+, -, *, /, //, %, **…).'),
@@ -3239,6 +3319,135 @@ root.GA.defs.push(function (D, GA) {
 
 </script>
 <script data-ga>
+/* Blocs : toutes les images ouvertes, et raccourcis pour les motifs qui reviennent dans tous les scripts GIMP */
+(function (root) {
+'use strict';
+var GA = root.GA;
+GA.CATS.splice(GA.CATS.length - 1, 0, { id: 'fast', name: '⚡ Raccourcis GIMP', colour: '#D9480F', intro: 'Ce que tous les scripts GIMP répètent, en un seul bloc' });
+GA.CAT.fast = GA.CATS.filter(function (c) { return c.id === 'fast'; })[0];
+
+/* blocs déjà existants montrés aussi dans d'autres catégories (là où on les cherche) */
+GA.ALSO = { image: ['c_foreach_image'], layer: ['c_foreach_layer'],
+  fast: ['c_foreach_image', 'c_foreach_layer', 'c_foreach_file', 'img_duplicate', 'file_png', 'file_jpg', 'file_save_xcf', 'msg_pstart', 'msg_pset', 'msg_pend'] };
+
+GA.defs.push(function (D, GA) {
+  var O = GA.ORD;
+  var IND = '    ';
+  // une valeur utilisée plusieurs fois est d'abord rangée dans une variable (sauf si c'est déjà un nom)
+  function once(c, code, p) { if (/^[A-Za-z_]\w*$/.test(code)) return { pre: '', v: code }; var v = c.uid(p); return { pre: v + ' = ' + code + '\n', v: v }; }
+  function images() { return 'list(reversed(gimp.image_list()))'; }
+  return [
+    /* ===== toutes les images ===== */
+    { type: 'img_all', cat: 'image', also: ['fast'], sep: 'Toutes les images ouvertes', out: ['Array'], msg: '🖼️ toutes les images ouvertes', args: {},
+      help: 'La liste de toutes les images ouvertes dans GIMP, dans l\'ordre d\'ouverture. À utiliser avec « pour chaque élément de la liste » ou « nombre d\'éléments ».', kw: 'images ouvertes liste lot toutes',
+      gen: function () { return [images(), O.CALL]; } },
+    { type: 'img_count', cat: 'image', out: ['Number'], msg: 'nombre d\'images ouvertes', args: {},
+      help: 'Combien d\'images sont ouvertes dans GIMP.', kw: 'combien images',
+      gen: function () { return ['len(gimp.image_list())', O.CALL]; } },
+    { type: 'img_by_name', cat: 'image', out: ['Image'], msg: 'image ouverte nommée %NAME', args: { NAME: D.STR('page_01.png') },
+      help: 'Trouve une image ouverte par son nom (celui de l\'onglet, ex. page_01.png). Vérifie avec « … existe » : si aucune image n\'a ce nom, le résultat est vide.', kw: 'chercher trouver image nom',
+      gen: function (b, c) { c.need('_image_nommee'); return ['_image_nommee(' + c.txt(b, 'NAME') + ')', O.CALL]; } },
+    { type: 'img_of_layer', cat: 'image', also: ['layer'], out: ['Image'], msg: 'image du calque %L', args: { L: D.LAY() }, pdb: ['gimp-item-get-image'],
+      help: 'L\'image qui contient ce calque. Pratique dans une boucle sur plusieurs images.',
+      gen: function (b, c) { return ['pdb.gimp_item_get_image(' + c.obj(b, 'L') + ')', O.CALL]; } },
+    { type: 'img_first', cat: 'image', out: ['Image'], msg: 'dernière image ouverte', args: {},
+      help: 'L\'image ouverte le plus récemment (vide si aucune image n\'est ouverte).',
+      gen: function () { return ['(gimp.image_list() or [None])[0]', O.MEMBER]; } },
+
+    /* ===== raccourcis : boucles ===== */
+    { type: 'c_each_image_undo', cat: 'fast', sep: 'Travailler sur plusieurs images', msg: 'pour chaque image ouverte %VAR %BR une annulation par image %UNDO %BR rafraîchir l\'affichage à la fin %FLUSH %DO',
+      args: { VAR: D.VAR('img'), UNDO: D.CB(true), FLUSH: D.CB(true), DO: D.ST() }, pdb: ['gimp-image-undo-group-start', 'gimp-image-undo-group-end', 'gimp-displays-flush'],
+      help: 'Passe sur toutes les images ouvertes. Chaque image garde une seule étape d\'annulation (Ctrl+Z annule tout ce que le plug-in a fait sur elle), même en cas d\'erreur.', kw: 'toutes les images lot annulation',
+      gen: function (b, c) {
+        var v = c.var(b, 'VAR'), body = c.body(b, 'DO'), s = 'for ' + v + ' in ' + images() + ':\n';
+        if (c.f(b, 'UNDO') === 'TRUE') s += IND + 'pdb.gimp_image_undo_group_start(' + v + ')\n' + IND + 'try:\n' + c.ind(body) + IND + 'finally:\n' + IND + IND + 'pdb.gimp_image_undo_group_end(' + v + ')\n';
+        else s += body;
+        if (c.f(b, 'FLUSH') === 'TRUE') s += 'gimp.displays_flush()\n';
+        return s;
+      } },
+    { type: 'c_each_layer_all', cat: 'fast', msg: 'pour chaque calque %VAR de toutes les images ouvertes %BR %REC chercher aussi dans les groupes %DO',
+      args: { VAR: D.VAR('calque'), REC: D.CB(true), DO: D.ST() },
+      help: 'Passe sur tous les calques de toutes les images ouvertes. Utilise « image du calque » pour savoir dans quelle image tu es.', kw: 'tous les calques toutes les images lot',
+      gen: function (b, c) {
+        c.need('_liste_calques');
+        var i = c.uid('img');
+        return 'for ' + i + ' in ' + images() + ':\n' + IND + 'for ' + c.var(b, 'VAR') + ' in _liste_calques(' + i + ', ' + (c.f(b, 'REC') === 'TRUE' ? 'True' : 'False') + ', False):\n' + c.ind(c.body(b, 'DO'));
+      } },
+    { type: 'c_each_file_open', cat: 'fast', msg: 'pour chaque fichier image du dossier %DIR %BR se terminant par %EXT : l\'ouvrir dans %VAR %BR puis le fermer %CLOSE %DO',
+      args: { DIR: D.STR(''), EXT: D.STR('.png'), VAR: D.VAR('img'), CLOSE: D.CB(true), DO: D.ST() }, pdb: ['gimp-file-load', 'gimp-image-delete'],
+      help: 'Traitement par lot : ouvre chaque fichier du dossier (sans fenêtre), fait les blocs, puis libère l\'image. Enregistre-la dans les blocs si tu veux garder le résultat.', kw: 'lot dossier batch ouvrir fichiers',
+      gen: function (b, c) {
+        c.need('_fichiers_du_dossier');
+        var f = c.uid('fichier'), v = c.var(b, 'VAR');
+        var s = 'for ' + f + ' in _fichiers_du_dossier(' + c.txt(b, 'DIR') + ', ' + c.txt(b, 'EXT') + '):\n' + IND + v + ' = pdb.gimp_file_load(' + f + ', ' + f + ')\n';
+        if (c.f(b, 'CLOSE') === 'TRUE') s += IND + 'try:\n' + c.ind(c.body(b, 'DO')) + IND + 'finally:\n' + IND + IND + 'pdb.gimp_image_delete(' + v + ')\n';
+        else s += c.body(b, 'DO');
+        return s;
+      } },
+
+    /* ===== raccourcis : enveloppes « faire …, puis toujours remettre en place » ===== */
+    { type: 'c_undo_group', cat: 'fast', sep: 'Envelopper des actions', msg: 'en une seule annulation dans %IMG %DO', args: { IMG: D.IMG(), DO: D.ST() },
+      pdb: ['gimp-image-undo-group-start', 'gimp-image-undo-group-end'],
+      help: 'Tout ce qui est à l\'intérieur ne compte que pour un seul Ctrl+Z. L\'annulation est refermée même en cas d\'erreur.', kw: 'undo annuler groupe',
+      gen: function (b, c) { var o = once(c, c.obj(b, 'IMG'), 'img'); return o.pre + 'pdb.gimp_image_undo_group_start(' + o.v + ')\ntry:\n' + c.body(b, 'DO') + 'finally:\n' + IND + 'pdb.gimp_image_undo_group_end(' + o.v + ')\n'; } },
+    { type: 'c_context', cat: 'fast', msg: 'en remettant ensuite les couleurs, pinceau et réglages d\'outils %DO', args: { DO: D.ST() },
+      pdb: ['gimp-context-push', 'gimp-context-pop'],
+      help: 'Tu peux changer la couleur, le pinceau, la police… à l\'intérieur : à la fin, l\'utilisateur retrouve les siens.', kw: 'contexte couleur premier plan sauvegarder restaurer push pop',
+      gen: function (b, c) { return 'pdb.gimp_context_push()\ntry:\n' + c.body(b, 'DO') + 'finally:\n' + IND + 'pdb.gimp_context_pop()\n'; } },
+    { type: 'c_keep_selection', cat: 'fast', msg: 'en remettant ensuite la sélection de %IMG %DO', args: { IMG: D.IMG(), DO: D.ST() },
+      pdb: ['gimp-selection-save', 'gimp-image-select-item', 'gimp-image-remove-channel'],
+      help: 'Tu peux changer la sélection à l\'intérieur : à la fin, la sélection d\'origine revient.', kw: 'sauvegarder selection restaurer',
+      gen: function (b, c) {
+        var o = once(c, c.obj(b, 'IMG'), 'img'), s = c.uid('selection');
+        return o.pre + s + ' = pdb.gimp_selection_save(' + o.v + ')\ntry:\n' + c.body(b, 'DO') + 'finally:\n' +
+          IND + 'pdb.gimp_image_select_item(' + o.v + ', CHANNEL_OP_REPLACE, ' + s + ')\n' + IND + 'pdb.gimp_image_remove_channel(' + o.v + ', ' + s + ')\n';
+      } },
+    { type: 'c_keep_active', cat: 'fast', msg: 'en remettant ensuite le calque actif de %IMG %DO', args: { IMG: D.IMG(), DO: D.ST() },
+      pdb: ['gimp-image-get-active-layer', 'gimp-image-set-active-layer'],
+      help: 'Tu peux activer d\'autres calques à l\'intérieur : à la fin, le calque qui était actif le redevient.', kw: 'calque actif restaurer',
+      gen: function (b, c) {
+        var o = once(c, c.obj(b, 'IMG'), 'img'), a = c.uid('actif');
+        return o.pre + a + ' = pdb.gimp_image_get_active_layer(' + o.v + ')\ntry:\n' + c.body(b, 'DO') + 'finally:\n' +
+          IND + 'if ' + a + ' is not None and pdb.gimp_item_is_valid(' + a + '):\n' + IND + IND + 'pdb.gimp_image_set_active_layer(' + o.v + ', ' + a + ')\n';
+      } },
+    { type: 'c_fast', cat: 'fast', msg: 'sans historique d\'annulation (plus rapide) dans %IMG %DO', args: { IMG: D.IMG(), DO: D.ST() },
+      pdb: ['gimp-image-undo-disable', 'gimp-image-undo-enable'],
+      help: 'Pour les traitements lourds (des centaines de calques) : GIMP ne mémorise pas les étapes, c\'est beaucoup plus rapide. Ctrl+Z ne pourra pas annuler ces actions.', kw: 'rapide vitesse undo desactiver',
+      gen: function (b, c) { var o = once(c, c.obj(b, 'IMG'), 'img'); return o.pre + 'pdb.gimp_image_undo_disable(' + o.v + ')\ntry:\n' + c.body(b, 'DO') + 'finally:\n' + IND + 'pdb.gimp_image_undo_enable(' + o.v + ')\n'; } },
+
+    /* ===== raccourcis : actions en un bloc ===== */
+    { type: 'fast_layer_new', cat: 'fast', sep: 'En un seul bloc', msg: 'nouveau calque %NAME dans %IMG %BR taille de l\'image, rempli de %FILL, tout en haut → dans %VAR',
+      args: { NAME: D.STR('Nouveau calque'), IMG: D.IMG(), FILL: D.DD(GA.OPT.FILL), VAR: D.VAR('nouveau_calque') },
+      pdb: ['gimp-layer-new', 'gimp-image-insert-layer', 'gimp-drawable-fill'],
+      help: 'Crée un calque de la taille de l\'image, l\'ajoute tout en haut et le remplit : les 3 lignes qu\'on écrit à chaque fois.', kw: 'creer calque ajouter',
+      gen: function (b, c) {
+        var o = once(c, c.obj(b, 'IMG'), 'img'), v = c.var(b, 'VAR');
+        return o.pre + v + ' = pdb.gimp_layer_new(' + o.v + ', ' + o.v + '.width, ' + o.v + '.height, RGBA_IMAGE, ' + c.txt(b, 'NAME') + ', 100, NORMAL_MODE)\n' +
+          'pdb.gimp_image_insert_layer(' + o.v + ', ' + v + ', None, 0)\n' + 'pdb.gimp_drawable_fill(' + v + ', ' + c.f(b, 'FILL') + ')\n';
+      } },
+    { type: 'fast_layer_copy_to', cat: 'fast', msg: 'copier le calque %L dans l\'image %IMG %BR tout en haut → dans %VAR', args: { L: D.LAY(), IMG: D.IMG(), VAR: D.VAR('calque_copie') },
+      pdb: ['gimp-layer-new-from-drawable', 'gimp-image-insert-layer'],
+      help: 'Copie un calque d\'une image vers une autre (ou la même) en une étape.', kw: 'copier calque autre image dupliquer',
+      gen: function (b, c) {
+        var o = once(c, c.obj(b, 'IMG'), 'img'), v = c.var(b, 'VAR');
+        return o.pre + v + ' = pdb.gimp_layer_new_from_drawable(' + c.obj(b, 'L') + ', ' + o.v + ')\npdb.gimp_image_insert_layer(' + o.v + ', ' + v + ', None, 0)\n';
+      } },
+    { type: 'fast_flush', cat: 'fast', msg: 'rafraîchir l\'affichage de toutes les images', args: {}, pdb: ['gimp-displays-flush'],
+      help: 'Met à jour les fenêtres des images tout de suite (utile dans une longue boucle).', kw: 'flush afficher actualiser',
+      gen: function () { return 'gimp.displays_flush()\n'; } }
+  ];
+});
+
+GA.HELPERS._image_nommee = { deps: ['_texte'], imports: [], code: [
+  'def _image_nommee(nom):',
+  '    for img in gimp.image_list():',
+  '        if _texte(pdb.gimp_image_get_name(img)) == _texte(nom):',
+  '            return img',
+  '    return None'] };
+})(typeof window !== 'undefined' ? window : globalThis);
+
+</script>
+<script data-ga>
 /* Atelier — blocs « Python fidèle » : chaque instruction du code devient un bloc, et redevient exactement le même code */
 (function (root) {
 'use strict';
@@ -3247,11 +3456,15 @@ var PY = GA.py;
 var T = function (x) { return GA.T ? GA.T(x) : x; };
 var IND = '    ';
 var PREC_BIN = { '|': 7, '^': 8, '&': 9, '<<': 10, '>>': 10, '+': 11, '-': 11, '*': 12, '/': 12, '//': 12, '%': 12, '@': 12, '**': 14 };
+var PICK_SVG = 'data:image/svg+xml;utf8,' + encodeURIComponent(
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#fff" fill-opacity=".92"/>' +
+  '<circle cx="10.5" cy="10.5" r="5" fill="none" stroke="#2B3346" stroke-width="2.4"/>' +
+  '<path d="M14.2 14.2l4.3 4.3" stroke="#2B3346" stroke-width="2.6" stroke-linecap="round"/></svg>');
 var REGISTER_ARGS = ['nom', 'description', 'aide', 'auteur', 'copyright', 'date', 'libellé', 'types d\'image', 'paramètres', 'résultats', 'fonction'];
 
 GA.CATS.splice(GA.CATS.length - 1, 0, { id: 'py', name: '🐍 Python', colour: '#3776AB', intro: 'Chaque ligne de Python en bloc (scripts importés)' });
 GA.CAT.py = GA.CATS.filter(function (c) { return c.id === 'py'; })[0];
-GA.PY_STYLES = { cat_pycom: '#8A8FA3', cat_pyraw: '#B5533C', cat_pycall: '#0E8A7E', cat_pypdb: '#414B60', cat_pyexpr: '#3E9E4E', cat_pyleaf: '#5A6A82' };
+GA.PY_STYLES = { cat_pycom: '#8A8FA3', cat_pyraw: '#B5533C', cat_pycall: '#0E8A7E', cat_pypdb: '#414B60', cat_pyexpr: '#3E9E4E', cat_pyleaf: '#5A6A82', cat_pyvar: '#FF8C1A', cat_pyconst: '#8E5CC7' };
 
 /* ---------- aide & boîte à outils (specs « custom ») ---------- */
 function leafBox(code) { return { block: { type: 'py_leaf', fields: { CODE: code } } }; }
@@ -3285,7 +3498,8 @@ GA.defs.push(function () {
     sp('py_class', 'classe …', 'Définit une classe (un modèle d\'objet).', { type: 'py_class', fields: { NAME: 'MaClasse', BASES: 'object' } }),
     sp('py_exprstmt', '▸ valeur seule', 'Une valeur utilisée seule comme instruction (par exemple le texte d\'explication d\'une fonction).', { type: 'py_exprstmt', inputs: { V: leafBox('"""Explication."""') } }),
     sp('py_raw', '🧱 code brut', 'Du code gardé caractère pour caractère, parce qu\'il contient une erreur de syntaxe (déjà présente dans le fichier d\'origine). Corrige-le puis réimporte le script pour le transformer en blocs.', { type: 'py_raw', fields: { CODE: '# code brut' } }),
-    sp('py_leaf', 'valeur Python', 'Une valeur écrite en Python : nombre, texte entre guillemets, nom de variable, liste…', { type: 'py_leaf', fields: { CODE: '0' } }, { sep: 'Valeurs' }),
+    sp('py_var', 'variable', 'Une variable : un nom qui garde une valeur (image, calque, nombre, texte…). Clique dessus pour choisir parmi les variables de ton script.', { type: 'py_var', fields: { NAME: 'image' } }, { sep: 'Valeurs', kw: 'variable nom' }),
+    sp('py_leaf', 'valeur Python', 'Une valeur écrite en Python : nombre, texte entre guillemets, nom de variable, liste…', { type: 'py_leaf', fields: { CODE: '0' } }),
     sp('py_call', 'résultat de …(…)', 'Le résultat d\'une fonction. Clic droit pour ajouter ou retirer des arguments.', { type: 'py_call', extraState: { a: ['p'] }, fields: { FUNC: 'len' }, inputs: { A0: leafBox('liste') } }),
     sp('py_binop', '… + …', 'Un calcul entre deux valeurs (+, -, *, /, //, %, **…).', { type: 'py_binop', fields: { OP: '+' }, inputs: { A: leafBox('1'), B: leafBox('2') } }),
     sp('py_compare', '… == …', 'Une comparaison (==, !=, <, >, dans, est…).', { type: 'py_compare', extraState: { n: 1 }, fields: { OP1: '==' }, inputs: { V0: leafBox('x'), V1: leafBox('0') } }),
@@ -3370,6 +3584,30 @@ GA.pyInit = function (Blockly, G) {
     return code;
   }
   function txt(v) { return new Blockly.FieldTextInput(v); }
+  /* champ « pastille » : variable, fonction ou attribut, avec suggestions pendant la frappe (GA.suggest) */
+  class PillField extends Blockly.FieldTextInput {
+    constructor(v, kind) { super(v); this.kind_ = kind; }
+    initView() {
+      super.initView();
+      if (!this.fieldGroup_) return;
+      Blockly.utils.dom.addClass(this.fieldGroup_, 'gcbPill gcbPill-' + this.kind_);
+      var src = this.getSourceBlock();
+      if (src && src.type === 'py_var') Blockly.utils.dom.addClass(this.fieldGroup_, 'gcbPill-solo');   // le bloc entier est la pastille
+      if (this.kind_ === 'func' && /^pdb\./.test(this.getValue() || '')) Blockly.utils.dom.addClass(this.fieldGroup_, 'gcbPill-pdb');
+    }
+    isFullBlockField() { return false; }   // sinon Zelos repeint tout le bloc en blanc
+    render_() {
+      super.render_();
+      var r = this.borderRect_;
+      if (r) { var h = this.size_.height; r.setAttribute('rx', h / 2); r.setAttribute('ry', h / 2); }
+    }
+    showEditor_(e, quiet) {
+      super.showEditor_(e, quiet);
+      if (GA.suggest && this.htmlInput_) GA.suggest.open(this, this.kind_, this.htmlInput_);
+    }
+  }
+  function pill(v, kind) { return new PillField(v, kind); }
+  GA.PillField = PillField;
   function mtxt(v) { return new Blockly.FieldMultilineInput(v); }
   function mutate(block, fn) {
     var before = JSON.stringify(block.saveExtraState() || {});
@@ -3457,10 +3695,10 @@ GA.pyInit = function (Blockly, G) {
     gen: function (b) { return stmtLine(b, 'return' + (has(b, 'V') ? ' ' + val(b, 'V', 0) : '')); } });
   defStmt('py_raise', { init: function () { this.appendValueInput('V').appendField(T('lever l\'erreur')); },
     gen: function (b) { return stmtLine(b, 'raise' + (has(b, 'V') ? ' ' + val(b, 'V', 1) : '')); } });
-  defStmt('py_assign', { init: function () { this.appendValueInput('V').appendField(txt('x'), 'T').appendField('='); this.setInputsInline(true); },
+  defStmt('py_assign', { init: function () { this.appendValueInput('V').appendField(pill('x', 'var'), 'T').appendField('='); this.setInputsInline(true); },
     gen: function (b) { return stmtLine(b, tx(b.getFieldValue('T')) + ' = ' + val(b, 'V', 0)); } });
   var AUGS = ['+=', '-=', '*=', '/=', '//=', '%=', '**=', '>>=', '<<=', '&=', '|=', '^=', '@='];
-  defStmt('py_augassign', { init: function () { this.appendValueInput('V').appendField(txt('x'), 'T').appendField(new Blockly.FieldDropdown(AUGS.map(function (o) { return [o, o]; })), 'OP'); this.setInputsInline(true); },
+  defStmt('py_augassign', { init: function () { this.appendValueInput('V').appendField(pill('x', 'var'), 'T').appendField(new Blockly.FieldDropdown(AUGS.map(function (o) { return [o, o]; })), 'OP'); this.setInputsInline(true); },
     gen: function (b) { return stmtLine(b, tx(b.getFieldValue('T')) + ' ' + b.getFieldValue('OP') + ' ' + val(b, 'V', 0)); } });
   defStmt('py_exprstmt', { init: function () { this.appendValueInput('V').appendField('▸'); },
     gen: function (b) { return stmtLine(b, has(b, 'V') ? val(b, 'V', 0) : 'pass'); } });
@@ -3528,7 +3766,7 @@ GA.pyInit = function (Blockly, G) {
   function elseShape(b, e) { if (e && !b.getInput('ELSE')) b.appendStatementInput('ELSE').setCheck('Action').appendField(T('sinon (boucle finie)')); if (!e) rm(b, 'ELSE'); b.e_ = e; }
   function elseMenu(opts) { var b = this; opts.push(item(b.e_ ? '➖ Retirer « sinon »' : '➕ Ajouter « sinon » (rare)', function () { mutate(b, function () { elseShape(b, !b.e_); }); })); }
   defStmt('py_for', {
-    init: function () { this.e_ = false; this.appendValueInput('ITER').appendField(T('pour')).appendField(txt('x'), 'T').appendField(T('dans')); this.appendStatementInput('DO').setCheck('Action').appendField(T('faire')); },
+    init: function () { this.e_ = false; this.appendValueInput('ITER').appendField(T('pour')).appendField(pill('x', 'var'), 'T').appendField(T('dans')); this.appendStatementInput('DO').setCheck('Action').appendField(T('faire')); },
     save: function () { return this.e_ ? { e: true } : {}; }, load: function (st) { elseShape(this, !!st.e); }, menu: elseMenu,
     gen: function (b) { return headLine(b, 'for ' + tx(b.getFieldValue('T')) + ' in ' + val(b, 'ITER', 0) + ':', 'DO') + (b.e_ ? clauseLine(b, 'el', 'else:', 'ELSE') : ''); }
   });
@@ -3603,7 +3841,7 @@ GA.pyInit = function (Blockly, G) {
     for (i = 0; i < n; i++) {
       if (!this.getInput('E' + i)) {
         this.appendValueInput('E' + i).appendField(i === 0 ? 'avec' : ',');
-        this.appendDummyInput('AS' + i).appendField(T('comme')).appendField(txt(''), 'V' + i);
+        this.appendDummyInput('AS' + i).appendField(T('comme')).appendField(pill('', 'var'), 'V' + i);
         this.moveInputBefore('E' + i, 'DO'); this.moveInputBefore('AS' + i, 'DO');
       }
     }
@@ -3628,16 +3866,20 @@ GA.pyInit = function (Blockly, G) {
       else if (!ext && i) lab = ',';
       f.setValue(lab);
     });
-    var ic = b.getField('ICON');
-    if (ic) ic.setValue(isPdb ? '⚙️' : (b.type === 'py_callst' ? '▶' : ''));
+    var ff = b.getField('FUNC');
+    if (ff && ff.fieldGroup_) Blockly.utils.dom[isPdb ? 'addClass' : 'removeClass'](ff.fieldGroup_, 'gcbPill-pdb');
+  }
+  function funcHead(b) {
+    var ff = pill('fonction', 'func');
+    ff.setValidator(function (v) { callLookSoon(b, v); return v; });
+    b.appendDummyInput('HEAD')
+      .appendField(new Blockly.FieldImage(PICK_SVG, 18, 18, T('choisir une fonction'), function () { if (GA.onPickProc) GA.onPickProc(b); }), 'ICON')
+      .appendField(ff, 'FUNC').appendField('(');
   }
   var callDef = {
     init: function () {
       this.a_ = []; this.f_ = false;
-      var self = this;
-      var ff = txt('fonction');
-      ff.setValidator(function (v) { callLookSoon(self, v); return v; });
-      this.appendDummyInput('HEAD').appendField('', 'ICON').appendField(ff, 'FUNC').appendField('(');
+      funcHead(this);
       this.appendDummyInput('END').appendField(')');
       this.setInputsInline(true);
     },
@@ -3663,9 +3905,7 @@ GA.pyInit = function (Blockly, G) {
       if (f) { rm(this, 'HEAD'); this.appendValueInput('F'); this.appendDummyInput('OPEN').appendField('('); }
       else {
         rm(this, 'F'); rm(this, 'OPEN');
-        var self = this, ff = txt('fonction');
-        ff.setValidator(function (v) { callLookSoon(self, v); return v; });
-        this.appendDummyInput('HEAD').appendField('', 'ICON').appendField(ff, 'FUNC').appendField('(');
+        funcHead(this);
       }
     }
     for (i = a.length; this.getInput('A' + i); i++) rm(this, 'A' + i);
@@ -3690,7 +3930,51 @@ GA.pyInit = function (Blockly, G) {
   Blockly.Blocks.py_callst.setShape_ = setCallShape;
   Blockly.Blocks.py_call.setShape_ = setCallShape;
 
+  /* choisir une fonction de la PDB dans un bloc d'appel : les cases manquantes sont ajoutées et pré-remplies */
+  function argDefault(a) {
+    var k = a[1];
+    if (a[4]) return { type: 'py_leaf', fields: { CODE: 'None' } };   // argument facultatif (ex. parent)
+    if (k === 'image') return { type: 'py_var', fields: { NAME: 'image' } };
+    if (k === 'drawable' || k === 'layer' || k === 'item') return { type: 'py_var', fields: { NAME: 'drawable' } };
+    var code = 'None';
+    if (/^(int32|int16|int8|count|unit)$/.test(k)) code = '0';
+    else if (k === 'float') code = '0.0';
+    else if (k === 'string') code = '""';
+    else if (k === 'boolean') code = 'False';
+    else if (k === 'color') code = '(0, 0, 0)';
+    else if (/array$/.test(k)) code = '[]';
+    else if (k === 'enum') { var o = GA.enumOptions ? GA.enumOptions(a) : []; code = o.length ? o[0][1] : '0'; }
+    return { type: 'py_leaf', fields: { CODE: code } };
+  }
+  GA.pyApplyProc = function (b, py) {
+    var sig = GA.SIGS && GA.SIGS[py];
+    if (!sig || b.f_) return;
+    Blockly.Events.setGroup(true);
+    try {
+      b.setFieldValue('pdb.' + py, 'FUNC');
+      if (b.a_.some(function (k) { return k !== 'p'; })) return;   // arguments nommés ou * : on ne touche à rien
+      var n = sig[4].length, keep = b.a_.length;
+      while (keep > n && !b.getInputTargetBlock('A' + (keep - 1))) keep--;
+      var shape = []; for (var i = 0; i < Math.max(n, keep); i++) shape.push('p');
+      if (shape.length !== b.a_.length) mutate(b, function () { b.setShape_(shape, false); });
+      sig[4].forEach(function (a, j) {
+        var inp = b.getInput('A' + j);
+        if (!inp || inp.connection.targetBlock()) return;
+        var child = Blockly.serialization.blocks.append(argDefault(a), b.workspace);
+        inp.connection.connect(child.outputConnection);
+      });
+    } finally { Blockly.Events.setGroup(false); }
+  };
+
   /* ----- valeurs ----- */
+  /* NOM_EN_MAJUSCULES (FILL_WHITE, NORMAL_MODE…) = constante de GIMP : pastille violette */
+  GA.isPyConst = function (n) { return /^[A-Z][A-Z0-9_]*$/.test(n || '') && /[A-Z]{2}/.test(n); };
+  defVal('py_var', { style: 'cat_pyvar', init: function () {
+      var self = this, f = pill('x', 'var');
+      f.setValidator(function (v) { self.setStyle(GA.isPyConst(v) ? 'cat_pyconst' : 'cat_pyvar'); return v; });
+      this.appendDummyInput().appendField(f, 'NAME');
+    },
+    gen: function (b) { return [String(b.getFieldValue('NAME')), 0]; } });
   defVal('py_leaf', { style: 'cat_pyleaf', init: function () { this.appendDummyInput().appendField(mtxt('0'), 'CODE'); },
     gen: function (b) { var t = String(b.getFieldValue('CODE')); return [tx(t), leafOrd(t)]; } });
   var BINOPS = ['+', '-', '*', '/', '//', '%', '**', '<<', '>>', '|', '^', '&', '@'];
@@ -3751,7 +4035,7 @@ GA.pyInit = function (Blockly, G) {
     gen: function (b) { return ['(' + (G.valueToCode(b, 'V', 99) || 'None') + ')', 0]; } });
   defVal('py_ifexp', { init: function () { this.appendValueInput('A'); this.appendValueInput('C').appendField(T('si')); this.appendValueInput('B').appendField(T('sinon')); },
     gen: function (b) { return [val(b, 'A', 3) + ' if ' + val(b, 'C', 3) + ' else ' + val(b, 'B', 2), PY.ordOf(2)]; } });
-  defVal('py_attr', { init: function () { this.appendValueInput('V'); this.appendDummyInput().appendField('.').appendField(txt('attribut'), 'NAME'); },
+  defVal('py_attr', { init: function () { this.appendValueInput('V'); this.appendDummyInput().appendField('.').appendField(pill('attribut', 'attr'), 'NAME'); },
     gen: function (b) { return [val(b, 'V', 16) + '.' + b.getFieldValue('NAME'), PY.ordOf(16)]; } });
   defVal('py_index', { init: function () { this.appendValueInput('V'); this.appendValueInput('I').appendField('['); this.appendDummyInput().appendField(']'); },
     gen: function (b) { return [val(b, 'V', 16) + '[' + (has(b, 'I') ? G.valueToCode(b, 'I', 99) : '0') + ']', PY.ordOf(16)]; } });
@@ -4402,12 +4686,14 @@ GA.setup = function (Blockly, DATA) {
       out.push({ kind: 'block', type: 'g_pdb_call' });
       out.push({ kind: 'block', type: 'g_pdb_value' });
     }
+    var also = (GA.ALSO && GA.ALSO[catId]) || [], borrowed = [];
     SPECS.forEach(function (s) {
-      if (s.cat !== catId || s.hidden) return;
-      if (s.custom && !s.box) return;
+      if (s.hidden || (s.custom && !s.box)) return;
+      if (s.cat !== catId) { if ((s.also || []).indexOf(catId) >= 0 || also.indexOf(s.type) >= 0) borrowed.push(GA.toolboxEntry(s)); return; }
       if (s.sep) out.push({ kind: 'label', text: s.sep, 'web-class': 'gaSep' });
       out.push(GA.toolboxEntry(s));
     });
+    if (borrowed.length) out = out.concat([{ kind: 'label', text: GA.T('Aussi utiles ici :'), 'web-class': 'gaSep' }], borrowed);
     return out;
   };
   GA.buildToolbox = function () {
@@ -4415,6 +4701,7 @@ GA.setup = function (Blockly, DATA) {
       var cat = { kind: 'category', name: c.name, colour: c.colour, toolboxitemid: 'cat_' + c.id };
       if (c.id === 'start') cat.custom = 'GA_START';
       else if (c.id === 'vars') cat.custom = 'GA_VARS';
+      else if (c.id === 'py') cat.custom = 'GA_PY';
       else cat.contents = GA.flyoutFor(c.id);
       return cat;
     }) };
@@ -4454,6 +4741,45 @@ GA.setup = function (Blockly, DATA) {
       }
     });
     return out;
+  };
+  /* Python : d'abord les variables du script (pastilles orange, comme dans Scratch), puis les blocs */
+  GA.pyFlyout = function (ws) {
+    var main = ws.targetWorkspace || ws, seen = {}, names = [];
+    main.getBlocksByType('py_var', false).forEach(function (b) { var n = b.getFieldValue('NAME'); if (!seen[n]) { seen[n] = 1; names.push(n); } });
+    main.getAllBlocks(false).forEach(function (b) {
+      if (b.type !== 'py_assign' && b.type !== 'py_for') return;
+      String(b.getFieldValue('T') || '').split(/[,()\s]+/).forEach(function (n) { if (/^[A-Za-z_]\w*$/.test(n) && !seen[n]) { seen[n] = 1; names.push(n); } });
+    });
+    names = names.filter(function (n) { return !GA.isPyConst(n); });
+    var out = GA.flyoutFor('py');
+    var vars = [{ kind: 'label', text: GA.T('Variables de ton script :'), 'web-class': 'gaSep' }];
+    if (!names.length) vars.push({ kind: 'label', text: GA.T('(importe ou écris un script pour voir ses variables)'), 'web-class': 'gaHint' });
+    names.sort(function (a, b) { return a.toLowerCase().localeCompare(b.toLowerCase()); }).slice(0, 80).forEach(function (n) { vars.push({ kind: 'block', type: 'py_var', fields: { NAME: n } }); });
+    return out.slice(0, 1).concat(vars, GA.pyShortcuts(), out.slice(1));
+  };
+  /* raccourcis GIMP en blocs Python : ce que presque tous les scripts écrivent */
+  var PY_SHORTCUTS = [
+    ['Tout faire en une seule annulation', 'pdb.gimp_image_undo_group_start(image)\ntry:\n    pass\nfinally:\n    pdb.gimp_image_undo_group_end(image)'],
+    ['Remettre couleurs et outils à la fin', 'pdb.gimp_context_push()\ntry:\n    pass\nfinally:\n    pdb.gimp_context_pop()'],
+    ['Pour chaque image ouverte (une annulation chacune)', 'for img in reversed(gimp.image_list()):\n    pdb.gimp_image_undo_group_start(img)\n    try:\n        pass\n    finally:\n        pdb.gimp_image_undo_group_end(img)\ngimp.displays_flush()'],
+    ['Pour chaque calque de l\'image', 'for layer in image.layers:\n    pass'],
+    ['Pour chaque calque de toutes les images', 'for img in reversed(gimp.image_list()):\n    for layer in img.layers:\n        pass'],
+    ['Le calque actif', 'layer = pdb.gimp_image_get_active_layer(image)'],
+    ['Nouveau calque de la taille de l\'image', 'layer = pdb.gimp_layer_new(image, image.width, image.height, RGBA_IMAGE, "Calque", 100, NORMAL_MODE)\npdb.gimp_image_insert_layer(image, layer, None, 0)'],
+    ['Enregistrer la sélection puis la remettre', 'saved = pdb.gimp_selection_save(image)\ntry:\n    pass\nfinally:\n    pdb.gimp_image_select_item(image, CHANNEL_OP_REPLACE, saved)\n    pdb.gimp_image_remove_channel(image, saved)'],
+    ['Afficher un message', 'pdb.gimp_message("Bonjour")'],
+    ['Rafraîchir l\'affichage', 'gimp.displays_flush()']
+  ];
+  var pyShortcutCache = null;
+  GA.pyShortcuts = function () {
+    if (pyShortcutCache) return JSON.parse(JSON.stringify(pyShortcutCache));
+    var out = [{ kind: 'label', text: GA.T('⚡ Raccourcis GIMP :'), 'web-class': 'gaSep' }];
+    PY_SHORTCUTS.forEach(function (sc) {
+      out.push({ kind: 'label', text: GA.T(sc[0]), 'web-class': 'gaHint' });
+      var st = GA.pySnippet(sc[1]); st.kind = 'block'; out.push(st);
+    });
+    pyShortcutCache = out;
+    return JSON.parse(JSON.stringify(out));
   };
   GA.withVar = function (entry, v) { entry.fields = entry.fields || {}; entry.fields.VAR = v; return entry; };
 
@@ -4518,6 +4844,18 @@ function hasCall(x) {
   for (var k in x) if (x[k] && typeof x[k] === 'object' && hasCall(x[k])) return true;
   return false;
 }
+/* une expression qui lit une variable ou fait un calcul devient des blocs (variable = pastille ronde, + - == et… = blocs) ;
+   les valeurs simples (nombres, textes, True/False/None, -1, (0, 0, 0)) restent une seule case */
+var CONST_NAMES = { True: 1, False: 1, None: 1 };
+function hasName(x) {
+  if (!x || typeof x !== 'object') return false;
+  if (Array.isArray(x)) { for (var i = 0; i < x.length; i++) if (hasName(x[i])) return true; return false; }
+  if (x.type === 'Name') return !CONST_NAMES[x.id];
+  if (/^(BinOp|Compare|BoolOp|IfExp)$/.test(x.type) || (x.type === 'UnaryOp' && x.op === 'not')) return true;
+  if (/^(Lambda|ListComp|SetComp|DictComp|GeneratorExp)$/.test(x.type)) return false;
+  for (var k in x) if (x[k] && typeof x[k] === 'object' && hasName(x[k])) return true;
+  return false;
+}
 function S(type, fields, inputs, extra) {
   var st = { type: type };
   if (fields) st.fields = fields;
@@ -4537,10 +4875,11 @@ function callState(e, stmt) {
   return S(stmt ? 'py_callst' : 'py_call', ex.f ? null : fields, inputs, ex);
 }
 function val(e) {
-  if (!hasCall(e)) return leaf(e);
+  if (!hasCall(e) && !hasName(e)) return leaf(e);
   var inputs = {}, i;
   if (e.paren && !(e.type === 'Tuple')) return S('py_paren', null, { V: B(val(PY.stripParen(e))) });
   switch (e.type) {
+    case 'Name': return CONST_NAMES[e.id] ? leaf(e) : S('py_var', { NAME: e.id });
     case 'Call': return callState(e, false);
     case 'BinOp': return S('py_binop', { OP: e.op }, { A: B(val(e.left)), B: B(val(e.right)) });
     case 'UnaryOp': return S('py_unary', { OP: e.op }, { A: B(val(e.operand)) });
@@ -4714,6 +5053,18 @@ GA.pyToState = function (mod, name) {
   var hat = S('py_file', { NAME: name || 'script' }, states.length ? { DO: { block: chain(states) } } : null, hx);
   hat.x = 30; hat.y = 30;
   return { blocks: { languageVersion: 0, blocks: [hat] }, _count: total + 1 };
+};
+
+/* petit morceau de Python → une pile de blocs (raccourcis de la boîte à outils) ; les « pass » de remplissage sont retirés */
+GA.pySnippet = function (code) {
+  var states = stmtsStates(PY.parse(code + '\n', {}).body);
+  (function strip(x) {
+    if (!x || typeof x !== 'object') return;
+    if (Array.isArray(x)) { x.forEach(strip); return; }
+    if (x.inputs) for (var k in x.inputs) { var t = x.inputs[k] && x.inputs[k].block; if (t && t.type === 'py_pass' && !t.next) delete x.inputs[k]; }
+    for (var j in x) if (x[j] && typeof x[j] === 'object') strip(x[j]);
+  })(states);
+  return chain(states);
 };
 
 /* ================= import tolérant (fichiers avec erreur de syntaxe) ================= */
@@ -5002,6 +5353,7 @@ GA.pyChecks = function (ws, add, py3) {
       case 'py_def': f('name', 'NAME', 'Nom de fonction'); e = tryParse('params', String(b.getFieldValue('ARGS') || ''), py3); if (e) add('error', 'Paramètres invalides : ' + e, b.id); break;
       case 'py_class': f('name', 'NAME', 'Nom de classe'); break;
       case 'py_attr': f('name', 'NAME', 'Nom d\'attribut'); break;
+      case 'py_var': f('name', 'NAME', 'Nom de variable'); break;
       case 'py_decorator': f('expr', 'CODE', 'Décorateur invalide'); break;
       case 'py_callst': case 'py_call': if (!b.f_) f('expr', 'FUNC', 'Nom de fonction invalide'); break;
       case 'py_raw': hasRaw = true; add('warn', 'Code brut : il contient une erreur de syntaxe (déjà présente dans le fichier d\'origine). GIMP ne chargera pas le script tant qu\'elle n\'est pas corrigée.', b.id); break;
@@ -5942,6 +6294,279 @@ GA.actions = {
 
 </script>
 <script data-ga>
+/* Atelier — suggestions pendant la frappe : fonctions de GIMP (PDB), fonctions Python, variables, attributs */
+(function (root) {
+'use strict';
+var GA = root.GA;
+var T = function (x) { return GA.T ? GA.T(x) : x; };
+function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', '\'': '&#39;' }[c]; }); }
+function norm(s) { return GA.translit(String(s || '')).toLowerCase(); }
+
+/* mots français → mots des noms de fonctions GIMP (tous en anglais) */
+var FR = {
+  flou: 'blur gauss', flouter: 'blur gauss', calque: 'layer', calques: 'layer', selection: 'select selection', selectionner: 'select', texte: 'text', couleur: 'color colour',
+  remplir: 'fill', remplissage: 'fill', chemin: 'vectors path', chemins: 'vectors path', trace: 'vectors stroke', pinceau: 'brush', brosse: 'brush', ombre: 'shadow',
+  tourner: 'rotate', rotation: 'rotate', redimensionner: 'scale resize', taille: 'size scale resize', agrandir: 'scale resize', copier: 'copy', coller: 'paste', couper: 'cut',
+  sauver: 'save', enregistrer: 'save', exporter: 'save export', ouvrir: 'load open', charger: 'load', fichier: 'file', nouveau: 'new', nouvelle: 'new', creer: 'new create',
+  supprimer: 'delete remove', effacer: 'clear erase', opacite: 'opacity', masque: 'mask', canal: 'channel', canaux: 'channel', grille: 'grid', police: 'font', degrade: 'gradient blend',
+  motif: 'pattern', annuler: 'undo', afficher: 'display flush', rafraichir: 'flush', recadrer: 'crop', largeur: 'width', hauteur: 'height', dupliquer: 'copy duplicate',
+  fusionner: 'merge', aplatir: 'flatten', inverser: 'invert', nettete: 'sharpen unsharp', bruit: 'noise', contour: 'stroke border outline', gomme: 'eraser', visible: 'visible',
+  nom: 'name', actif: 'active', active: 'active', premier: 'foreground', avant: 'foreground', arriere: 'background', fond: 'background', luminosite: 'brightness', contraste: 'contrast',
+  teinte: 'hue', saturation: 'saturation', niveaux: 'levels', courbes: 'curves', desaturer: 'desaturate', seuil: 'threshold', miroir: 'flip', retourner: 'flip', deplacer: 'offset translate',
+  position: 'offsets position', image: 'image', guide: 'guide', rectangle: 'rect rectangle', ellipse: 'ellipse', rond: 'ellipse', cercle: 'ellipse', progression: 'progress', message: 'message',
+  pixel: 'pixel', groupe: 'group', lier: 'link', verrouiller: 'lock', filtre: 'plug_in', filtres: 'plug_in', encre: 'ink', crayon: 'pencil', aerographe: 'airbrush', dessiner: 'paint'
+};
+function expand(tok) {
+  var alts = [tok];
+  if (FR[tok]) alts = alts.concat(FR[tok].split(' '));
+  return alts;
+}
+function wordStart(hay, w) { var i = hay.indexOf(w); return i === 0 || (i > 0 && /[_.\s]/.test(hay.charAt(i - 1))); }
+/* score d'un nom pour une requête : 0 = ne correspond pas */
+function scoreText(name, desc, q) {
+  var n = norm(name), d = norm(desc || ''), qs = q.replace(/\s+/g, '_');
+  var s = 0;
+  if (!q) return 1;
+  if (n === qs) s += 1000;
+  else if (n.indexOf(qs) === 0) s += 500;
+  else if (wordStart(n, qs)) s += 300;
+  else if (n.indexOf(qs) >= 0) s += 200;
+  var toks = q.split(/[\s_]+/).filter(Boolean), all = true;
+  toks.forEach(function (t) {
+    var best = 0;
+    expand(t).forEach(function (w) {
+      if (wordStart(n, w)) best = Math.max(best, 40);
+      else if (n.indexOf(w) >= 0) best = Math.max(best, 25);
+      else if (d.indexOf(w) >= 0) best = Math.max(best, 6);
+    });
+    if (!best) all = false;
+    s += best;
+  });
+  if (!all && s < 200) {
+    // lettres dans l'ordre (ex. « insrtlay » → gimp_image_insert_layer)
+    var j = 0, flat = qs.replace(/_/g, '');
+    for (var i = 0; i < n.length && j < flat.length; i++) if (n.charAt(i) === flat.charAt(j)) j++;
+    return j === flat.length && flat.length >= 3 ? 3 : 0;
+  }
+  return s;
+}
+
+/* ---------- fonctions de la PDB ---------- */
+var popRank = null;
+GA.pdbSearch = function (q, group, limit) {
+  var SIGS = GA.SIGS || {};
+  if (!popRank) { popRank = {}; (GA.POPULAR || []).forEach(function (p, i) { popRank[p] = i; }); }
+  q = norm(q).replace(/^pdb\./, '').replace(/-/g, '_').trim();
+  var hits = [];
+  Object.keys(SIGS).forEach(function (n) {
+    var s = SIGS[n];
+    if (group && s[0] !== group) return;
+    var sc = scoreText(n, s[1], q);
+    if (!sc) return;
+    if (popRank[n] !== undefined) sc += 30 - Math.min(29, popRank[n] * 0.3);
+    if (s[2]) sc -= 60;
+    hits.push({ n: n, sc: sc });
+  });
+  hits.sort(function (a, b) { return b.sc - a.sc || a.n.localeCompare(b.n); });
+  return { total: hits.length, list: hits.slice(0, limit || 60).map(function (h) { return h.n; }) };
+};
+GA.pdbArgs = function (py) {
+  var s = GA.SIGS[py];
+  if (!s) return '';
+  return '(' + s[4].map(function (a) { return a[0]; }).join(', ') + ')' + (s[5].length ? ' → ' + s[5].map(function (o) { return o[0]; }).join(', ') : '');
+};
+/* groupe → couleur de pastille (pour s'y retrouver d'un coup d'œil) */
+var GROUP_COL = { image: '#3A7BD5', image_select: '#1E88A8', selection: '#1E88A8', layer: '#7A5AF8', item: '#6C63C9', text_layer: '#A0527A', text_tool: '#A0527A',
+  context: '#D08A1C', drawable_edit: '#2E9E6A', edit: '#2E9E6A', vectors: '#B5533C', fileops: '#5F6B7A', plug_in_compat: '#C0417A', message: '#2F8F5B', progress: '#2F8F5B',
+  channel: '#4E7A8E', image_undo: '#6B7385', display: '#6B7385', drawable: '#3F8F8A', drawable_color: '#C77A12', external: '#8A5A2B' };
+GA.pdbColour = function (py) { var s = GA.SIGS[py]; return (s && GROUP_COL[s[0]]) || '#414B60'; };
+
+/* ---------- sources par genre de champ ---------- */
+var PY_FUNCS = [
+  ['len', 'Nombre d\'éléments d\'une liste ou de lettres d\'un texte.'], ['range', 'Une suite de nombres : range(10) → 0…9.'], ['str', 'Transforme en texte.'],
+  ['int', 'Transforme en nombre entier.'], ['float', 'Transforme en nombre à virgule.'], ['min', 'La plus petite valeur.'], ['max', 'La plus grande valeur.'],
+  ['abs', 'Valeur sans le signe moins.'], ['round', 'Arrondit un nombre.'], ['open', 'Ouvre un fichier.'], ['list', 'Fabrique une liste.'], ['sorted', 'Une copie triée.'],
+  ['enumerate', 'Chaque élément avec son numéro.'], ['zip', 'Assemble plusieurs listes deux à deux.'], ['isinstance', 'Vérifie le type d\'une valeur.'],
+  ['gimp.message', 'Affiche un message dans GIMP.'], ['gimp.image_list', 'La liste des images ouvertes.'], ['gimp.displays_flush', 'Rafraîchit l\'affichage des images.'],
+  ['gimp.Layer', 'Crée un calque (image, nom, largeur, hauteur, type, opacité, mode).'], ['gimp.Image', 'Crée une image (largeur, hauteur, type).'], ['gimp.Display', 'Ouvre une fenêtre pour une image.'],
+  ['gimp.progress_init', 'Démarre la barre de progression.'], ['gimp.progress_update', 'Avance la barre de progression (0.0 à 1.0).'],
+  ['gimp.get_foreground', 'Couleur de premier plan.'], ['gimp.set_foreground', 'Change la couleur de premier plan.'], ['gimp.get_background', 'Couleur d\'arrière-plan.'],
+  ['gimp.set_background', 'Change la couleur d\'arrière-plan.'], ['gimp.delete', 'Supprime un objet GIMP.'], ['register', 'Déclare le plug-in à GIMP (nom, menu, réglages…).'], ['main', 'Lance le plug-in.'],
+  ['os.path.join', 'Assemble des morceaux de chemin de fichier.'], ['os.path.exists', 'Le fichier existe-t-il ?'], ['os.listdir', 'Les fichiers d\'un dossier.']
+];
+var ATTRS = [
+  ['name', 'Le nom (calque, image…).'], ['width', 'La largeur en pixels.'], ['height', 'La hauteur en pixels.'], ['layers', 'Les calques de l\'image.'],
+  ['active_layer', 'Le calque actif.'], ['active_drawable', 'Le calque ou masque actif.'], ['visible', 'Visible ou caché.'], ['opacity', 'L\'opacité (0 à 100).'],
+  ['offsets', 'La position (x, y) du calque.'], ['mode', 'Le mode de fusion.'], ['filename', 'Le fichier de l\'image.'], ['children', 'Les calques d\'un groupe.'],
+  ['parent', 'Le groupe qui contient le calque.'], ['mask', 'Le masque du calque.'], ['linked', 'Lié ou non.'], ['lock_alpha', 'Transparence verrouillée.'],
+  ['vectors', 'Les chemins de l\'image.'], ['channels', 'Les canaux.'], ['selection', 'La sélection.'], ['base_type', 'RGB, niveaux de gris ou indexé.'],
+  ['ID', 'Le numéro interne.'], ['copy', 'Fait une copie (calque).'], ['resize', 'Change la taille du calque.'], ['translate', 'Déplace le calque.'],
+  ['set_offsets', 'Place le calque en (x, y).'], ['add_alpha', 'Ajoute la transparence.'], ['fill', 'Remplit le calque.'], ['append', 'Ajoute à la fin d\'une liste.'],
+  ['split', 'Coupe un texte en morceaux.'], ['strip', 'Enlève les espaces autour.'], ['replace', 'Remplace dans un texte.'], ['lower', 'En minuscules.'], ['upper', 'En majuscules.'],
+  ['format', 'Remplit un texte modèle.'], ['join', 'Assemble une liste de textes.'], ['startswith', 'Commence par… ?'], ['endswith', 'Finit par… ?']
+];
+function wsOf(field) { var b = field.getSourceBlock(); return b && b.workspace; }
+function namesInWorkspace(ws, self) {
+  var seen = {}, out = [];
+  function add(n, why) {
+    n = String(n || '').trim();
+    if (!/^[A-Za-z_]\w*$/.test(n) || seen[n] || /^(True|False|None|self)$/.test(n) || (GA.isPyConst(n) && why !== 'variable')) return;
+    seen[n] = 1; out.push([n, why]);
+  }
+  function split(t, why) { String(t || '').split(/[,()\s*=]+/).forEach(function (x) { if (x && !/^['"\d]/.test(x)) add(x, why); }); }
+  if (!ws) return out;
+  ws.getAllBlocks(false).forEach(function (b) {
+    if (b.isInFlyout || b === self) return;
+    if (b.type === 'py_assign' || b.type === 'py_augassign') split(b.getFieldValue('T'), 'variable remplie par « = »');
+    else if (b.type === 'py_for') split(b.getFieldValue('T'), 'variable de boucle');
+    else if (b.type === 'py_def') String(b.getFieldValue('ARGS') || '').split(',').forEach(function (p) { add(p.replace(/[=*].*$/, '').replace(/^\*+/, ''), 'paramètre de ' + b.getFieldValue('NAME')); });
+    else if (b.type === 'py_with') for (var i = 0; b.getField('V' + i); i++) split(b.getFieldValue('V' + i), 'ressource « avec »');
+    else if (b.type === 'py_var') add(b.getFieldValue('NAME'), 'variable');
+  });
+  add('image', 'l\'image sur laquelle le plug-in est lancé');
+  add('drawable', 'le calque (ou masque) actif');
+  return out;
+}
+function defsInWorkspace(ws) {
+  var out = [];
+  if (ws) ws.getBlocksByType('py_def', false).forEach(function (b) { out.push([b.getFieldValue('NAME'), 'ta fonction (' + b.getFieldValue('ARGS') + ')']); });
+  return out;
+}
+var constList = null;
+function rank(pairs, q, max) {
+  var hits = [];
+  pairs.forEach(function (p) { var sc = scoreText(p[0], p[1], q); if (sc) hits.push({ p: p, sc: sc }); });
+  hits.sort(function (a, b) { return b.sc - a.sc; });
+  return hits.slice(0, max);
+}
+/* liste de suggestions : { v: valeur à écrire, chip: texte de la pastille, cls, col, sub, desc } */
+function itemsFor(kind, q, field) {
+  var qn = norm(q).trim(), out = [];
+  if (kind === 'var') {
+    rank(namesInWorkspace(wsOf(field), field.getSourceBlock()), qn, 40).forEach(function (h) {
+      var c = GA.isPyConst(h.p[0]);
+      out.push({ v: h.p[0], chip: h.p[0], cls: c ? 'const' : 'var', desc: c ? T('constante de GIMP') : T(h.p[1]) });
+    });
+    // constantes de GIMP (FILL_WHITE, NORMAL_MODE…) dès qu'on tape 2 lettres
+    if (qn.length >= 2) {
+      if (!constList) constList = Object.keys(GA.RESERVED || {}).filter(GA.isPyConst).sort();
+      var have = {}; out.forEach(function (o) { have[o.v] = 1; });
+      rank(constList.filter(function (n) { return !have[n]; }).map(function (n) { return [n, '']; }), qn, 25).forEach(function (h) { out.push({ v: h.p[0], chip: h.p[0], cls: 'const', desc: T('constante de GIMP') }); });
+    }
+    return out;
+  }
+  if (kind === 'attr') {
+    rank(ATTRS, qn, 40).forEach(function (h) { out.push({ v: h.p[0], chip: '.' + h.p[0], cls: 'attr', desc: T(h.p[1]) }); });
+    return out;
+  }
+  // fonctions : les tiennes, celles de Python/gimp, puis la PDB
+  var isPdb = /^pdb\./.test(qn);
+  if (!isPdb) {
+    rank(defsInWorkspace(wsOf(field)), qn, 6).forEach(function (h) { out.push({ v: h.p[0], chip: h.p[0], cls: 'def', desc: T(h.p[1]) }); });
+    rank(PY_FUNCS, qn, qn ? 6 : 4).forEach(function (h) { out.push({ v: h.p[0], chip: h.p[0], cls: 'fn', desc: T(h.p[1]) }); });
+  }
+  GA.pdbSearch(qn, null, 50).list.forEach(function (n) {
+    var s = GA.SIGS[n];
+    out.push({ v: 'pdb.' + n, chip: n, cls: 'pdb', col: GA.pdbColour(n), sub: GA.pdbArgs(n), desc: s[1], old: !!s[2], pdb: n });
+  });
+  return out;
+}
+
+/* ---------- la fenêtre de suggestions ---------- */
+var box = null, cur = null;
+function close() {
+  if (box && box.parentNode) box.parentNode.removeChild(box);
+  box = null; cur = null;
+}
+function place() {
+  if (!box || !cur) return;
+  var r = cur.input.getBoundingClientRect(), vh = window.innerHeight, vw = window.innerWidth;
+  var w = Math.min(460, vw - 16);
+  box.style.width = w + 'px';
+  box.style.left = Math.max(8, Math.min(r.left, vw - w - 8)) + 'px';
+  var below = vh - r.bottom - 12, above = r.top - 12;
+  if (below >= 220 || below >= above) { box.style.top = (r.bottom + 4) + 'px'; box.style.bottom = ''; box.style.maxHeight = Math.max(140, below) + 'px'; }
+  else { box.style.top = ''; box.style.bottom = (vh - r.top + 4) + 'px'; box.style.maxHeight = Math.max(140, above) + 'px'; }
+}
+function render() {
+  if (!cur) return;
+  var items = cur.items = itemsFor(cur.kind, cur.input.value, cur.field);
+  // pré-sélection seulement si le début correspond : écrire un nouveau nom puis Entrée ne le remplace pas
+  var qn = norm(cur.input.value).trim();
+  cur.active = items.length && qn && (norm(items[0].v).indexOf(qn) === 0 || norm(items[0].chip).indexOf(qn) === 0) ? 0 : -1;
+  var head = cur.kind === 'var' ? T('Variables de ton script') : cur.kind === 'attr' ? T('Attributs courants') : T('Fonctions — tape un mot (en français ou en anglais)');
+  var h = '<div class="sgHead">' + esc(head) + (cur.kind === 'func' ? '<button type="button" class="sgAll">🔍 ' + esc(T('Parcourir tout')) + '</button>' : '') + '</div>';
+  if (!items.length) h += '<div class="sgNone">' + esc(T('Rien ne correspond. Tu peux quand même écrire ce que tu veux.')) + '</div>';
+  items.forEach(function (it, i) {
+    h += '<div class="sgRow' + (i === cur.active ? ' on' : '') + '" data-i="' + i + '">' +
+      '<span class="sgChip sg-' + it.cls + '"' + (it.col ? ' style="background:' + it.col + '"' : '') + '>' + (it.cls === 'pdb' ? '⚙️ ' : '') + esc(it.chip) + '</span>' +
+      (it.old ? '<span class="tag">' + esc(T('ancienne')) + '</span>' : '') +
+      (it.sub ? '<span class="sgSub">' + esc(it.sub) + '</span>' : '') +
+      (it.desc ? '<div class="sgDesc">' + esc(it.desc) + '</div>' : '') + '</div>';
+  });
+  box.innerHTML = h;
+  place();
+}
+function setActive(i) {
+  if (!cur || !cur.items.length) return;
+  if (i < -1) i = cur.items.length - 1;
+  cur.active = (i + cur.items.length) % cur.items.length;
+  box.querySelectorAll('.sgRow').forEach(function (r) { r.classList.toggle('on', +r.getAttribute('data-i') === cur.active); });
+  var on = box.querySelector('.sgRow.on');
+  if (on && on.scrollIntoView) on.scrollIntoView({ block: 'nearest' });
+}
+function choose(i) {
+  if (!cur || !cur.items[i]) return;
+  var it = cur.items[i], c = cur, block = c.field.getSourceBlock();
+  c.input.value = it.v;
+  c.input.dispatchEvent(new Event('input', { bubbles: true }));
+  close();
+  root.Blockly.WidgetDiv.hide();
+  if (it.pdb && block && GA.pyApplyProc) GA.pyApplyProc(block, it.pdb);
+  if (GA.afterSuggest) GA.afterSuggest(block);
+}
+GA.suggest = {
+  open: function (field, kind, input) {
+    close();
+    if (!input || !root.document) return;
+    cur = { field: field, kind: kind, input: input, items: [], active: -1 };
+    box = document.createElement('div');
+    box.className = 'sgBox';
+    box.setAttribute('role', 'listbox');
+    document.body.appendChild(box);
+    box.addEventListener('mousedown', function (e) { e.preventDefault(); });   // garde le focus dans la case
+    box.addEventListener('click', function (e) {
+      if (e.target.closest('.sgAll')) {
+        var b = cur && cur.field.getSourceBlock();
+        close(); root.Blockly.WidgetDiv.hide();
+        if (b && GA.onPickProc) GA.onPickProc(b);
+        return;
+      }
+      var row = e.target.closest('.sgRow');
+      if (row) choose(+row.getAttribute('data-i'));
+    });
+    box.addEventListener('mousemove', function (e) { var row = e.target.closest('.sgRow'); if (row && +row.getAttribute('data-i') !== cur.active) setActive(+row.getAttribute('data-i')); });
+    var c = cur;
+    input.addEventListener('input', function () { if (cur === c) render(); });
+    input.addEventListener('blur', function () { setTimeout(function () { if (cur === c) close(); }, 0); });
+    input.addEventListener('keydown', function (e) {
+      if (cur !== c || !c.items.length) return;
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); e.stopImmediatePropagation(); setActive(c.active + (e.key === 'ArrowDown' ? 1 : -1)); }
+      else if ((e.key === 'Enter' || e.key === 'Tab') && c.active >= 0 && c.items[c.active].v !== input.value) { e.preventDefault(); e.stopImmediatePropagation(); choose(c.active); }
+      else if (e.key === 'Escape') { close(); }
+    }, true);
+    render();
+  },
+  close: close
+};
+if (root.addEventListener) {
+  root.addEventListener('resize', place);
+  root.addEventListener('wheel', function () { if (cur && !document.body.contains(cur.input)) close(); else place(); }, { passive: true });
+}
+})(typeof window !== 'undefined' ? window : globalThis);
+
+</script>
+<script data-ga>
 /* Atelier — l'IA écrit du code, l'atelier le vérifie et le transforme en blocs */
 (function () {
 'use strict';
@@ -6749,6 +7374,14 @@ function renderHelp() {
   if (b.type === 'g_pdb_call' || b.type === 'g_pdb_value') {
     h += '<p style="margin-top:14px"><button class="btn primary" id="hPick">🔍 Choisir une autre fonction</button></p>';
   }
+  if ((b.type === 'py_call' || b.type === 'py_callst') && !b.f_) {
+    h += '<p style="margin-top:14px"><button class="btn primary" id="hPick">🔍 Choisir une fonction de GIMP</button></p>' +
+      '<div class="tip">💡 Clique sur le nom de la fonction dans le bloc et tape un mot (flou, calque, texte…) : la liste des fonctions qui correspondent s\'affiche.</div>';
+  }
+  if (b.type === 'py_var') {
+    var vn = b.getFieldValue('NAME'), uses = ws.getAllBlocks(false).filter(function (x) { return x.type === 'py_var' && x.getFieldValue('NAME') === vn; }).length;
+    h += '<div class="tip">🟠 « ' + esc(vn) + ' » est utilisée ' + uses + ' fois dans ce script. Clique sur la pastille pour choisir une autre variable.</div>';
+  }
   el.innerHTML = h;
   var pk = el.querySelector('#hPick');
   if (pk) pk.onclick = function () { openPicker(b); };
@@ -6853,22 +7486,16 @@ function openPicker(block) {
     '<div class="pickList" id="pl"></div><div class="foot"><button class="btn" id="pc">Annuler</button></div>', 'wide');
   d.querySelector('#pc').onclick = closeDialog;
   function render() {
-    var q = GA.translit(d.querySelector('#pq').value).toLowerCase().replace(/-/g, '_').trim().split(/\s+/).filter(Boolean);
-    var g = d.querySelector('#pg').value;
-    var hits = names.filter(function (n) {
-      var s = GA.SIGS[n];
-      if (g && s[0] !== g) return false;
-      var hay = (n + ' ' + s[1]).toLowerCase();
-      return q.every(function (w) { return hay.indexOf(w) >= 0; });
-    });
-    hits.sort(function (a, b) { return (GA.SIGS[a][2] ? 1 : 0) - (GA.SIGS[b][2] ? 1 : 0) || a.localeCompare(b); });
-    var shown = hits.slice(0, 150);
-    d.querySelector('#pl').innerHTML = (shown.length ? '' : '<p class="muted">Aucune fonction ne correspond.</p>') + shown.map(function (n) {
+    var q = d.querySelector('#pq').value, g = d.querySelector('#pg').value;
+    var res = GA.pdbSearch(q, g, 150), shown = res.list;
+    d.querySelector('#pl').innerHTML = (q.trim() || g ? '' : '<p class="muted">⭐ Les plus utilisées d\'abord. Tape un mot, en français ou en anglais (flou, calque, texte, sélection…).</p>') +
+      (shown.length ? '' : '<p class="muted">Aucune fonction ne correspond.</p>') + shown.map(function (n) {
       var s = GA.SIGS[n];
       var args = s[4].filter(function (a) { return a[1] !== 'count'; }).map(function (a) { return a[0]; }).join(', ');
-      return '<button class="pick" data-p="' + esc(n) + '"><code>' + esc(n) + '</code>' + (s[2] ? '<span class="tag">ancienne</span>' : '') +
+      return '<button class="pick" data-p="' + esc(n) + '"><span class="sgChip sg-pdb" style="background:' + GA.pdbColour(n) + '">⚙️ ' + esc(n) + '</span>' + (s[2] ? '<span class="tag">ancienne</span>' : '') +
+        '<span class="gname">' + esc(groupName(s[0])) + '</span>' +
         '<span class="bl">' + esc(s[1]) + '</span><span class="ar">(' + esc(args) + ')' + (s[5].length ? ' → ' + esc(s[5].map(function (o) { return o[0]; }).join(', ')) : '') + '</span></button>';
-    }).join('') + (hits.length > 150 ? '<p class="muted">… et ' + (hits.length - 150) + ' autres : précise ta recherche.</p>' : '');
+    }).join('') + (res.total > shown.length ? '<p class="muted">… et ' + (res.total - shown.length) + ' autres : précise ta recherche.</p>' : '');
   }
   d.querySelector('#pq').addEventListener('input', render);
   d.querySelector('#pg').addEventListener('change', render);
@@ -6879,7 +7506,10 @@ function openPicker(block) {
   });
   function choose(py) {
     closeDialog();
-    if (block && !block.disposed && block.workspace === ws) setProc(block, py);
+    if (block && !block.disposed && block.workspace === ws && block.setProc) setProc(block, py);
+    else if (block && !block.disposed && block.workspace === ws && GA.pyApplyProc && (block.type === 'py_call' || block.type === 'py_callst')) {
+      GA.pyApplyProc(block, py); block.select(); scheduleRefresh(); renderHelp();
+    }
     else insertBlock(GA.pdbBlockState(GA.SIGS[py][5].length ? 'g_pdb_value' : 'g_pdb_call', py));
   }
   render();
@@ -7377,6 +8007,8 @@ function init() {
   if (mq.addEventListener) mq.addEventListener('change', function () { if (!GA.prefs || GA.prefs.theme === 'auto') ws.setTheme(GA.makeTheme(mq.matches)); });
   ws.registerToolboxCategoryCallback('GA_START', function (w) { return GA.startFlyout(w); });
   ws.registerToolboxCategoryCallback('GA_VARS', function (w) { return GA.varsFlyout(w); });
+  ws.registerToolboxCategoryCallback('GA_PY', function (w) { return GA.pyFlyout(w); });
+  GA.afterSuggest = function (b) { if (b && !b.disposed) { scheduleRefresh(); if (b.id === selectedId) renderHelp(); } };
   ws.registerButtonCallback('GA_CREATE_VAR', function (btn) { Blockly.Variables.createVariableButtonHandler(btn.getTargetWorkspace(), null, ''); });
   ws.addChangeListener(function (e) {
     if (e.type === Blockly.Events.SELECTED) {

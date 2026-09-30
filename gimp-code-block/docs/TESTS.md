@@ -7,10 +7,11 @@ npm test
 
 | Command | What it proves |
 | --- | --- |
-| `npm run test:gen` | Builds 183 block programs, generates Python for each, checks every PDB name and argument count, and — if `python2.7` is on the PATH — compiles each generated file |
+| `npm run test:gen` | Builds 199 block programs, generates Python for each, checks every PDB name and argument count, and — if `python2.7` is on the PATH — compiles each generated file |
 | `node test/import_test.js` | Imports each fixture, rebuilds the blocks, compares the Python structure (AST) and comment count |
 | `node test/cycle_test.js` | friendly blocks → `.py` → Python blocks → `.py`, and the fingerprint path |
 | `node test/edit_test.js` | Editing one block changes only the lines it should |
+| `node test/pill_test.js` | Variables become round blocks, renaming one changes only its line, choosing a PDB procedure fills its arguments, Python shortcuts generate code, PDB search (French words, prefixes) |
 | `npm run test:roundtrip` | **Byte-for-byte identity** on `test/fixtures/`, twice (stability) |
 | `npm run test:corpus` | Same, on a folder you point at |
 | `npm run test:ui` | Browser tests: menus, multi-selection, clipboard, find/replace, appearance, tutorial, AI panel, English mode, no JS errors |

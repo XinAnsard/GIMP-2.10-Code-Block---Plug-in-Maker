@@ -295,4 +295,45 @@ GA.EN_RX = [
   var i = p.indexOf('|');
   if (GA.EN[p.slice(0, i)] === undefined) GA.EN[p.slice(0, i)] = p.slice(i + 1);
 });
+/* ---- pastilles, suggestions, variables ---- */
+Object.assign(GA.EN, {
+'choisir une fonction': 'choose a function', 'Variables de ton script :': 'Variables of your script:', '(importe ou écris un script pour voir ses variables)': '(import or write a script to see its variables)',
+'Variables de ton script': 'Variables of your script', 'Attributs courants': 'Common attributes', 'Fonctions — tape un mot (en français ou en anglais)': 'Functions — type a word (in English or French)',
+'Parcourir tout': 'Browse all', 'Rien ne correspond. Tu peux quand même écrire ce que tu veux.': 'Nothing matches. You can still write whatever you want.', 'ancienne': 'old',
+'🔍 Choisir une fonction de GIMP': '🔍 Choose a GIMP function',
+'💡 Clique sur le nom de la fonction dans le bloc et tape un mot (flou, calque, texte…) : la liste des fonctions qui correspondent s\'affiche.': '💡 Click the function name in the block and type a word (blur, layer, text…): the list of matching functions appears.',
+'⭐ Les plus utilisées d\'abord. Tape un mot, en français ou en anglais (flou, calque, texte, sélection…).': '⭐ Most used first. Type a word, in English or French (blur, layer, text, selection…).',
+'Aucune fonction ne correspond.': 'No function matches.',
+'variable remplie par « = »': 'variable filled by "="', 'variable de boucle': 'loop variable', 'ressource « avec »': '"with" resource', 'variable': 'variable',
+'l\'image sur laquelle le plug-in est lancé': 'the image the plug-in runs on', 'le calque (ou masque) actif': 'the active layer (or mask)',
+'Nombre d\'éléments d\'une liste ou de lettres d\'un texte.': 'Number of items in a list or letters in a text.', 'Une suite de nombres : range(10) → 0…9.': 'A sequence of numbers: range(10) → 0…9.',
+'Transforme en texte.': 'Turns into text.', 'Transforme en nombre entier.': 'Turns into a whole number.', 'Transforme en nombre à virgule.': 'Turns into a decimal number.',
+'La plus petite valeur.': 'The smallest value.', 'La plus grande valeur.': 'The largest value.', 'Valeur sans le signe moins.': 'Value without the minus sign.', 'Arrondit un nombre.': 'Rounds a number.',
+'Ouvre un fichier.': 'Opens a file.', 'Fabrique une liste.': 'Makes a list.', 'Une copie triée.': 'A sorted copy.', 'Chaque élément avec son numéro.': 'Each item with its number.',
+'Assemble plusieurs listes deux à deux.': 'Pairs several lists together.', 'Vérifie le type d\'une valeur.': 'Checks the type of a value.', 'Affiche un message dans GIMP.': 'Shows a message in GIMP.',
+'La liste des images ouvertes.': 'The list of open images.', 'Rafraîchit l\'affichage des images.': 'Refreshes the image displays.', 'Crée un calque (image, nom, largeur, hauteur, type, opacité, mode).': 'Creates a layer (image, name, width, height, type, opacity, mode).',
+'Crée une image (largeur, hauteur, type).': 'Creates an image (width, height, type).', 'Ouvre une fenêtre pour une image.': 'Opens a window for an image.', 'Démarre la barre de progression.': 'Starts the progress bar.',
+'Avance la barre de progression (0.0 à 1.0).': 'Moves the progress bar (0.0 to 1.0).', 'Couleur de premier plan.': 'Foreground colour.', 'Change la couleur de premier plan.': 'Changes the foreground colour.',
+'Couleur d\'arrière-plan.': 'Background colour.', 'Change la couleur d\'arrière-plan.': 'Changes the background colour.', 'Supprime un objet GIMP.': 'Deletes a GIMP object.',
+'Déclare le plug-in à GIMP (nom, menu, réglages…).': 'Declares the plug-in to GIMP (name, menu, settings…).', 'Lance le plug-in.': 'Starts the plug-in.',
+'Assemble des morceaux de chemin de fichier.': 'Joins pieces of a file path.', 'Le fichier existe-t-il ?': 'Does the file exist?', 'Les fichiers d\'un dossier.': 'The files of a folder.',
+'Le nom (calque, image…).': 'The name (layer, image…).', 'La largeur en pixels.': 'The width in pixels.', 'La hauteur en pixels.': 'The height in pixels.', 'Les calques de l\'image.': 'The layers of the image.',
+'Le calque actif.': 'The active layer.', 'Le calque ou masque actif.': 'The active layer or mask.', 'Visible ou caché.': 'Visible or hidden.', 'L\'opacité (0 à 100).': 'The opacity (0 to 100).',
+'La position (x, y) du calque.': 'The position (x, y) of the layer.', 'Le mode de fusion.': 'The blend mode.', 'Le fichier de l\'image.': 'The file of the image.', 'Les calques d\'un groupe.': 'The layers of a group.',
+'Le groupe qui contient le calque.': 'The group that holds the layer.', 'Le masque du calque.': 'The layer mask.', 'Lié ou non.': 'Linked or not.', 'Transparence verrouillée.': 'Alpha locked.',
+'Les chemins de l\'image.': 'The paths of the image.', 'Les canaux.': 'The channels.', 'La sélection.': 'The selection.', 'RGB, niveaux de gris ou indexé.': 'RGB, greyscale or indexed.',
+'Le numéro interne.': 'The internal number.', 'Fait une copie (calque).': 'Makes a copy (layer).', 'Change la taille du calque.': 'Changes the layer size.', 'Déplace le calque.': 'Moves the layer.',
+'Place le calque en (x, y).': 'Puts the layer at (x, y).', 'Ajoute la transparence.': 'Adds transparency.', 'Remplit le calque.': 'Fills the layer.', 'Ajoute à la fin d\'une liste.': 'Adds at the end of a list.',
+'Coupe un texte en morceaux.': 'Splits a text into pieces.', 'Enlève les espaces autour.': 'Removes the spaces around.', 'Remplace dans un texte.': 'Replaces in a text.', 'En minuscules.': 'In lowercase.',
+'En majuscules.': 'In uppercase.', 'Remplit un texte modèle.': 'Fills a template text.', 'Assemble une liste de textes.': 'Joins a list of texts.', 'Commence par… ?': 'Starts with…?', 'Finit par… ?': 'Ends with…?',
+'Nom de variable': 'Variable name', 'Aussi utiles ici :': 'Also useful here:', 'constante de GIMP': 'GIMP constant', '⚡ Raccourcis GIMP :': '⚡ GIMP shortcuts:', 'Tout faire en une seule annulation': 'Do everything as a single undo step',
+'Remettre couleurs et outils à la fin': 'Restore colours and tools at the end', 'Pour chaque image ouverte (une annulation chacune)': 'For each open image (one undo step each)',
+'Pour chaque calque de l\'image': 'For each layer of the image', 'Pour chaque calque de toutes les images': 'For each layer of all images', 'Le calque actif': 'The active layer',
+'Nouveau calque de la taille de l\'image': 'New layer the size of the image', 'Enregistrer la sélection puis la remettre': 'Save the selection, then restore it',
+'Afficher un message': 'Show a message', 'Rafraîchir l\'affichage': 'Refresh the display'
+});
+GA.EN_RX.push(
+[/^paramètre de (.+)$/, 'parameter of $1'], [/^ta fonction \((.*)\)$/, 'your function ($1)'],
+[/^🟠 « (.+) » est utilisée (\d+) fois dans ce script\. Clique sur la pastille pour choisir une autre variable\.$/, '🟠 "$1" is used $2 time(s) in this script. Click the pill to pick another variable.']
+);
 })(typeof window !== 'undefined' ? window : globalThis);

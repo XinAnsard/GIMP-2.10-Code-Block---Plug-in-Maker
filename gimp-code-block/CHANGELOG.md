@@ -3,6 +3,36 @@
 All notable changes to this project are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [Unreleased]
+
+### Added
+- **Variables as round orange pills**, like Scratch: every variable read in an imported script
+  (`image`, `layer`, `x`…) is now its own round block instead of plain text. GIMP constants
+  (`FILL_WHITE`, `NORMAL_MODE`…) are violet pills. The 🐍 Python category lists the variables of
+  the current script.
+- **Operations as blocks**: `a + 1`, `x == 0`, `not a`, `a and b`, `a if b else c`, `layer.name`… are
+  split into blocks even when they contain no function call (plain values such as `-1`, `"text"`,
+  `(0, 0, 0)` stay a single slot).
+- **Type-ahead suggestions** in the Python blocks: clicking a function name, a variable or an
+  attribute opens a list of matching entries as coloured pills with their arguments and a short
+  description. Function search covers the 857 PDB procedures, understands French words
+  (flou → blur, calque → layer…), tolerates missing letters, and puts the most used first.
+  Choosing a PDB procedure fills in the missing arguments with sensible defaults.
+- 🔍 button on every Python call block and in the help panel to browse all PDB procedures.
+- **⚡ GIMP shortcuts** category: blocks that replace the patterns every GIMP script repeats —
+  one undo step per image across all open images, every layer of every open image, batch-open
+  the files of a folder, single undo step / restore colours & tools / restore selection / restore
+  active layer / no-undo fast mode wrappers (all `try/finally`), new layer the size of the image,
+  copy a layer to another image.
+- **All open images**: `all open images` (list), `number of open images`, `open image named …`,
+  `image of the layer`, `most recently opened image`.
+- The same shortcuts as ready-made Python block stacks in the 🐍 Python category, for imported
+  scripts.
+
+### Verified
+- Byte-for-byte round trip unchanged: fixtures (now including `edge_names.py`, variables in
+  tricky expressions) and 34 public plug-ins, identical and stable on a second pass.
+
 ## [1.0.0] — 2026-09-27
 
 First public release.

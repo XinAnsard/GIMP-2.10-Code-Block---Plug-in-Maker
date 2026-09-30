@@ -192,8 +192,30 @@ main { flex: 1; display: flex; min-height: 0; }
 .pickList { max-height: 55vh; overflow: auto; display: flex; flex-direction: column; gap: 6px; }
 .pick { text-align: left; border: 1.5px solid var(--line); background: var(--panel); border-radius: 11px; padding: 9px 11px; }
 .pick:hover { border-color: var(--accent); background: var(--panel2); }
-.pick code { font: 700 13px var(--mono); color: var(--k-fn); }
 .pick .bl { display: block; font-size: 13px; color: var(--muted); }
+.pick .gname { font-size: 11.5px; font-weight: 800; color: var(--muted); margin-left: 8px; }
+/* pastilles dans les blocs : variables (orange, comme Scratch), fonctions, fonctions de GIMP, attributs */
+.gcbPill > rect.blocklyFieldRect { stroke-width: 1.5px; fill-opacity: 1; }
+.gcbPill > text.blocklyText { font-weight: 800 !important; }
+.gcbPill-var > rect.blocklyFieldRect { fill: #FF8C1A !important; stroke: #D96F00 !important; }
+.gcbPill-var > text.blocklyText, .gcbPill-func > text.blocklyText, .gcbPill-attr > text.blocklyText { fill: #fff !important; }
+.gcbPill-func > rect.blocklyFieldRect { fill: #0A5F57 !important; stroke: rgba(0, 0, 0, .25) !important; }
+.gcbPill-func.gcbPill-pdb > rect.blocklyFieldRect { fill: #FFD23F !important; stroke: #C99700 !important; }
+.gcbPill-func.gcbPill-pdb > text.blocklyText { fill: #3B2E00 !important; }
+.gcbPill-attr > rect.blocklyFieldRect { fill: #2F6B3A !important; stroke: rgba(0, 0, 0, .25) !important; }
+.gcbPill-solo > rect.blocklyFieldRect { fill: transparent !important; stroke: none !important; }
+/* liste de suggestions sous une case */
+.sgBox { position: fixed; z-index: 100001; background: var(--panel); color: var(--ink); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow); overflow: auto; padding: 6px; font-family: var(--font); font-size: 13px; }
+.sgHead { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 11.5px; font-weight: 800; color: var(--muted); padding: 2px 6px 6px; position: sticky; top: -6px; background: var(--panel); }
+.sgAll { border: 1.5px solid var(--line); background: var(--panel2); border-radius: 8px; padding: 2px 8px; font-weight: 800; font-size: 11.5px; color: var(--ink); cursor: pointer; white-space: nowrap; }
+.sgAll:hover { border-color: var(--accent); }
+.sgRow { padding: 6px 8px; border-radius: 9px; cursor: pointer; }
+.sgRow.on { background: var(--accent-soft); }
+.sgNone { padding: 8px; color: var(--muted); }
+.sgChip { display: inline-block; padding: 2px 11px; border-radius: 999px; color: #fff; font: 800 12.5px var(--mono); background: #414B60; word-break: break-all; }
+.sg-var { background: #FF8C1A; } .sg-const { background: #8E5CC7; } .sg-fn { background: #0A5F57; } .sg-def { background: #3776AB; } .sg-attr { background: #2F6B3A; }
+.sgSub { font: 11.5px var(--mono); color: var(--muted); margin-left: 6px; word-break: break-word; }
+.sgDesc { font-size: 12.5px; color: var(--muted); margin-top: 2px; line-height: 1.35; }
 .pick .ar { display: block; font: 12px var(--mono); color: var(--muted); margin-top: 2px; word-break: break-word; }
 .status { border-radius: 13px; padding: 12px 14px; font-weight: 800; margin-bottom: 14px; }
 .status.ok { background: var(--ok-soft); } .status.warn { background: var(--warn-soft); } .status.err { background: var(--err-soft); }

@@ -85,13 +85,14 @@ src/            application sources, loaded in this order by the build
   core.js         namespace, categories, DSL, Python helper library
   i18n*.js        language engine + English strings (UI, blocks, examples)
   pyparse.js      Python 2/3 tokenizer, parser and exact-format printer
-  specs_*.js      the ~200 friendly block definitions
+  specs_*.js      the ~215 friendly block definitions (specs_d: all images + ⚡ GIMP shortcuts)
   pyblocks.js     the 33 faithful py_* blocks (one per Python construct)
   gen.js          Blockly setup, code generator, checks, toolbox
   pyimport.js     AST → blocks, tolerant import, block fingerprint trailer
   examples.js     the built-in example projects
   tools.js        menus, multi-selection, clipboard, drag outline, folding
   tools2.js       appearance, find/replace, function list, tutorial, actions
+  suggest.js      type-ahead suggestions (PDB procedures, variables, attributes)
   ai.js           AI providers, prompt building, validation, insertion
   app.js          UI wiring, dialogs, import/export, autosave
   index.html      markup and styles (scripts are injected by the build)
