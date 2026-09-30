@@ -25,6 +25,14 @@ SCRIPTS = (
     'i18n.js',
     'i18n_en.js',
     'i18n_blocks.js',
+    'i18n_learn_en.js',
+    'lang/es.js',
+    'lang/de.js',
+    'lang/pt.js',
+    'lang/ru.js',
+    'lang/hi.js',
+    'lang/ar.js',
+    'i18n_apply.js',
     'pyparse.js',
     'specs_a.js',
     'specs_b.js',
@@ -40,7 +48,8 @@ SCRIPTS = (
     'ai.js',
     'app.js',
 )
-BLOCKLY_FILES = ('blockly_compressed.js', 'blocks_compressed.js', 'msg/en.js', 'msg/fr.js')
+BLOCKLY_LANGS = ('es', 'de', 'pt-br', 'ru', 'hi', 'ar')
+BLOCKLY_FILES = ('blockly_compressed.js', 'blocks_compressed.js', 'msg/en.js', 'msg/fr.js') + tuple('msg/%s.js' % l for l in BLOCKLY_LANGS)
 
 
 def read(path):
@@ -68,7 +77,11 @@ def build(out_path, offline_dir=None):
     # English messages are snapshotted, then French is loaded over them, so the
     # app can switch language at runtime without a second network request.
     parts.append(blockly('msg/en.js'))
-    parts.append('<script data-ga>window.__BLOCKLY_EN = window.Blockly ? Object.assign({}, Blockly.Msg) : null;</script>')
+    parts.append('<script data-ga>window.__BLOCKLY_EN = window.Blockly ? Object.assign({}, Blockly.Msg) : null; window.__BLOCKLY_MSG = {};</script>')
+    # Each other language is loaded over English and snapshotted; French goes last (default).
+    for l in BLOCKLY_LANGS:
+        parts.append(blockly('msg/%s.js' % l))
+        parts.append('<script data-ga>if (window.Blockly) window.__BLOCKLY_MSG[%s] = Object.assign({}, Blockly.Msg);</script>' % json.dumps(l))
     parts.append(blockly('msg/fr.js'))
     parts.append('<script data-ga type="application/json" id="ga-data">%s</script>' % payload)
 

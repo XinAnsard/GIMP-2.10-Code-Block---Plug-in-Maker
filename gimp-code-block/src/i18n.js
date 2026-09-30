@@ -1,15 +1,37 @@
-/* Atelier — langues (français / anglais) */
+/* Atelier — langues : le texte source est en français ; l'anglais sert de base aux autres langues
+   (GA.EN… contient l'anglais, et pour es/de/pt/ru/hi/ar il est remplacé par le paquet de langue : voir i18n_apply.js) */
 (function (root) {
 'use strict';
 var GA = root.GA;
+GA.LANGS = [
+  { code: 'fr', name: 'Français', flag: '🇫🇷', ai: 'French' }, { code: 'en', name: 'English', flag: '🇬🇧', ai: 'English' },
+  { code: 'es', name: 'Español', flag: '🇪🇸', ai: 'Spanish' }, { code: 'de', name: 'Deutsch', flag: '🇩🇪', ai: 'German' },
+  { code: 'pt', name: 'Português (Brasil)', flag: '🇧🇷', ai: 'Brazilian Portuguese', blockly: 'pt-br', html: 'pt-BR' },
+  { code: 'ru', name: 'Русский', flag: '🇷🇺', ai: 'Russian' }, { code: 'hi', name: 'हिन्दी', flag: '🇮🇳', ai: 'Hindi' },
+  { code: 'ar', name: 'العربية', flag: '🇸🇦', ai: 'Arabic', rtl: true }
+];
+function langInfo(c) { for (var i = 0; i < GA.LANGS.length; i++) if (GA.LANGS[i].code === c) return GA.LANGS[i]; return null; }
+GA.langInfo = langInfo;
 var lang = null;
 try { lang = root.localStorage && localStorage.getItem('atelier-gimp-lang'); } catch (e) { lang = null; }
-if (!lang) lang = typeof navigator !== 'undefined' && !/^fr/i.test(navigator.language || 'fr') ? 'en' : 'fr';
-GA.lang = lang === 'en' ? 'en' : 'fr';
+if (!langInfo(lang)) {
+  var nav = typeof navigator !== 'undefined' ? String(navigator.language || 'fr').toLowerCase() : 'fr';
+  lang = langInfo(nav.slice(0, 2)) ? nav.slice(0, 2) : 'en';
+  if (typeof navigator === 'undefined') lang = 'fr';
+}
+GA.lang = lang;
+GA.RTL = !!langInfo(lang).rtl;
+GA.I18N = GA.I18N || {};   // paquets de langue : GA.I18N.es = { identifiant: texte }
+/* identifiant stable d'un texte à traduire (FNV-1a 32 bits, base 36) */
+GA.i18nId = function (s) {
+  var h = 0x811c9dc5;
+  for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 0x01000193) >>> 0; }
+  return h.toString(36);
+};
 GA.EN = GA.EN || {};        // texte français exact -> anglais
 GA.EN_RX = GA.EN_RX || [];  // [expression régulière, remplacement] pour les textes avec des parties variables
 GA.T = function (s) {
-  if (GA.lang !== 'en' || s === null || s === undefined) return s;
+  if (GA.lang === 'fr' || s === null || s === undefined) return s;
   var str = String(s), k = str.replace(/\s+/g, ' ').trim();
   if (!k) return str;
   var t = GA.EN[k];
@@ -43,11 +65,13 @@ function trNode(n) {
 GA.trDom = trNode;
 var domDone = false;
 GA.i18nDom = function () {
-  if (GA.lang !== 'en' || typeof document === 'undefined' || !document.body) return;
+  if (GA.lang === 'fr' || typeof document === 'undefined' || !document.body) return;
   trNode(document.body);
   if (domDone) return;
   domDone = true;
-  document.documentElement.lang = 'en';
+  var li = langInfo(GA.lang);
+  document.documentElement.lang = li.html || li.code;
+  if (li.rtl) document.documentElement.dir = 'rtl';
   document.title = 'GIMP Code Block — Plug-in Maker';
   if (typeof MutationObserver === 'undefined') return;
   new MutationObserver(function (list) {
@@ -60,8 +84,10 @@ GA.i18nDom = function () {
 };
 /* avant la création des blocs : Blockly, catégories, menus, aides Python, exemples */
 GA.i18nEarly = function (Blockly) {
-  if (GA.lang !== 'en') return;
-  if (Blockly && root.__BLOCKLY_EN) Blockly.setLocale(root.__BLOCKLY_EN);
+  if (GA.lang === 'fr') return;
+  var msgs = root.__BLOCKLY_MSG || {};
+  var bl = msgs[langInfo(GA.lang).blockly || GA.lang] || root.__BLOCKLY_EN;
+  if (Blockly && bl) Blockly.setLocale(bl);
   var C = GA.EN_CATS || {};
   GA.CATS.forEach(function (c) { if (C[c.id]) { c.name = C[c.id][0]; c.intro = C[c.id][1]; } });
   GA.MENUS.forEach(function (m) { if (GA.EN_DD && GA.EN_DD[m[0]]) m[0] = GA.EN_DD[m[0]]; });
@@ -79,7 +105,7 @@ GA.i18nEarly = function (Blockly) {
 };
 /* textes contenus dans un état de blocs (exemples, projet vide) */
 GA.trState = function (st) {
-  if (GA.lang !== 'en') return st;
+  if (GA.lang === 'fr') return st;
   var M = GA.EN_STATE || {};
   (function walk(x) {
     if (!x || typeof x !== 'object') return;
@@ -91,7 +117,7 @@ GA.trState = function (st) {
 };
 /* textes des blocs : message, aide, astuce, séparateurs, menus déroulants, valeurs par défaut */
 GA.translateSpecs = function (SPECS) {
-  if (GA.lang !== 'en') return;
+  if (GA.lang === 'fr') return;
   var B = GA.EN_BLOCKS || {}, DD = GA.EN_DD || {}, ST = GA.EN_STATE || {}, SEP = GA.EN_SEP || {};
   SPECS.forEach(function (s) {
     var e = B[s.type];

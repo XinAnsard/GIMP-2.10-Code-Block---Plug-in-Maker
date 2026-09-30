@@ -4,7 +4,7 @@
 var GA = root.GA = root.GA || { defs: [], exampleDefs: [] };
 if (!GA.lang) GA.lang = 'fr';
 if (!GA.T) GA.T = function (s) { return s; };
-GA.L = function (fr, en) { return GA.lang === 'en' ? en : fr; };
+GA.L = function (fr, en) { return GA.lang === 'fr' ? fr : en; };   // commentaires du code produit : anglais pour toute autre langue (ASCII)
 
 /* ---------- catégories ---------- */
 GA.CATS = [

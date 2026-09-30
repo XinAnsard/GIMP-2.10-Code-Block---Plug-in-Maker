@@ -881,6 +881,7 @@ function init() {
   ws = Blockly.inject('blockly', {
     toolbox: GA.buildToolbox(),
     renderer: P.renderer || 'zelos',
+    rtl: !!GA.RTL,
     theme: (GA.isDark ? GA.isDark() : mq.matches) ? GA.themes.dark : GA.themes.light,
     media: 'https://cdn.jsdelivr.net/npm/blockly@10.4.3/media/',
     trashcan: false, sounds: false, oneBasedIndex: true,
