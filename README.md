@@ -50,6 +50,8 @@ browser and download a plug-in ready to drop into GIMP's `plug-ins` folder.
 
 ## Quick start
 
+**Windows :** double-clique sur **`Lancer GIMP Code Block.bat`** à la racine du projet — un petit menu s'ouvre et lance l'atelier dans ton navigateur (il peut aussi ouvrir le dossier plug-ins de GIMP).
+
 ```bash
 git clone https://github.com/USER/gimp-code-block.git
 cd gimp-code-block
