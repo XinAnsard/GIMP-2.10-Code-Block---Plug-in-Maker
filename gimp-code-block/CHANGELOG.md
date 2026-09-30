@@ -6,6 +6,22 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [Unreleased]
 
 ### Added
+- **Script variables in 📦 Variables & lists**: after an import, every variable of the script
+  (parameters, `=` targets, loop variables…) is listed there as a draggable pill, with ready-made
+  `x = …` and `x += …` blocks. « Create a variable » also works in a Python script.
+- **Pick a variable, don't type it**: clicking a variable pill opens a menu of the script's
+  variables; right-click offers « rename everywhere » (safe: texts, attributes and keyword
+  arguments are left alone) and « use another variable ». Typing the name stays available as
+  an option in 🎨 Appearance.
+- **Predicted values**: clicking a box of `register(...)` proposes the usual values (unique name,
+  the remembered author, this year, menu paths, image types, your function). Picking a `PF_…`
+  type completes the whole setting tuple (default value, min/max/step, options). Arguments of
+  GIMP functions propose their options (fill types, modes…), `True`/`False`, `image`,
+  `drawable`, sizes. A pre-filled `register(...)` + `main()` block and the common `PF_…`
+  settings are in the 🐍 Python category.
+- **💼 Sessions** (File menu): save under a name your project, appearance, language, screen
+  layout, course progress and remembered authors; reopen it, take back only the interface,
+  or export/import it as a `.json` file. The AI key is never included.
 - **🎓 Course, from complete beginner to pro**: 18 lessons in 4 levels (first plug-in,
   installing it, layers, settings → variables, loops, conditions, layer loops → selections,
   text, all open images, batch folders → reading the Python, Python blocks, the PDB, debugging,

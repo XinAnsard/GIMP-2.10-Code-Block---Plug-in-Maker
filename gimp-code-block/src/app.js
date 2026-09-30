@@ -600,6 +600,7 @@ function importText(text, name, replaceOk, bytes) {
       if (res.opts) opts = Object.assign(GA.defaultOpts(), res.opts);
       else opts = Object.assign(GA.defaultOpts(), { crlf: opts.crlf });
       loadState(res.state);
+      if (GA.learnFromWorkspace) GA.learnFromWorkspace(ws);
       dlgClose = null; closeDialog();
       res.origText = text; res.origBytes = bytes || null;
       importReport(res);
@@ -689,9 +690,10 @@ function openWelcome() {
     '<div class="stack" aria-hidden="true"><div class="pb hat" style="background:#C8930A">▶ Quand je lance « Crédits +1 »</div><div class="pb in" style="background:#E0701A">pour chaque calque</div>' +
     '<div class="pb in" style="background:#D43F7C;margin-left:44px">changer le texte</div><div class="pb in" style="background:#5E6F8A">💬 afficher « Terminé ! »</div></div></div>' +
     '<div class="tip">🎓 Tu débutes ? Le <b>cours</b> t\'emmène pas à pas de ton premier plug-in jusqu\'au vrai code Python, avec des missions vérifiées automatiquement.</div>' +
-    '<div class="foot"><button class="btn" id="wEx">✨ Voir un exemple</button><button class="btn" id="wGuide">📘 Guide d\'utilisation</button><button class="btn" id="wGo">Commencer seul</button><button class="btn primary" id="wLearn" autofocus>🎓 Suivre le cours</button></div>', 'wide', function () { store.set(KEY_SEEN, '1'); });
+    '<div class="foot">' + (GA.sessions && GA.sessions.list().length ? '<button class="btn" id="wSes">💼 ' + T('Mes sessions') + '</button>' : '') + '<button class="btn" id="wEx">✨ Voir un exemple</button><button class="btn" id="wGuide">📘 Guide d\'utilisation</button><button class="btn" id="wGo">Commencer seul</button><button class="btn primary" id="wLearn" autofocus>🎓 Suivre le cours</button></div>', 'wide', function () { store.set(KEY_SEEN, '1'); });
   d.querySelector('#wGo').onclick = closeDialog;
   d.querySelector('#wLearn').onclick = function () { closeDialog(); if (GA.learn) GA.learn.open(); };
+  if (d.querySelector('#wSes')) d.querySelector('#wSes').onclick = function () { closeDialog(); GA.sessions.open(); };
   d.querySelector('#wGuide').onclick = function () { closeDialog(); if (GA.openGuide) GA.openGuide(); };
   d.querySelector('#wEx').onclick = function () { closeDialog(); openExamples(); };
 }
@@ -900,7 +902,7 @@ function init() {
   ws.registerToolboxCategoryCallback('GA_VARS', function (w) { return GA.varsFlyout(w); });
   ws.registerToolboxCategoryCallback('GA_PY', function (w) { return GA.pyFlyout(w); });
   GA.afterSuggest = function (b) { if (b && !b.disposed) { scheduleRefresh(); if (b.id === selectedId) renderHelp(); } };
-  ws.registerButtonCallback('GA_CREATE_VAR', function (btn) { Blockly.Variables.createVariableButtonHandler(btn.getTargetWorkspace(), null, ''); });
+  ws.registerButtonCallback('GA_CREATE_VAR', function (btn) { var w = btn.getTargetWorkspace(); if (GA.isFileMode(w) && GA.createScriptVar) GA.createScriptVar(w); else Blockly.Variables.createVariableButtonHandler(w, null, ''); });
   ws.addChangeListener(function (e) {
     if (e.type === Blockly.Events.SELECTED) {
       selectedId = e.newElementId || null;
@@ -923,6 +925,8 @@ function init() {
   if (!store.get(KEY_SEEN)) openWelcome();
   window.addEventListener('resize', function () { Blockly.svgResize(ws); });
   GA.ws = ws; GA.app = { openDialog: openDialog, closeDialog: closeDialog, confirmBox: confirmBox, saveFile: saveFile, openExamples: openExamples, openSettings: openSettings, saveProject: saveProject, openPaste: openPaste, convertToPython: convertToPython, openWelcome: openWelcome, importText: importText, handleFile: handleFile, readZip: readZip, exportCode: exportCode, refresh: refresh, openExport: openExport, openExamples: openExamples, openSettings: openSettings, openPicker: openPicker, showTab: showTab, loadState: loadState, getBuilt: function () { return built; }, getIssues: function () { return issues; }, getOpts: function () { return opts; } };
+  GA.app.flush = save;
+  if (GA.sessions) GA.sessions.init();
 }
 function start() {
   if (!window.Blockly) { $('#loading').textContent = 'Impossible de charger Blockly (connexion ?). Recharge la page.'; return; }
