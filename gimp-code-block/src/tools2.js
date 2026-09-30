@@ -307,10 +307,11 @@ GA.actions = {
   toggleSide: function () { document.body.classList.toggle('noSide'); setTimeout(function () { Blockly.svgResize(ws()); }, 60); },
   appearance: function () { GA.openAppearance(); },
   theme: function () { var t = GA.prefs.theme; GA.prefs.theme = t === 'auto' ? (GA.isDark() ? 'light' : 'dark') : (t === 'dark' ? 'light' : 'dark'); GA.savePrefs(); GA.applyLivePrefs(); },
-  langFr: function () { GA.setLang('fr'); }, langEn: function () { GA.setLang('en'); },
-  tour: function () { GA.tour.start(); }, shortcuts: function () { GA.openShortcuts(); }, about: function () { GA.openAbout(); },
+  langFr: function () { GA.setLang('fr'); }, langEn: function () { GA.setLang('en'); },   // anciens noms (raccourcis enregistrés)
+  tour: function () { GA.tour.start(); }, learn: function () { GA.learn.open(); }, guide: function () { GA.openGuide(); }, shortcuts: function () { GA.openShortcuts(); }, about: function () { GA.openAbout(); },
   saveProject: function () { GA.app.saveProject(); }, importFile: function () { var f = $('#fileOpen'); f.value = ''; f.click(); },
   aiPanel: function () { if (GA.ai) GA.ai.show(); }, aiSettings: function () { if (GA.ai) GA.ai.openSettings(); },
   downloadAtelier: function () { if (GA.ai) GA.ai.downloadAtelier(); }
 };
+(GA.LANGS || []).forEach(function (l) { GA.actions['lang_' + l.code] = function () { GA.setLang(l.code); }; });
 })();

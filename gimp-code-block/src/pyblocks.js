@@ -6,11 +6,15 @@ var PY = GA.py;
 var T = function (x) { return GA.T ? GA.T(x) : x; };
 var IND = '    ';
 var PREC_BIN = { '|': 7, '^': 8, '&': 9, '<<': 10, '>>': 10, '+': 11, '-': 11, '*': 12, '/': 12, '//': 12, '%': 12, '@': 12, '**': 14 };
+var PICK_SVG = 'data:image/svg+xml;utf8,' + encodeURIComponent(
+  '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" fill="#fff" fill-opacity=".92"/>' +
+  '<circle cx="10.5" cy="10.5" r="5" fill="none" stroke="#2B3346" stroke-width="2.4"/>' +
+  '<path d="M14.2 14.2l4.3 4.3" stroke="#2B3346" stroke-width="2.6" stroke-linecap="round"/></svg>');
 var REGISTER_ARGS = ['nom', 'description', 'aide', 'auteur', 'copyright', 'date', 'libellé', 'types d\'image', 'paramètres', 'résultats', 'fonction'];
 
 GA.CATS.splice(GA.CATS.length - 1, 0, { id: 'py', name: '🐍 Python', colour: '#3776AB', intro: 'Chaque ligne de Python en bloc (scripts importés)' });
 GA.CAT.py = GA.CATS.filter(function (c) { return c.id === 'py'; })[0];
-GA.PY_STYLES = { cat_pycom: '#8A8FA3', cat_pyraw: '#B5533C', cat_pycall: '#0E8A7E', cat_pypdb: '#414B60', cat_pyexpr: '#3E9E4E', cat_pyleaf: '#5A6A82' };
+GA.PY_STYLES = { cat_pycom: '#8A8FA3', cat_pyraw: '#B5533C', cat_pycall: '#0E8A7E', cat_pypdb: '#414B60', cat_pyexpr: '#3E9E4E', cat_pyleaf: '#5A6A82', cat_pyvar: '#FF8C1A', cat_pyconst: '#8E5CC7' };
 
 /* ---------- aide & boîte à outils (specs « custom ») ---------- */
 function leafBox(code) { return { block: { type: 'py_leaf', fields: { CODE: code } } }; }
@@ -44,7 +48,8 @@ GA.defs.push(function () {
     sp('py_class', 'classe …', 'Définit une classe (un modèle d\'objet).', { type: 'py_class', fields: { NAME: 'MaClasse', BASES: 'object' } }),
     sp('py_exprstmt', '▸ valeur seule', 'Une valeur utilisée seule comme instruction (par exemple le texte d\'explication d\'une fonction).', { type: 'py_exprstmt', inputs: { V: leafBox('"""Explication."""') } }),
     sp('py_raw', '🧱 code brut', 'Du code gardé caractère pour caractère, parce qu\'il contient une erreur de syntaxe (déjà présente dans le fichier d\'origine). Corrige-le puis réimporte le script pour le transformer en blocs.', { type: 'py_raw', fields: { CODE: '# code brut' } }),
-    sp('py_leaf', 'valeur Python', 'Une valeur écrite en Python : nombre, texte entre guillemets, nom de variable, liste…', { type: 'py_leaf', fields: { CODE: '0' } }, { sep: 'Valeurs' }),
+    sp('py_var', 'variable', 'Une variable : un nom qui garde une valeur (image, calque, nombre, texte…). Clique dessus pour choisir parmi les variables de ton script.', { type: 'py_var', fields: { NAME: 'image' } }, { sep: 'Valeurs', kw: 'variable nom' }),
+    sp('py_leaf', 'valeur Python', 'Une valeur écrite en Python : nombre, texte entre guillemets, nom de variable, liste…', { type: 'py_leaf', fields: { CODE: '0' } }),
     sp('py_call', 'résultat de …(…)', 'Le résultat d\'une fonction. Clic droit pour ajouter ou retirer des arguments.', { type: 'py_call', extraState: { a: ['p'] }, fields: { FUNC: 'len' }, inputs: { A0: leafBox('liste') } }),
     sp('py_binop', '… + …', 'Un calcul entre deux valeurs (+, -, *, /, //, %, **…).', { type: 'py_binop', fields: { OP: '+' }, inputs: { A: leafBox('1'), B: leafBox('2') } }),
     sp('py_compare', '… == …', 'Une comparaison (==, !=, <, >, dans, est…).', { type: 'py_compare', extraState: { n: 1 }, fields: { OP1: '==' }, inputs: { V0: leafBox('x'), V1: leafBox('0') } }),
@@ -129,6 +134,30 @@ GA.pyInit = function (Blockly, G) {
     return code;
   }
   function txt(v) { return new Blockly.FieldTextInput(v); }
+  /* champ « pastille » : variable, fonction ou attribut, avec suggestions pendant la frappe (GA.suggest) */
+  class PillField extends Blockly.FieldTextInput {
+    constructor(v, kind) { super(v); this.kind_ = kind; }
+    initView() {
+      super.initView();
+      if (!this.fieldGroup_) return;
+      Blockly.utils.dom.addClass(this.fieldGroup_, 'gcbPill gcbPill-' + this.kind_);
+      var src = this.getSourceBlock();
+      if (src && src.type === 'py_var') Blockly.utils.dom.addClass(this.fieldGroup_, 'gcbPill-solo');   // le bloc entier est la pastille
+      if (this.kind_ === 'func' && /^pdb\./.test(this.getValue() || '')) Blockly.utils.dom.addClass(this.fieldGroup_, 'gcbPill-pdb');
+    }
+    isFullBlockField() { return false; }   // sinon Zelos repeint tout le bloc en blanc
+    render_() {
+      super.render_();
+      var r = this.borderRect_;
+      if (r) { var h = this.size_.height; r.setAttribute('rx', h / 2); r.setAttribute('ry', h / 2); }
+    }
+    showEditor_(e, quiet) {
+      super.showEditor_(e, quiet);
+      if (GA.suggest && this.htmlInput_) GA.suggest.open(this, this.kind_, this.htmlInput_);
+    }
+  }
+  function pill(v, kind) { return new PillField(v, kind); }
+  GA.PillField = PillField;
   function mtxt(v) { return new Blockly.FieldMultilineInput(v); }
   function mutate(block, fn) {
     var before = JSON.stringify(block.saveExtraState() || {});
@@ -216,10 +245,10 @@ GA.pyInit = function (Blockly, G) {
     gen: function (b) { return stmtLine(b, 'return' + (has(b, 'V') ? ' ' + val(b, 'V', 0) : '')); } });
   defStmt('py_raise', { init: function () { this.appendValueInput('V').appendField(T('lever l\'erreur')); },
     gen: function (b) { return stmtLine(b, 'raise' + (has(b, 'V') ? ' ' + val(b, 'V', 1) : '')); } });
-  defStmt('py_assign', { init: function () { this.appendValueInput('V').appendField(txt('x'), 'T').appendField('='); this.setInputsInline(true); },
+  defStmt('py_assign', { init: function () { this.appendValueInput('V').appendField(pill('x', 'var'), 'T').appendField('='); this.setInputsInline(true); },
     gen: function (b) { return stmtLine(b, tx(b.getFieldValue('T')) + ' = ' + val(b, 'V', 0)); } });
   var AUGS = ['+=', '-=', '*=', '/=', '//=', '%=', '**=', '>>=', '<<=', '&=', '|=', '^=', '@='];
-  defStmt('py_augassign', { init: function () { this.appendValueInput('V').appendField(txt('x'), 'T').appendField(new Blockly.FieldDropdown(AUGS.map(function (o) { return [o, o]; })), 'OP'); this.setInputsInline(true); },
+  defStmt('py_augassign', { init: function () { this.appendValueInput('V').appendField(pill('x', 'var'), 'T').appendField(new Blockly.FieldDropdown(AUGS.map(function (o) { return [o, o]; })), 'OP'); this.setInputsInline(true); },
     gen: function (b) { return stmtLine(b, tx(b.getFieldValue('T')) + ' ' + b.getFieldValue('OP') + ' ' + val(b, 'V', 0)); } });
   defStmt('py_exprstmt', { init: function () { this.appendValueInput('V').appendField('▸'); },
     gen: function (b) { return stmtLine(b, has(b, 'V') ? val(b, 'V', 0) : 'pass'); } });
@@ -287,7 +316,7 @@ GA.pyInit = function (Blockly, G) {
   function elseShape(b, e) { if (e && !b.getInput('ELSE')) b.appendStatementInput('ELSE').setCheck('Action').appendField(T('sinon (boucle finie)')); if (!e) rm(b, 'ELSE'); b.e_ = e; }
   function elseMenu(opts) { var b = this; opts.push(item(b.e_ ? '➖ Retirer « sinon »' : '➕ Ajouter « sinon » (rare)', function () { mutate(b, function () { elseShape(b, !b.e_); }); })); }
   defStmt('py_for', {
-    init: function () { this.e_ = false; this.appendValueInput('ITER').appendField(T('pour')).appendField(txt('x'), 'T').appendField(T('dans')); this.appendStatementInput('DO').setCheck('Action').appendField(T('faire')); },
+    init: function () { this.e_ = false; this.appendValueInput('ITER').appendField(T('pour')).appendField(pill('x', 'var'), 'T').appendField(T('dans')); this.appendStatementInput('DO').setCheck('Action').appendField(T('faire')); },
     save: function () { return this.e_ ? { e: true } : {}; }, load: function (st) { elseShape(this, !!st.e); }, menu: elseMenu,
     gen: function (b) { return headLine(b, 'for ' + tx(b.getFieldValue('T')) + ' in ' + val(b, 'ITER', 0) + ':', 'DO') + (b.e_ ? clauseLine(b, 'el', 'else:', 'ELSE') : ''); }
   });
@@ -362,7 +391,7 @@ GA.pyInit = function (Blockly, G) {
     for (i = 0; i < n; i++) {
       if (!this.getInput('E' + i)) {
         this.appendValueInput('E' + i).appendField(i === 0 ? 'avec' : ',');
-        this.appendDummyInput('AS' + i).appendField(T('comme')).appendField(txt(''), 'V' + i);
+        this.appendDummyInput('AS' + i).appendField(T('comme')).appendField(pill('', 'var'), 'V' + i);
         this.moveInputBefore('E' + i, 'DO'); this.moveInputBefore('AS' + i, 'DO');
       }
     }
@@ -387,16 +416,20 @@ GA.pyInit = function (Blockly, G) {
       else if (!ext && i) lab = ',';
       f.setValue(lab);
     });
-    var ic = b.getField('ICON');
-    if (ic) ic.setValue(isPdb ? '⚙️' : (b.type === 'py_callst' ? '▶' : ''));
+    var ff = b.getField('FUNC');
+    if (ff && ff.fieldGroup_) Blockly.utils.dom[isPdb ? 'addClass' : 'removeClass'](ff.fieldGroup_, 'gcbPill-pdb');
+  }
+  function funcHead(b) {
+    var ff = pill('fonction', 'func');
+    ff.setValidator(function (v) { callLookSoon(b, v); return v; });
+    b.appendDummyInput('HEAD')
+      .appendField(new Blockly.FieldImage(PICK_SVG, 18, 18, T('choisir une fonction'), function () { if (GA.onPickProc) GA.onPickProc(b); }), 'ICON')
+      .appendField(ff, 'FUNC').appendField('(');
   }
   var callDef = {
     init: function () {
       this.a_ = []; this.f_ = false;
-      var self = this;
-      var ff = txt('fonction');
-      ff.setValidator(function (v) { callLookSoon(self, v); return v; });
-      this.appendDummyInput('HEAD').appendField('', 'ICON').appendField(ff, 'FUNC').appendField('(');
+      funcHead(this);
       this.appendDummyInput('END').appendField(')');
       this.setInputsInline(true);
     },
@@ -422,9 +455,7 @@ GA.pyInit = function (Blockly, G) {
       if (f) { rm(this, 'HEAD'); this.appendValueInput('F'); this.appendDummyInput('OPEN').appendField('('); }
       else {
         rm(this, 'F'); rm(this, 'OPEN');
-        var self = this, ff = txt('fonction');
-        ff.setValidator(function (v) { callLookSoon(self, v); return v; });
-        this.appendDummyInput('HEAD').appendField('', 'ICON').appendField(ff, 'FUNC').appendField('(');
+        funcHead(this);
       }
     }
     for (i = a.length; this.getInput('A' + i); i++) rm(this, 'A' + i);
@@ -449,7 +480,51 @@ GA.pyInit = function (Blockly, G) {
   Blockly.Blocks.py_callst.setShape_ = setCallShape;
   Blockly.Blocks.py_call.setShape_ = setCallShape;
 
+  /* choisir une fonction de la PDB dans un bloc d'appel : les cases manquantes sont ajoutées et pré-remplies */
+  function argDefault(a) {
+    var k = a[1];
+    if (a[4]) return { type: 'py_leaf', fields: { CODE: 'None' } };   // argument facultatif (ex. parent)
+    if (k === 'image') return { type: 'py_var', fields: { NAME: 'image' } };
+    if (k === 'drawable' || k === 'layer' || k === 'item') return { type: 'py_var', fields: { NAME: 'drawable' } };
+    var code = 'None';
+    if (/^(int32|int16|int8|count|unit)$/.test(k)) code = '0';
+    else if (k === 'float') code = '0.0';
+    else if (k === 'string') code = '""';
+    else if (k === 'boolean') code = 'False';
+    else if (k === 'color') code = '(0, 0, 0)';
+    else if (/array$/.test(k)) code = '[]';
+    else if (k === 'enum') { var o = GA.enumOptions ? GA.enumOptions(a) : []; code = o.length ? o[0][1] : '0'; }
+    return { type: 'py_leaf', fields: { CODE: code } };
+  }
+  GA.pyApplyProc = function (b, py) {
+    var sig = GA.SIGS && GA.SIGS[py];
+    if (!sig || b.f_) return;
+    Blockly.Events.setGroup(true);
+    try {
+      b.setFieldValue('pdb.' + py, 'FUNC');
+      if (b.a_.some(function (k) { return k !== 'p'; })) return;   // arguments nommés ou * : on ne touche à rien
+      var n = sig[4].length, keep = b.a_.length;
+      while (keep > n && !b.getInputTargetBlock('A' + (keep - 1))) keep--;
+      var shape = []; for (var i = 0; i < Math.max(n, keep); i++) shape.push('p');
+      if (shape.length !== b.a_.length) mutate(b, function () { b.setShape_(shape, false); });
+      sig[4].forEach(function (a, j) {
+        var inp = b.getInput('A' + j);
+        if (!inp || inp.connection.targetBlock()) return;
+        var child = Blockly.serialization.blocks.append(argDefault(a), b.workspace);
+        inp.connection.connect(child.outputConnection);
+      });
+    } finally { Blockly.Events.setGroup(false); }
+  };
+
   /* ----- valeurs ----- */
+  /* NOM_EN_MAJUSCULES (FILL_WHITE, NORMAL_MODE…) = constante de GIMP : pastille violette */
+  GA.isPyConst = function (n) { return /^[A-Z][A-Z0-9_]*$/.test(n || '') && /[A-Z]{2}/.test(n); };
+  defVal('py_var', { style: 'cat_pyvar', init: function () {
+      var self = this, f = pill('x', 'var');
+      f.setValidator(function (v) { self.setStyle(GA.isPyConst(v) ? 'cat_pyconst' : 'cat_pyvar'); return v; });
+      this.appendDummyInput().appendField(f, 'NAME');
+    },
+    gen: function (b) { return [String(b.getFieldValue('NAME')), 0]; } });
   defVal('py_leaf', { style: 'cat_pyleaf', init: function () { this.appendDummyInput().appendField(mtxt('0'), 'CODE'); },
     gen: function (b) { var t = String(b.getFieldValue('CODE')); return [tx(t), leafOrd(t)]; } });
   var BINOPS = ['+', '-', '*', '/', '//', '%', '**', '<<', '>>', '|', '^', '&', '@'];
@@ -510,7 +585,7 @@ GA.pyInit = function (Blockly, G) {
     gen: function (b) { return ['(' + (G.valueToCode(b, 'V', 99) || 'None') + ')', 0]; } });
   defVal('py_ifexp', { init: function () { this.appendValueInput('A'); this.appendValueInput('C').appendField(T('si')); this.appendValueInput('B').appendField(T('sinon')); },
     gen: function (b) { return [val(b, 'A', 3) + ' if ' + val(b, 'C', 3) + ' else ' + val(b, 'B', 2), PY.ordOf(2)]; } });
-  defVal('py_attr', { init: function () { this.appendValueInput('V'); this.appendDummyInput().appendField('.').appendField(txt('attribut'), 'NAME'); },
+  defVal('py_attr', { init: function () { this.appendValueInput('V'); this.appendDummyInput().appendField('.').appendField(pill('attribut', 'attr'), 'NAME'); },
     gen: function (b) { return [val(b, 'V', 16) + '.' + b.getFieldValue('NAME'), PY.ordOf(16)]; } });
   defVal('py_index', { init: function () { this.appendValueInput('V'); this.appendValueInput('I').appendField('['); this.appendDummyInput().appendField(']'); },
     gen: function (b) { return [val(b, 'V', 16) + '[' + (has(b, 'I') ? G.valueToCode(b, 'I', 99) : '0') + ']', PY.ordOf(16)]; } });

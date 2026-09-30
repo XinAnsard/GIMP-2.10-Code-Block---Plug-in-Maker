@@ -8,11 +8,13 @@
   "scripts": {
     "build": "python3 tools/build.py",
     "start": "npm run build && node tools/serve.js",
-    "test": "node test/gen_test.js && node test/parse_test.js && node test/import_test.js && node test/cycle_test.js && node test/edit_test.js && node test/exact_test.js",
+    "test": "node test/gen_test.js && node test/parse_test.js && node test/import_test.js && node test/cycle_test.js && node test/edit_test.js && node test/exact_test.js && node test/pill_test.js && node test/i18n_test.js",
     "test:gen": "node test/gen_test.js",
     "test:roundtrip": "node test/exact_test.js",
     "test:corpus": "node --max-old-space-size=4096 test/exact_dir.js",
-    "test:ui": "python3 test/ui2.py"
+    "test:ui": "python3 test/ui2.py",
+    "i18n:master": "node tools/i18n_master.js",
+    "guide": "node tools/build_guide.js"
   },
   "devDependencies": {
     "blockly": "10.4.3"

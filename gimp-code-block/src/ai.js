@@ -7,7 +7,8 @@ var T = function (s) { return GA.T ? GA.T(s) : s; };
 var $ = function (s) { return document.querySelector(s); };
 function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
 function ws() { return GA.ws; }
-var EN = function () { return GA.lang === 'en'; };
+var EN = function () { return GA.lang !== 'fr'; };
+function msgOf(e) { if (GA.lang === 'fr') return e.fr; var t = GA.T(e.fr); return t !== e.fr ? t : e.en; }
 
 /* ================= fournisseurs ================= */
 var PROVIDERS = [
@@ -76,7 +77,7 @@ var MODES = {
 GA.aiPrompt = function (mode, request, sel) {
   var built = GA.app.getBuilt(), fileMode = built && built.mode === 'file';
   var code = built ? built.code : '';
-  var lang = EN() ? 'English' : 'French';
+  var lang = (GA.langInfo && GA.langInfo(GA.lang) || {}).ai || 'English';
   var sys = [
     'You are an expert in GIMP 2.10 Python-Fu plug-ins (module gimpfu, Python 2.7, the Python bundled with GIMP 2.10 on Windows).',
     'Your code is automatically parsed and turned into visual blocks by "GIMP Code Block - Plug-in Maker", then run inside GIMP 2.10. A validator checks your answer; if it fails you will be asked to fix it.',
@@ -391,7 +392,7 @@ function showResult(ctx, code, v, text) {
   var item = ctx.item, ok = !v.errors.length;
   var after = text.split(/```[\s\S]*?```/).join(' ').trim();
   var html = '<div class="st">' + (ok ? '✅ ' + T('Code vérifié') : '⚠️ ' + T('Le code a encore des problèmes')) + (ctx.tries ? ' <span class="muted">(' + ctx.tries + ' ' + T('correction(s) automatique(s)') + ')</span>' : '') + '</div>' +
-    '<ul class="aiChecks">' + v.errors.map(function (e) { return '<li class="err">🛑 ' + esc(EN() ? e.en : e.fr) + '</li>'; }).join('') + v.warnings.map(function (e) { return '<li class="warn">⚠️ ' + esc(EN() ? e.en : e.fr) + '</li>'; }).join('') +
+    '<ul class="aiChecks">' + v.errors.map(function (e) { return '<li class="err">🛑 ' + esc(msgOf(e)) + '</li>'; }).join('') + v.warnings.map(function (e) { return '<li class="warn">⚠️ ' + esc(msgOf(e)) + '</li>'; }).join('') +
     (ok ? '<li>✔ ' + T('Syntaxe Python 2.7, fonctions de GIMP 2.10 et nombre d\'arguments vérifiés') + '</li>' : '') + '</ul>' +
     '<div class="snippet aiCode"></div>' + (after ? '<div class="aiText"></div>' : '') +
     '<div class="dlrow" style="margin-top:8px">' +

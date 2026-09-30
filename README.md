@@ -41,8 +41,12 @@ browser and download a plug-in ready to drop into GIMP's `plug-ins` folder.
   fold/unfold, drag outline for huge stacks, keyboard shortcuts.
 - **Customisable look** — 4 presets from minimal to fully custom: theme, block shape,
   palettes (including per-category colours), fonts, sizes, background, zoom.
-- **Bilingual** — full French and English UI, including every block, help text and check
-  message.
+- **8 languages** — French, English, Spanish, German, Brazilian Portuguese, Russian, Hindi
+  and Arabic (right to left): every menu, block, help text, check message, the course and the
+  guide. Adding a language: [docs/TRANSLATING.md](gimp-code-block/docs/TRANSLATING.md).
+- **Never alone** — a built-in 🎓 course takes complete beginners to real Python in 18
+  lessons with automatically checked missions, and a 📘 user guide covers everything else
+  ([docs/guide/](gimp-code-block/docs/guide/)).
 
 ## Quick start
 
@@ -85,13 +89,14 @@ src/            application sources, loaded in this order by the build
   core.js         namespace, categories, DSL, Python helper library
   i18n*.js        language engine + English strings (UI, blocks, examples)
   pyparse.js      Python 2/3 tokenizer, parser and exact-format printer
-  specs_*.js      the ~200 friendly block definitions
+  specs_*.js      the ~215 friendly block definitions (specs_d: all images + ⚡ GIMP shortcuts)
   pyblocks.js     the 33 faithful py_* blocks (one per Python construct)
   gen.js          Blockly setup, code generator, checks, toolbox
   pyimport.js     AST → blocks, tolerant import, block fingerprint trailer
   examples.js     the built-in example projects
   tools.js        menus, multi-selection, clipboard, drag outline, folding
   tools2.js       appearance, find/replace, function list, tutorial, actions
+  suggest.js      type-ahead suggestions (PDB procedures, variables, attributes)
   ai.js           AI providers, prompt building, validation, insertion
   app.js          UI wiring, dialogs, import/export, autosave
   index.html      markup and styles (scripts are injected by the build)

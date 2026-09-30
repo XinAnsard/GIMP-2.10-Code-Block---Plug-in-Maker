@@ -13,6 +13,18 @@ function hasCall(x) {
   for (var k in x) if (x[k] && typeof x[k] === 'object' && hasCall(x[k])) return true;
   return false;
 }
+/* une expression qui lit une variable ou fait un calcul devient des blocs (variable = pastille ronde, + - == et… = blocs) ;
+   les valeurs simples (nombres, textes, True/False/None, -1, (0, 0, 0)) restent une seule case */
+var CONST_NAMES = { True: 1, False: 1, None: 1 };
+function hasName(x) {
+  if (!x || typeof x !== 'object') return false;
+  if (Array.isArray(x)) { for (var i = 0; i < x.length; i++) if (hasName(x[i])) return true; return false; }
+  if (x.type === 'Name') return !CONST_NAMES[x.id];
+  if (/^(BinOp|Compare|BoolOp|IfExp)$/.test(x.type) || (x.type === 'UnaryOp' && x.op === 'not')) return true;
+  if (/^(Lambda|ListComp|SetComp|DictComp|GeneratorExp)$/.test(x.type)) return false;
+  for (var k in x) if (x[k] && typeof x[k] === 'object' && hasName(x[k])) return true;
+  return false;
+}
 function S(type, fields, inputs, extra) {
   var st = { type: type };
   if (fields) st.fields = fields;
@@ -32,10 +44,11 @@ function callState(e, stmt) {
   return S(stmt ? 'py_callst' : 'py_call', ex.f ? null : fields, inputs, ex);
 }
 function val(e) {
-  if (!hasCall(e)) return leaf(e);
+  if (!hasCall(e) && !hasName(e)) return leaf(e);
   var inputs = {}, i;
   if (e.paren && !(e.type === 'Tuple')) return S('py_paren', null, { V: B(val(PY.stripParen(e))) });
   switch (e.type) {
+    case 'Name': return CONST_NAMES[e.id] ? leaf(e) : S('py_var', { NAME: e.id });
     case 'Call': return callState(e, false);
     case 'BinOp': return S('py_binop', { OP: e.op }, { A: B(val(e.left)), B: B(val(e.right)) });
     case 'UnaryOp': return S('py_unary', { OP: e.op }, { A: B(val(e.operand)) });
@@ -209,6 +222,18 @@ GA.pyToState = function (mod, name) {
   var hat = S('py_file', { NAME: name || 'script' }, states.length ? { DO: { block: chain(states) } } : null, hx);
   hat.x = 30; hat.y = 30;
   return { blocks: { languageVersion: 0, blocks: [hat] }, _count: total + 1 };
+};
+
+/* petit morceau de Python → une pile de blocs (raccourcis de la boîte à outils) ; les « pass » de remplissage sont retirés */
+GA.pySnippet = function (code) {
+  var states = stmtsStates(PY.parse(code + '\n', {}).body);
+  (function strip(x) {
+    if (!x || typeof x !== 'object') return;
+    if (Array.isArray(x)) { x.forEach(strip); return; }
+    if (x.inputs) for (var k in x.inputs) { var t = x.inputs[k] && x.inputs[k].block; if (t && t.type === 'py_pass' && !t.next) delete x.inputs[k]; }
+    for (var j in x) if (x[j] && typeof x[j] === 'object') strip(x[j]);
+  })(states);
+  return chain(states);
 };
 
 /* ================= import tolérant (fichiers avec erreur de syntaxe) ================= */
@@ -497,6 +522,7 @@ GA.pyChecks = function (ws, add, py3) {
       case 'py_def': f('name', 'NAME', 'Nom de fonction'); e = tryParse('params', String(b.getFieldValue('ARGS') || ''), py3); if (e) add('error', 'Paramètres invalides : ' + e, b.id); break;
       case 'py_class': f('name', 'NAME', 'Nom de classe'); break;
       case 'py_attr': f('name', 'NAME', 'Nom d\'attribut'); break;
+      case 'py_var': f('name', 'NAME', 'Nom de variable'); break;
       case 'py_decorator': f('expr', 'CODE', 'Décorateur invalide'); break;
       case 'py_callst': case 'py_call': if (!b.f_) f('expr', 'FUNC', 'Nom de fonction invalide'); break;
       case 'py_raw': hasRaw = true; add('warn', 'Code brut : il contient une erreur de syntaxe (déjà présente dans le fichier d\'origine). GIMP ne chargera pas le script tant qu\'elle n\'est pas corrigée.', b.id); break;

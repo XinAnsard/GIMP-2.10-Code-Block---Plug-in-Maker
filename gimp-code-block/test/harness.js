@@ -8,7 +8,7 @@ const SRC = path.join(ROOT, 'src');
 const DATA = path.join(ROOT, 'data');
 
 // Source files needed for code generation and import (no DOM, so no app.js/tools).
-const HEADLESS = ['core.js', 'pyparse.js', 'specs_a.js', 'specs_b.js', 'specs_c.js',
+const HEADLESS = ['core.js', 'pyparse.js', 'specs_a.js', 'specs_b.js', 'specs_c.js', 'specs_d.js',
   'pyblocks.js', 'gen.js', 'pyimport.js', 'examples.js'];
 
 function loadBlockly(locale) {

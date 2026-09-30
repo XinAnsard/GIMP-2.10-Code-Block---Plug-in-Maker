@@ -576,12 +576,14 @@ GA.setup = function (Blockly, DATA) {
       out.push({ kind: 'block', type: 'g_pdb_call' });
       out.push({ kind: 'block', type: 'g_pdb_value' });
     }
+    var also = (GA.ALSO && GA.ALSO[catId]) || [], borrowed = [];
     SPECS.forEach(function (s) {
-      if (s.cat !== catId || s.hidden) return;
-      if (s.custom && !s.box) return;
+      if (s.hidden || (s.custom && !s.box)) return;
+      if (s.cat !== catId) { if ((s.also || []).indexOf(catId) >= 0 || also.indexOf(s.type) >= 0) borrowed.push(GA.toolboxEntry(s)); return; }
       if (s.sep) out.push({ kind: 'label', text: s.sep, 'web-class': 'gaSep' });
       out.push(GA.toolboxEntry(s));
     });
+    if (borrowed.length) out = out.concat([{ kind: 'label', text: GA.T('Aussi utiles ici :'), 'web-class': 'gaSep' }], borrowed);
     return out;
   };
   GA.buildToolbox = function () {
@@ -589,6 +591,7 @@ GA.setup = function (Blockly, DATA) {
       var cat = { kind: 'category', name: c.name, colour: c.colour, toolboxitemid: 'cat_' + c.id };
       if (c.id === 'start') cat.custom = 'GA_START';
       else if (c.id === 'vars') cat.custom = 'GA_VARS';
+      else if (c.id === 'py') cat.custom = 'GA_PY';
       else cat.contents = GA.flyoutFor(c.id);
       return cat;
     }) };
@@ -628,6 +631,45 @@ GA.setup = function (Blockly, DATA) {
       }
     });
     return out;
+  };
+  /* Python : d'abord les variables du script (pastilles orange, comme dans Scratch), puis les blocs */
+  GA.pyFlyout = function (ws) {
+    var main = ws.targetWorkspace || ws, seen = {}, names = [];
+    main.getBlocksByType('py_var', false).forEach(function (b) { var n = b.getFieldValue('NAME'); if (!seen[n]) { seen[n] = 1; names.push(n); } });
+    main.getAllBlocks(false).forEach(function (b) {
+      if (b.type !== 'py_assign' && b.type !== 'py_for') return;
+      String(b.getFieldValue('T') || '').split(/[,()\s]+/).forEach(function (n) { if (/^[A-Za-z_]\w*$/.test(n) && !seen[n]) { seen[n] = 1; names.push(n); } });
+    });
+    names = names.filter(function (n) { return !GA.isPyConst(n); });
+    var out = GA.flyoutFor('py');
+    var vars = [{ kind: 'label', text: GA.T('Variables de ton script :'), 'web-class': 'gaSep' }];
+    if (!names.length) vars.push({ kind: 'label', text: GA.T('(importe ou écris un script pour voir ses variables)'), 'web-class': 'gaHint' });
+    names.sort(function (a, b) { return a.toLowerCase().localeCompare(b.toLowerCase()); }).slice(0, 80).forEach(function (n) { vars.push({ kind: 'block', type: 'py_var', fields: { NAME: n } }); });
+    return out.slice(0, 1).concat(vars, GA.pyShortcuts(), out.slice(1));
+  };
+  /* raccourcis GIMP en blocs Python : ce que presque tous les scripts écrivent */
+  var PY_SHORTCUTS = [
+    ['Tout faire en une seule annulation', 'pdb.gimp_image_undo_group_start(image)\ntry:\n    pass\nfinally:\n    pdb.gimp_image_undo_group_end(image)'],
+    ['Remettre couleurs et outils à la fin', 'pdb.gimp_context_push()\ntry:\n    pass\nfinally:\n    pdb.gimp_context_pop()'],
+    ['Pour chaque image ouverte (une annulation chacune)', 'for img in reversed(gimp.image_list()):\n    pdb.gimp_image_undo_group_start(img)\n    try:\n        pass\n    finally:\n        pdb.gimp_image_undo_group_end(img)\ngimp.displays_flush()'],
+    ['Pour chaque calque de l\'image', 'for layer in image.layers:\n    pass'],
+    ['Pour chaque calque de toutes les images', 'for img in reversed(gimp.image_list()):\n    for layer in img.layers:\n        pass'],
+    ['Le calque actif', 'layer = pdb.gimp_image_get_active_layer(image)'],
+    ['Nouveau calque de la taille de l\'image', 'layer = pdb.gimp_layer_new(image, image.width, image.height, RGBA_IMAGE, "Calque", 100, NORMAL_MODE)\npdb.gimp_image_insert_layer(image, layer, None, 0)'],
+    ['Enregistrer la sélection puis la remettre', 'saved = pdb.gimp_selection_save(image)\ntry:\n    pass\nfinally:\n    pdb.gimp_image_select_item(image, CHANNEL_OP_REPLACE, saved)\n    pdb.gimp_image_remove_channel(image, saved)'],
+    ['Afficher un message', 'pdb.gimp_message("Bonjour")'],
+    ['Rafraîchir l\'affichage', 'gimp.displays_flush()']
+  ];
+  var pyShortcutCache = null;
+  GA.pyShortcuts = function () {
+    if (pyShortcutCache) return JSON.parse(JSON.stringify(pyShortcutCache));
+    var out = [{ kind: 'label', text: GA.T('⚡ Raccourcis GIMP :'), 'web-class': 'gaSep' }];
+    PY_SHORTCUTS.forEach(function (sc) {
+      out.push({ kind: 'label', text: GA.T(sc[0]), 'web-class': 'gaHint' });
+      var st = GA.pySnippet(sc[1]); st.kind = 'block'; out.push(st);
+    });
+    pyShortcutCache = out;
+    return JSON.parse(JSON.stringify(out));
   };
   GA.withVar = function (entry, v) { entry.fields = entry.fields || {}; entry.fields.VAR = v; return entry; };
 

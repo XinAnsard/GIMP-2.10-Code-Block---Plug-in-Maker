@@ -90,8 +90,8 @@ main { flex: 1; display: flex; min-height: 0; }
 
 /* panneau latéral */
 #side { width: clamp(330px, 31vw, 460px); background: var(--panel); border-left: 1px solid var(--line); display: flex; flex-direction: column; min-height: 0; z-index: 3; }
-.tabs { display: flex; gap: 4px; padding: 8px 10px 0; border-bottom: 1px solid var(--line); }
-.tab { flex: 1; white-space: nowrap; border: 0; background: none; padding: 10px 6px 11px; font-weight: 800; font-size: 13.5px; color: var(--muted); border-bottom: 3px solid transparent; border-radius: 8px 8px 0 0; display: inline-flex; justify-content: center; align-items: center; gap: 6px; }
+.tabs { display: flex; gap: 4px; padding: 8px 10px 0; border-bottom: 1px solid var(--line); overflow-x: auto; scrollbar-width: thin; }
+.tab { flex: 1 0 auto; white-space: nowrap; border: 0; background: none; padding: 10px 6px 11px; font-weight: 800; font-size: 13.5px; color: var(--muted); border-bottom: 3px solid transparent; border-radius: 8px 8px 0 0; display: inline-flex; justify-content: center; align-items: center; gap: 6px; }
 .tab:hover { color: var(--ink); background: var(--panel2); }
 .tab[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); }
 .tab .badge { background: var(--panel2); color: var(--muted); }
@@ -192,8 +192,63 @@ main { flex: 1; display: flex; min-height: 0; }
 .pickList { max-height: 55vh; overflow: auto; display: flex; flex-direction: column; gap: 6px; }
 .pick { text-align: left; border: 1.5px solid var(--line); background: var(--panel); border-radius: 11px; padding: 9px 11px; }
 .pick:hover { border-color: var(--accent); background: var(--panel2); }
-.pick code { font: 700 13px var(--mono); color: var(--k-fn); }
 .pick .bl { display: block; font-size: 13px; color: var(--muted); }
+/* cours et guide */
+#p-learn h2 { margin-top: 4px; }
+.lnBar { height: 10px; border-radius: 99px; background: var(--panel2); border: 1px solid var(--line); overflow: hidden; margin: 10px 0 4px; }
+.lnBar > div { height: 100%; background: var(--go); border-radius: 99px; transition: width .3s; }
+.lnCount { font-size: 12.5px; font-weight: 800; color: var(--muted); margin-bottom: 8px; }
+.lnLvl { margin-top: -6px; font-size: 13px; }
+.lnList { display: flex; flex-direction: column; gap: 5px; }
+.lnItem { display: flex; align-items: center; gap: 10px; text-align: start; border: 1.5px solid var(--line); background: var(--panel); border-radius: 11px; padding: 8px 10px; font-weight: 700; font-size: 14px; color: var(--ink); }
+.lnItem:hover { border-color: var(--accent); background: var(--panel2); }
+.lnItem.done { border-color: var(--go); background: var(--ok-soft); }
+.lnMark { min-width: 26px; height: 26px; border-radius: 99px; background: var(--accent-soft); color: var(--accent); display: inline-flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 900; }
+.lnItem.done .lnMark { background: transparent; }
+.lnNav, .lnNav2 { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+.lnNav .muted { font-size: 12.5px; }
+.lnGoal { background: var(--accent-soft); border-radius: 11px; padding: 9px 12px; font-weight: 800; margin: 8px 0 10px; }
+.lnText p, .lnText li, .gdBody p, .gdBody li { font-size: 14.5px; line-height: 1.55; }
+.lnText code, .gdBody code, .lnGoal code, .steps code, .tip code { font: 600 12.5px var(--mono); background: var(--code-bg); border: 1px solid var(--line); border-radius: 6px; padding: 0 5px; word-break: break-word; }
+.lnBlocks { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0 10px; }
+.lnBlock { border: 0; border-radius: 10px; color: #fff; font-weight: 800; font-size: 13px; padding: 7px 12px; box-shadow: inset 0 -3px 0 rgba(0, 0, 0, .18); cursor: pointer; }
+.lnBlock:hover { filter: brightness(1.08); }
+.lnActs { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0 10px; }
+.lnOk { background: var(--ok-soft); color: var(--go); font-weight: 900; border-radius: 11px; padding: 10px 12px; margin: 10px 0; font-size: 15px; }
+.lnWait { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; color: var(--muted); font-size: 13px; font-weight: 700; margin: 10px 0 4px; }
+.lnHint { background: var(--warn-soft); border-radius: 11px; padding: 9px 12px; font-size: 14px; }
+.lnFoot { margin-top: 16px; display: flex; gap: 6px; flex-wrap: wrap; }
+.gdWrap { display: flex; gap: 14px; min-height: 50vh; max-height: 62vh; }
+.gdToc { display: flex; flex-direction: column; gap: 3px; min-width: 210px; max-width: 240px; overflow: auto; }
+.gdTab { text-align: start; border: 0; background: transparent; border-radius: 9px; padding: 7px 10px; font-weight: 700; font-size: 13.5px; color: var(--ink); }
+.gdTab:hover { background: var(--panel2); }
+.gdTab.on { background: var(--accent-soft); color: var(--accent); }
+.gdBody { flex: 1; overflow: auto; padding-inline-end: 6px; }
+.gdBody h3 { margin-top: 0; }
+@media (max-width: 700px) { .gdWrap { flex-direction: column; max-height: none; } .gdToc { flex-direction: row; flex-wrap: wrap; max-width: none; } }
+.pick .gname { font-size: 11.5px; font-weight: 800; color: var(--muted); margin-left: 8px; }
+/* pastilles dans les blocs : variables (orange, comme Scratch), fonctions, fonctions de GIMP, attributs */
+.gcbPill > rect.blocklyFieldRect { stroke-width: 1.5px; fill-opacity: 1; }
+.gcbPill > text.blocklyText { font-weight: 800 !important; }
+.gcbPill-var > rect.blocklyFieldRect { fill: #FF8C1A !important; stroke: #D96F00 !important; }
+.gcbPill-var > text.blocklyText, .gcbPill-func > text.blocklyText, .gcbPill-attr > text.blocklyText { fill: #fff !important; }
+.gcbPill-func > rect.blocklyFieldRect { fill: #0A5F57 !important; stroke: rgba(0, 0, 0, .25) !important; }
+.gcbPill-func.gcbPill-pdb > rect.blocklyFieldRect { fill: #FFD23F !important; stroke: #C99700 !important; }
+.gcbPill-func.gcbPill-pdb > text.blocklyText { fill: #3B2E00 !important; }
+.gcbPill-attr > rect.blocklyFieldRect { fill: #2F6B3A !important; stroke: rgba(0, 0, 0, .25) !important; }
+.gcbPill-solo > rect.blocklyFieldRect { fill: transparent !important; stroke: none !important; }
+/* liste de suggestions sous une case */
+.sgBox { position: fixed; z-index: 100001; background: var(--panel); color: var(--ink); border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow); overflow: auto; padding: 6px; font-family: var(--font); font-size: 13px; }
+.sgHead { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 11.5px; font-weight: 800; color: var(--muted); padding: 2px 6px 6px; position: sticky; top: -6px; background: var(--panel); }
+.sgAll { border: 1.5px solid var(--line); background: var(--panel2); border-radius: 8px; padding: 2px 8px; font-weight: 800; font-size: 11.5px; color: var(--ink); cursor: pointer; white-space: nowrap; }
+.sgAll:hover { border-color: var(--accent); }
+.sgRow { padding: 6px 8px; border-radius: 9px; cursor: pointer; }
+.sgRow.on { background: var(--accent-soft); }
+.sgNone { padding: 8px; color: var(--muted); }
+.sgChip { display: inline-block; padding: 2px 11px; border-radius: 999px; color: #fff; font: 800 12.5px var(--mono); background: #414B60; word-break: break-all; }
+.sg-var { background: #FF8C1A; } .sg-const { background: #8E5CC7; } .sg-fn { background: #0A5F57; } .sg-def { background: #3776AB; } .sg-attr { background: #2F6B3A; }
+.sgSub { font: 11.5px var(--mono); color: var(--muted); margin-left: 6px; word-break: break-word; }
+.sgDesc { font-size: 12.5px; color: var(--muted); margin-top: 2px; line-height: 1.35; }
 .pick .ar { display: block; font: 12px var(--mono); color: var(--muted); margin-top: 2px; word-break: break-word; }
 .status { border-radius: 13px; padding: 12px 14px; font-weight: 800; margin-bottom: 14px; }
 .status.ok { background: var(--ok-soft); } .status.warn { background: var(--warn-soft); } .status.err { background: var(--err-soft); }
@@ -387,11 +442,19 @@ table.keys kbd { font: 700 12px var(--mono); background: var(--panel2); border: 
         <button role="menuitem" data-act="downloadAtelier"><span>🧳 Télécharger l'atelier (pour ton IA locale)</span></button>
     </div></div>
     <div class="mb"><button class="mbBtn" aria-haspopup="true" aria-expanded="false">🌐 Langue</button><div class="menu" role="menu">
-        <button role="menuitem" data-act="langFr"><span>🇫🇷 Français</span></button>
-        <button role="menuitem" data-act="langEn"><span>🇬🇧 English</span></button>
+        <button role="menuitem" data-act="lang_fr" lang="fr"><span>🇫🇷 Français</span></button>
+        <button role="menuitem" data-act="lang_en" lang="en"><span>🇬🇧 English</span></button>
+        <button role="menuitem" data-act="lang_es" lang="es"><span>🇪🇸 Español</span></button>
+        <button role="menuitem" data-act="lang_de" lang="de"><span>🇩🇪 Deutsch</span></button>
+        <button role="menuitem" data-act="lang_pt" lang="pt"><span>🇧🇷 Português (Brasil)</span></button>
+        <button role="menuitem" data-act="lang_ru" lang="ru"><span>🇷🇺 Русский</span></button>
+        <button role="menuitem" data-act="lang_hi" lang="hi"><span>🇮🇳 हिन्दी</span></button>
+        <button role="menuitem" data-act="lang_ar" lang="ar"><span>🇸🇦 العربية</span></button>
     </div></div>
     <div class="mb"><button class="mbBtn" aria-haspopup="true" aria-expanded="false">Aide</button><div class="menu" role="menu">
-        <button role="menuitem" data-act="tour"><span>🎓 Tutoriel (2 min)</span><kbd>F1</kbd></button>
+        <button role="menuitem" data-act="learn"><span>🎓 Cours : de débutant à pro</span></button>
+        <button role="menuitem" data-act="guide"><span>📘 Guide d'utilisation</span></button>
+        <button role="menuitem" data-act="tour"><span>🧭 Visite de l'écran (2 min)</span><kbd>F1</kbd></button>
         <button role="menuitem" id="mWelcome"><span>👋 Revoir l'accueil</span></button>
         <button role="menuitem" data-act="shortcuts"><span>⌨️ Raccourcis clavier</span></button>
         <button role="menuitem" data-act="about"><span>ℹ️ À propos</span></button>
@@ -428,6 +491,7 @@ table.keys kbd { font: 700 12px var(--mono); background: var(--panel2); border: 
       <button class="tab" role="tab" id="t-code" aria-selected="false" data-pane="code">🐍 Code</button>
       <button class="tab" role="tab" id="t-check" aria-selected="false" data-pane="check">✅ Vérification <span class="badge" id="chkBadge">0</span></button>
       <button class="tab" role="tab" id="t-ai" aria-selected="false" data-pane="ai">🤖 IA</button>
+      <button class="tab" role="tab" id="t-learn" aria-selected="false" data-pane="learn">🎓 Cours</button>
       <button class="tab closeSheet" id="sheetClose" aria-label="Fermer le panneau">✕</button>
     </div>
     <div class="pane on" id="p-help" role="tabpanel"></div>
@@ -441,6 +505,7 @@ table.keys kbd { font: 700 12px var(--mono); background: var(--panel2); border: 
     </div>
     <div class="pane" id="p-check" role="tabpanel"></div>
     <div class="pane" id="p-ai" role="tabpanel"></div>
+    <div class="pane" id="p-learn" role="tabpanel"></div>
   </aside>
 </main>
 <button class="btn primary" id="sideToggle">💡 Aide & code</button>
